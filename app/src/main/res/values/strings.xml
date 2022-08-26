@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">diario_digital_criptografado</string>
+    <string-array name="array_genero">
+        <item>Masculino</item>
+        <item>Feminino</item>
+        <item>Outro</item>
+    </string-array>
+    <string-array name="array_tipo_perfil">
+        <item>Usuário do diário</item>
+        <item>Psicólogo</item>
+    </string-array>
+</resources>

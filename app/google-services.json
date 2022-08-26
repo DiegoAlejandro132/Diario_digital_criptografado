@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "198549131624",
+    "firebase_url": "https://tcc-app-diario-digital-default-rtdb.firebaseio.com",
+    "project_id": "tcc-app-diario-digital",
+    "storage_bucket": "tcc-app-diario-digital.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198549131624:android:a65ee99b8b6dfb6347c6dd",
+        "android_client_info": {
+          "package_name": "tcc.com.diario_digital_criptografado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198549131624-06v14t6rvlbj0kqtobo93oatqtgvt77n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRFS0PfHuC-pk4zhBTo9Op0jmQN5Gt8ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198549131624-06v14t6rvlbj0kqtobo93oatqtgvt77n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198549131624:android:f7d6c9d7cfc8fc1747c6dd",
+        "android_client_info": {
+          "package_name": "tcc.com.diariodigitalcriptografado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198549131624-06v14t6rvlbj0kqtobo93oatqtgvt77n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRFS0PfHuC-pk4zhBTo9Op0jmQN5Gt8ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198549131624-06v14t6rvlbj0kqtobo93oatqtgvt77n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

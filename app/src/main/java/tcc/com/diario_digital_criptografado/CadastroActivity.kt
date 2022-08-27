@@ -58,14 +58,14 @@ class CadastroActivity : AppCompatActivity() {
 
     //função que garante que os dados do formulario estejam validos
     private fun validateForm () : Boolean{
-        if((txt_cpf.text.toString() != "" && txt_cpf.text.toString() != null)
-            && (txt_email.text.toString() != "" &&  txt_email.text.toString() != null)
-            && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento.text.toString() != null)
-            && (txt_nome.text.toString() != "" && txt_nome.text.toString() != null)
-            && (txt_telefone.text.toString() != "" && txt_telefone.text.toString() != null)
+        if((txt_cpf.text.toString() != "" && txt_cpf != null)
+            && (txt_email.text.toString() != "" &&  txt_email != null)
+            && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento != null)
+            && (txt_nome.text.toString() != "" && txt_nome != null)
+            && (txt_telefone.text.toString() != "" && txt_telefone != null)
             && (genero != "" && genero != null)
             && (tipo_perfil != null)
-            && (txt_senha.text.toString() != "" && txt_confirmar_senha.text.toString() != null))
+            && (txt_senha.text.toString() != "" && txt_confirmar_senha != null))
         {
             return true
         }
@@ -77,6 +77,7 @@ class CadastroActivity : AppCompatActivity() {
         }
         return false
     }
+
 
     //funões para setar o spinner de genero
     private fun setGeneroAdapter(){
@@ -97,6 +98,8 @@ class CadastroActivity : AppCompatActivity() {
             }
         }
     }
+
+
     //funções para setar o spinner do tipo de perfil
     private fun setTipoCadastroAdapter(){
         ArrayAdapter.createFromResource(this, R.array.array_tipo_perfil, android.R.layout.simple_list_item_1)
@@ -115,6 +118,7 @@ class CadastroActivity : AppCompatActivity() {
             }
         }
     }
+
 
     //funções para criar usuario novo no banco
     private fun setUserData() : Usuario {

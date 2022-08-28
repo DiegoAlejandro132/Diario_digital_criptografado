@@ -13,7 +13,7 @@
         android:background="@drawable/borda_edit_text"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

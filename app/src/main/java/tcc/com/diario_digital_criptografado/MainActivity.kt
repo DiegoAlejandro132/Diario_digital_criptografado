@@ -51,10 +51,11 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    
 
     private fun validateLogin() : Boolean{
         if((txt_email != null && txt_email.text.toString() != "")
-            &&(txt_senha != null && txt_senha.text.toString() != null)){
+            &&(txt_senha != null && txt_senha.text.toString() != "")){
             return true
         }
         return false

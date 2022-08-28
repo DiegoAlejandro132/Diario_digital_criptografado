@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_cadastro.*
-import tcc.com.diario_digital_criptografado.MainActivity
-import tcc.com.diario_digital_criptografado.R
-import tcc.com.diariodigitalcriptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.models.Usuario
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -136,7 +134,7 @@ class CadastroActivity : AppCompatActivity() {
         usuario.email = email
         usuario.telefone = telefone
         usuario.nome = nome
-        usuario.genero = genero.toString()
+        usuario.sexo = genero.toString()
         usuario.id_perfil = tipo_perfil.toString().toInt()
 
         return usuario

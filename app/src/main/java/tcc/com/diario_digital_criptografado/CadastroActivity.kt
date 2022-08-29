@@ -25,10 +25,12 @@ class CadastroActivity : AppCompatActivity() {
         setGeneroAdapter()
         setTipoCadastroAdapter()
 
-
+        //usuario volta pra tela de login ao clicar em cancelar
         btn_cancelar.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+        //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
             val usuario = setUserData()
 

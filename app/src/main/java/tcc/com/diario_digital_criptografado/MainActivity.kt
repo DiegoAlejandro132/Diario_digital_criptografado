@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
-        if(AuthUtil.userIsLoggedIn()) {
-            startActivity(Intent(this, DirecionadorActivity::class.java))
-        }
+//        if(AuthUtil.userIsLoggedIn()) {
+//            startActivity(Intent(this, DirecionadorActivity::class.java))
+//        }
 
         //logar usuario com suas credenciais
         btn_login.setOnClickListener {

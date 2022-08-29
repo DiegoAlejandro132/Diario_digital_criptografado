@@ -11,9 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_cadastro.*
-import tcc.com.diario_digital_criptografado.MainActivity
-import tcc.com.diario_digital_criptografado.R
-import tcc.com.diariodigitalcriptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.models.Usuario
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -61,14 +59,14 @@ class CadastroActivity : AppCompatActivity() {
 
     //função que garante que os dados do formulario estejam validos
     private fun validateForm () : Boolean{
-        if((txt_cpf.text.toString() != "" && txt_cpf.text.toString() != null)
-            && (txt_email.text.toString() != "" &&  txt_email.text.toString() != null)
-            && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento.text.toString() != null)
-            && (txt_nome.text.toString() != "" && txt_nome.text.toString() != null)
-            && (txt_telefone.text.toString() != "" && txt_telefone.text.toString() != null)
+        if((txt_cpf.text.toString() != "" && txt_cpf != null)
+            && (txt_email.text.toString() != "" &&  txt_email != null)
+            && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento != null)
+            && (txt_nome.text.toString() != "" && txt_nome != null)
+            && (txt_telefone.text.toString() != "" && txt_telefone != null)
             && (genero != "" && genero != null)
             && (tipo_perfil != null)
-            && (txt_senha.text.toString() != "" && txt_confirmar_senha.text.toString() != null))
+            && (txt_senha.text.toString() != "" && txt_confirmar_senha != null))
         {
             return true
         }
@@ -80,6 +78,7 @@ class CadastroActivity : AppCompatActivity() {
         }
         return false
     }
+
 
     //funões para setar o spinner de genero
     private fun setGeneroAdapter(){
@@ -176,7 +175,7 @@ class CadastroActivity : AppCompatActivity() {
         usuario.email = email
         usuario.telefone = telefone
         usuario.nome = nome
-        usuario.genero = genero.toString()
+        usuario.sexo = genero.toString()
         usuario.id_perfil = tipo_perfil.toString().toInt()
 
         return usuario

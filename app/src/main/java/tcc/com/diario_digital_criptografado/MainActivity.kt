@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
 //        if(AuthUtil.userIsLoggedIn()) {
 //            startActivity(Intent(this, DirecionadorActivity::class.java))
@@ -32,15 +33,28 @@ class MainActivity : AppCompatActivity() {
             val email = txt_email.text.toString()
             val senha = txt_senha.text.toString()
 
-            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    startActivity(Intent(this, DirecionadorActivity::class.java))
-                }else{
-                    Toast.makeText(this@MainActivity, "Emai ou senha incorreto", Toast.LENGTH_LONG).show()
+            if(validateLogin()){
+                auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        startActivity(Intent(this, DirecionadorActivity::class.java))
+                    }else{
+                        Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()
+                    }
                 }
+            }else{
+                Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
             }
         }
 
 
+    }
+    
+
+    private fun validateLogin() : Boolean{
+        if((txt_email != null && txt_email.text.toString() != "")
+            &&(txt_senha != null && txt_senha.text.toString() != "")){
+            return true
+        }
+        return false
     }
 }

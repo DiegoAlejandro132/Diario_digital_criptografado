@@ -1,12 +1,45 @@
 <resources>
     <string name="app_name">diario_digital_criptografado</string>
     <string-array name="array_genero">
+        <item>Selecione</item>
         <item>Masculino</item>
         <item>Feminino</item>
         <item>Outro</item>
     </string-array>
     <string-array name="array_tipo_perfil">
+        <item>Selecione</item>
         <item>Usuário do diário</item>
         <item>Psicólogo</item>
+    </string-array>
+    <string-array name="estados_registro">
+        <item>Selecione</item>
+        <item>Acre-CRP 24ª Região</item>
+        <item>Alagoas-CRP 15ª Região</item>
+        <item>Amapá-CRP 10ª Região</item>
+        <item>Amazonas-CRP 20ª Região</item>
+        <item>Bahia-CRP 3ª Região</item>
+        <item>Ceará-CRP 11ª Região</item>
+        <item>Distrito Federal-CRP 1ª Região</item>
+        <item>Espirito Santo-CRP 16ª Região</item>
+        <item>Goiás-CRP 9ª Região</item>
+        <item>Maranhão-CRP 22ª Região</item>
+        <item>Mato Grosso do Sul-CRP 14ª Região</item>
+        <item>Mato Grosso-CRP 18ª Região</item>
+        <item>Minas Gerais-CRP 4ª Região</item>
+        <item>Pará-CRP 10ª Região</item>
+        <item>Paraíba-CRP 13ª Região</item>
+        <item>Paraná-CRP 8ª Região</item>
+        <item>Pernambuco-CRP 2ª Região</item>
+        <item>Piauí-CRP 21ª Região</item>
+        <item>Rio de Janeiro-CRP 5ª Região</item>
+        <item>Rio Grande do Norte-CRP 17ª Região</item>
+        <item>Rio Grande do Sul-CRP 7ª Região</item>
+        <item>Rondônia-CRP 24ª Região</item>
+        <item>Roraima-CRP 20ª Região</item>
+        <item>Santa Catarina-CRP 12ª Região</item>
+        <item>São Paulo-CRP 6ª Região</item>
+        <item>Sergipe-CRP 19ª Região</item>
+        <item>Tocantins-CRP 23ª Região</item>
+
     </string-array>
 </resources>

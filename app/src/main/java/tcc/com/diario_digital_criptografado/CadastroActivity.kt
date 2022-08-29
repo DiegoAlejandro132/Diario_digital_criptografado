@@ -3,6 +3,7 @@ package tcc.com.diario_digital_criptografado
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -18,12 +19,14 @@ class CadastroActivity : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance()
     private var tipo_perfil : Int? = null
     private var genero : String? = null
+    private var estado_registro : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
         setGeneroAdapter()
         setTipoCadastroAdapter()
+        setEstadoRegiaoAdapter()
 
 
         btn_cancelar.setOnClickListener {
@@ -104,15 +107,53 @@ class CadastroActivity : AppCompatActivity() {
             .also { adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spn_tipo_perfil.adapter = adapter
             }
+        lbl_estado_regiao.setVisibility(View.INVISIBLE)
+        spn_regiao.setVisibility(View.INVISIBLE)
+        lbl_numero_registro.setVisibility(View.INVISIBLE)
+        txt_numero_registro.setVisibility(View.INVISIBLE)
         setTipoCadastroOnItemSelected()
     }
     private fun setTipoCadastroOnItemSelected(){
         spn_tipo_perfil.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 tipo_perfil = p2
+                if(tipo_perfil == 2){
+                    lbl_numero_registro.setVisibility(View.VISIBLE)
+                    spn_regiao.setVisibility(View.VISIBLE)
+                    lbl_estado_regiao.setVisibility(View.VISIBLE)
+                    txt_numero_registro.setVisibility(View.VISIBLE)
+                }else{
+                    if(tipo_perfil == 1 || tipo_perfil == 0){
+                        lbl_numero_registro.setVisibility(View.INVISIBLE)
+                        spn_regiao.setVisibility(View.INVISIBLE)
+                        lbl_estado_regiao.setVisibility(View.INVISIBLE)
+                        txt_numero_registro.setVisibility(View.INVISIBLE)
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+    }
+
+
+    //funções para setar o spinner do tipo de perfil
+    private fun setEstadoRegiaoAdapter(){
+        ArrayAdapter.createFromResource(this, R.array.estados_registro, android.R.layout.simple_list_item_1)
+            .also { adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spn_regiao.adapter = adapter
+            }
+        setEstadoRegiaoOnItemSelected()
+    }
+    private fun setEstadoRegiaoOnItemSelected(){
+        spn_regiao.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                estado_registro = p0?.getItemAtPosition(p2).toString()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
             }
         }
     }

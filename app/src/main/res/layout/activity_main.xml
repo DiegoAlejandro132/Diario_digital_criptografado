@@ -8,23 +8,23 @@
 
     <EditText
         android:id="@+id/txt_email"
-        android:layout_width="233dp"
+        android:layout_width="280dp"
         android:layout_height="48dp"
         android:background="@drawable/borda_edit_text"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.579" />
+        app:layout_constraintVertical_bias="0.53" />
 
     <EditText
         android:id="@+id/txt_senha"
-        android:layout_width="233dp"
+        android:layout_width="280dp"
         android:layout_height="48dp"
         android:background="@drawable/borda_edit_text"
         android:ems="10"
@@ -34,10 +34,9 @@
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.708" />
+        app:layout_constraintVertical_bias="0.635" />
 
     <Button
         android:id="@+id/btn_login"
@@ -63,5 +62,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+    <Button
+        android:id="@+id/btn_ir_redefinir_senha"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginBottom="32dp"
+        android:text="Esqueci minha senha"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_senha"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

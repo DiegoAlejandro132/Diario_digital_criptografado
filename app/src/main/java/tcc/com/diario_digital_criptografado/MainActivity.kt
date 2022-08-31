@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.CadastroActivity
 import tcc.com.diario_digital_criptografado.DirecionadorActivity
-import tcc.com.diariodigitalcriptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database = Firebase.database.reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

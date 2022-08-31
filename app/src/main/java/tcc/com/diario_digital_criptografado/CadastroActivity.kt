@@ -11,22 +11,23 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_cadastro.*
+import tcc.com.diario_digital_criptografado.models.Psicologo
 import tcc.com.diario_digital_criptografado.models.Usuario
 
 class CadastroActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance()
-    private var tipo_perfil : Int? = null
+    private var tipo_perfil : String? = null
     private var genero : String? = null
     private var estado_registro : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
-        setGeneroAdapter()
-        setTipoCadastroAdapter()
-        setEstadoRegiaoAdapter()
+
+        //seta todos os adapters dos spinners
+        setAdapters()
 
         //usuario volta pra tela de login ao clicar em cancelar
         btn_cancelar.setOnClickListener {
@@ -35,19 +36,9 @@ class CadastroActivity : AppCompatActivity() {
 
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
-            val usuario = setUserData()
-
             if(validateForm()){
                 if(validatePassword()){
-                    auth.createUserWithEmailAndPassword(usuario.email, txt_senha.text.toString()).addOnCompleteListener(this) {task ->
-                        if(task.isSuccessful){
-                            writeUserDatabase(usuario)
-                            Toast.makeText(this@CadastroActivity, "Usuario Cadastrado com sucesso", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, MainActivity::class.java))
-                        }else{
-                            Toast.makeText(this@CadastroActivity, "Usuário ja possui cadastro no sistema", Toast.LENGTH_LONG).show()
-                        }
-                    }
+                    createUser()
                 }else{
                     Toast.makeText(this@CadastroActivity, "As senhas tem que ser iguais", Toast.LENGTH_SHORT).show()
                 }
@@ -57,19 +48,63 @@ class CadastroActivity : AppCompatActivity() {
         }
     }
 
+    // <---------------------------------------------------- funções ----------------------------------------------------->
+    // <---------------------------------------------------- funções ----------------------------------------------------->
+    // <---------------------------------------------------- funções ----------------------------------------------------->
 
+
+    //função que cria a conta do usuario e do seu tipo de cadastro
+    private fun createUser(){
+        val usuario = setUserData()
+        val psicologo = setPsicologoData()
+
+        auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
+            if(task.isSuccessful){
+                if(tipo_perfil == "Usuário do diário") {
+                    writeUserDatabase(usuario)
+                    Toast.makeText(
+                        this@CadastroActivity,
+                        "Usuario cadastrado com sucesso",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }else{
+                    if(tipo_perfil == "Psicólogo"){
+                        writePsicologoDatabase(psicologo)
+                        Toast.makeText(
+                            this@CadastroActivity,
+                            "Psicólogo cadastrado com sucesso",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }else{
+                        Toast.makeText(
+                            this@CadastroActivity,
+                            "Não foi possivel criar a conta, tente novamente mais tarde",
+                            Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            }else{
+                Toast.makeText(this@CadastroActivity, "Usuário ja possui cadastro no sistema", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     //função que garante que os dados do formulario estejam validos
-    private fun validateForm () : Boolean{
-        if((txt_cpf.text.toString() != "" && txt_cpf != null)
-            && (txt_email.text.toString() != "" &&  txt_email != null)
+    private fun validateForm () : Boolean {
+        if ((txt_cpf.text.toString() != "" && txt_cpf != null)
+            && (txt_email.text.toString() != "" && txt_email != null)
             && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento != null)
             && (txt_nome.text.toString() != "" && txt_nome != null)
             && (txt_telefone.text.toString() != "" && txt_telefone != null)
-            && (genero != "" && genero != null)
-            && (tipo_perfil != null)
-            && (txt_senha.text.toString() != "" && txt_confirmar_senha != null))
-        {
+            && (genero != "" && genero != "Selecione" && genero != null)
+            && (tipo_perfil != null && tipo_perfil != "" && tipo_perfil != "Selecione")
+            && (txt_senha.text.toString() != "" && txt_confirmar_senha != null)
+        ) {
+            if (tipo_perfil == "Psicólogo") {
+                return estado_registro != "Selecione" && txt_numero_registro.text.toString() != "" && txt_numero_registro != null
+            }
             return true
         }
         return false
@@ -118,14 +153,14 @@ class CadastroActivity : AppCompatActivity() {
     private fun setTipoCadastroOnItemSelected(){
         spn_tipo_perfil.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                tipo_perfil = p2
-                if(tipo_perfil == 2){
+                tipo_perfil = p0?.getItemAtPosition(p2).toString()
+                if(tipo_perfil == "Psicólogo"){
                     lbl_numero_registro.setVisibility(View.VISIBLE)
                     spn_regiao.setVisibility(View.VISIBLE)
                     lbl_estado_regiao.setVisibility(View.VISIBLE)
                     txt_numero_registro.setVisibility(View.VISIBLE)
                 }else{
-                    if(tipo_perfil == 1 || tipo_perfil == 0){
+                    if((tipo_perfil == "Usuário do diário") || (tipo_perfil == "Selecione")){
                         lbl_numero_registro.setVisibility(View.INVISIBLE)
                         spn_regiao.setVisibility(View.INVISIBLE)
                         lbl_estado_regiao.setVisibility(View.INVISIBLE)
@@ -160,6 +195,12 @@ class CadastroActivity : AppCompatActivity() {
         }
     }
 
+    //função pra unir todos os spinners
+    private fun setAdapters(){
+        setGeneroAdapter()
+        setTipoCadastroAdapter()
+        setEstadoRegiaoAdapter()
+    }
 
     //funções para criar usuario novo no banco
     private fun setUserData() : Usuario {
@@ -167,7 +208,6 @@ class CadastroActivity : AppCompatActivity() {
         val cpf = txt_cpf.text.toString()
         val data_nascimento = txt_data_nascimento.text.toString()
         val telefone = txt_telefone.text.toString()
-        val senha = txt_senha.text.toString()
         val email = txt_email.text.toString()
 
 
@@ -178,13 +218,13 @@ class CadastroActivity : AppCompatActivity() {
         usuario.telefone = telefone
         usuario.nome = nome
         usuario.sexo = genero.toString()
-        usuario.id_perfil = tipo_perfil.toString().toInt()
+        usuario.id_perfil = tipo_perfil.toString()
 
         return usuario
     }
     private fun writeUserDatabase(usuario: Usuario) {
         val userUid = getCurrentUser()
-        val child = "user/$userUid"
+        val child = "users/usuario_comum/$userUid"
         database.reference.child(child).setValue(usuario)
     }
     private fun getCurrentUser(): String? {
@@ -193,5 +233,35 @@ class CadastroActivity : AppCompatActivity() {
             usuario.uid;
         else
             null;
+    }
+
+    //funções para criar psicologo novo no banco de dados
+    private fun setPsicologoData() : Psicologo {
+        val nome = txt_nome.text.toString()
+        val cpf = txt_cpf.text.toString()
+        val data_nascimento = txt_data_nascimento.text.toString()
+        val telefone = txt_telefone.text.toString()
+        val email = txt_email.text.toString()
+        val numero_registro = txt_numero_registro.text.toString()
+        val estado_registro = estado_registro.toString()
+
+
+        val psicologo = Psicologo()
+        psicologo.cpf = cpf
+        psicologo.data_nascimento = data_nascimento
+        psicologo.email = email
+        psicologo.telefone = telefone
+        psicologo.nome = nome
+        psicologo.sexo = genero.toString()
+        psicologo.id_perfil = tipo_perfil.toString()
+        psicologo.numero_registro = numero_registro
+        psicologo.estado_registro = estado_registro
+
+        return psicologo
+    }
+    private fun writePsicologoDatabase(psicologo: Psicologo) {
+        val userUid = getCurrentUser()
+        val child = "users/psicologo/$userUid"
+        database.reference.child(child).setValue(psicologo)
     }
 }

@@ -22,6 +22,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //direciona para pagina de redefinição de senha
+        btn_ir_redefinir_senha.setOnClickListener {
+            val intent = Intent(this, RedefinirSenhaActivity::class.java)
+            startActivity(intent)
+        }
 
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
 //        if(AuthUtil.userIsLoggedIn()) {

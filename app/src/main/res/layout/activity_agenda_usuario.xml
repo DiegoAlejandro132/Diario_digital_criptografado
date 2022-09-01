@@ -11,4 +11,11 @@
         android:text="Agenda de usuario"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="63dp" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="99dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

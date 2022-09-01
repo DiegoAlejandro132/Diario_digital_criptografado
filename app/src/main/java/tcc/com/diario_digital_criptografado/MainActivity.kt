@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             if(validateLogin()){
                 auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+
                         startActivity(Intent(this, DirecionadorActivity::class.java))
                     }else{
                         Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()

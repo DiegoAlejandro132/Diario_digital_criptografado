@@ -224,7 +224,7 @@ class CadastroActivity : AppCompatActivity() {
     }
     private fun writeUserDatabase(usuario: Usuario) {
         val userUid = getCurrentUser()
-        val child = "users/usuario_comum/$userUid"
+        val child = "users/$userUid"
         database.reference.child(child).setValue(usuario)
     }
     private fun getCurrentUser(): String? {
@@ -261,7 +261,7 @@ class CadastroActivity : AppCompatActivity() {
     }
     private fun writePsicologoDatabase(psicologo: Psicologo) {
         val userUid = getCurrentUser()
-        val child = "users/psicologo/$userUid"
+        val child = "users/$userUid"
         database.reference.child(child).setValue(psicologo)
     }
 }

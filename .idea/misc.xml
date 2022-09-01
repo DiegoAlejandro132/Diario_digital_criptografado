@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/diario_digital_criptografado/app/src/main/res/drawable/borda_edit_text.xml" value="0.14322916666666666" />
+        <entry key="..\:/AndroidStudioProjects/diario_digital_criptografado/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26614583333333336" />
         <entry key="..\:/AndroidStudioProjects/diario_digital_criptografado/app/src/main/res/drawable/modelo_botao.xml" value="0.26614583333333336" />
         <entry key="..\:/AndroidStudioProjects/diario_digital_criptografado/app/src/main/res/layout/activity_agenda_usuario.xml" value="0.16168478260869565" />
-
+        <entry key="..\:/AndroidStudioProjects/diario_digital_criptografado/app/src/main/res/layout/activity_direcionador.xml" value="0.22871376811594202" />
       </map>
     </option>
   </component>

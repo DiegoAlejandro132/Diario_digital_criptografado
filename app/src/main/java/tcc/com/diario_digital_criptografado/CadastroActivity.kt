@@ -3,13 +3,13 @@ package tcc.com.diario_digital_criptografado
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.models.Psicologo
 import tcc.com.diario_digital_criptografado.models.Usuario
@@ -17,7 +17,8 @@ import tcc.com.diario_digital_criptografado.models.Usuario
 class CadastroActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance()
+    private val database = Firebase.database.reference
+
     private var tipo_perfil : String? = null
     private var genero : String? = null
     private var estado_registro : String? = null
@@ -116,6 +117,9 @@ class CadastroActivity : AppCompatActivity() {
         return false
     }
 
+    private fun validateDate() : Boolean {
+        return true
+    }
 
     //funões para setar o spinner de genero
     private fun setGeneroAdapter(){
@@ -218,14 +222,14 @@ class CadastroActivity : AppCompatActivity() {
         usuario.telefone = telefone
         usuario.nome = nome
         usuario.sexo = genero.toString()
-        usuario.id_perfil = tipo_perfil.toString()
+        usuario.tipo_perfil = tipo_perfil.toString()
 
         return usuario
     }
     private fun writeUserDatabase(usuario: Usuario) {
         val userUid = getCurrentUser()
         val child = "users/$userUid"
-        database.reference.child(child).setValue(usuario)
+        database.child(child).setValue(usuario)
     }
     private fun getCurrentUser(): String? {
         val usuario = auth.currentUser;
@@ -253,7 +257,7 @@ class CadastroActivity : AppCompatActivity() {
         psicologo.telefone = telefone
         psicologo.nome = nome
         psicologo.sexo = genero.toString()
-        psicologo.id_perfil = tipo_perfil.toString()
+        psicologo.tipo_perfil = tipo_perfil.toString()
         psicologo.numero_registro = numero_registro
         psicologo.estado_registro = estado_registro
 
@@ -262,6 +266,6 @@ class CadastroActivity : AppCompatActivity() {
     private fun writePsicologoDatabase(psicologo: Psicologo) {
         val userUid = getCurrentUser()
         val child = "users/$userUid"
-        database.reference.child(child).setValue(psicologo)
+        database.child(child).setValue(psicologo)
     }
 }

@@ -26,10 +26,6 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".DirecionadorActivity"
-            android:exported="true">
-        </activity>
-        <activity
             android:name=".AgendaUsuarioActivity"
             android:exported="true">
             <meta-data

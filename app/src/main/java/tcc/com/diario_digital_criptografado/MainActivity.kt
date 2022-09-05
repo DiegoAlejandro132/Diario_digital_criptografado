@@ -1,17 +1,22 @@
 package tcc.com.diario_digital_criptografado;
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
-import tcc.com.diario_digital_criptografado.CadastroActivity
-import tcc.com.diario_digital_criptografado.DirecionadorActivity
-import tcc.com.diariodigitalcriptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.util.AuthUtil
+
 
 class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var database : DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         //logar usuario com suas credenciais
+        //dependendo do tipo de perfil, redireciona para uma tela de uso ideal
         btn_login.setOnClickListener {
             val email = txt_email.text.toString()
             val senha = txt_senha.text.toString()
@@ -41,7 +47,16 @@ class MainActivity : AppCompatActivity() {
             if(validateLogin()){
                 auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        startActivity(Intent(this, DirecionadorActivity::class.java))
+                        database = FirebaseDatabase.getInstance().getReference("users")
+                        database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                             val tipo_perfil = it.child("tipo_perfil").value
+
+                             when (tipo_perfil){
+                                 "Usuário do diário" -> startActivity(Intent(this, AgendaUsuarioActivity::class.java))
+                                 "Psicólogo" -> startActivity(Intent(this, ListagemPacientesActivity::class.java))
+                                 else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                             }
+                        }
                     }else{
                         Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()
                     }

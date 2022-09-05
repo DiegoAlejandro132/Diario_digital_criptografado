@@ -47,7 +47,7 @@
             app:layout_constraintVertical_bias="1.0"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <EditText
+        <com.vicmikhailau.maskededittext.MaskedEditText
             android:id="@+id/txt_data_nascimento"
             android:layout_width="155dp"
             android:layout_height="48dp"
@@ -55,6 +55,7 @@
             android:layout_marginBottom="23dp"
             android:ems="10"
             android:hint="Data de nascimento"
+            app:mask="##/##/####"
             android:inputType="date"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/textView8"
@@ -92,7 +93,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.746" />
 
-        <EditText
+        <com.vicmikhailau.maskededittext.MaskedEditText
             android:id="@+id/txt_telefone"
             android:layout_width="155dp"
             android:layout_height="48dp"
@@ -101,12 +102,13 @@
             android:hint="Telefone"
             android:inputType="phone"
             android:textSize="14sp"
+            app:mask="(##)#########"
             app:layout_constraintBottom_toTopOf="@+id/txt_confirmar_senha"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_data_nascimento" />
 
-        <EditText
+        <com.vicmikhailau.maskededittext.MaskedEditText
             android:id="@+id/txt_cpf"
             android:layout_width="155dp"
             android:layout_height="48dp"
@@ -114,6 +116,7 @@
             android:layout_marginBottom="23dp"
             android:ems="10"
             android:hint="CPF"
+            app:mask="###.###.###-##"
             android:inputType="text"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/textView7"
@@ -197,7 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="352dp"
-            android:text="Genero"
+            android:text="Sexo"
             app:layout_constraintBottom_toTopOf="@+id/spn_genero"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

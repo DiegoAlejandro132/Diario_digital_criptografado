@@ -2,6 +2,8 @@ package tcc.com.diario_digital_criptografado
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -11,10 +13,13 @@ import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 class FormularioDiarioActivity : AppCompatActivity() {
     private val database = Firebase.database.reference
+    private lateinit var avaliacao_dia : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_diario)
 
+
+        onRadioButtonClicked(checkboxGroup)
 
         val intent = intent
         val dataSelecionada = intent.getStringExtra("dataSelecionada")
@@ -30,7 +35,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
     private fun setDayData() : DiaFormulario{
         val pergunta1 = txt_pergunta1.text.toString()
-        val pergunta2 = txt_pergunta2.text.toString()
+        val pergunta2 = txt_diario.text.toString()
 
         val dia = DiaFormulario()
         dia.pergunta1 = pergunta1
@@ -43,6 +48,37 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val userId = AuthUtil.getCurrentUser()
         val child = "users/${userId}/${data}"
         database.child(child).setValue(dia)
+    }
+
+     fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_pessimo ->
+                    if (checked) {
+                        avaliacao_dia = view.text.toString()
+                    }
+                R.id.radio_ruim ->
+                    if (checked) {
+                        avaliacao_dia = view.text.toString()
+                    }
+                R.id.radio_regular ->
+                    if (checked) {
+                        avaliacao_dia = view.text.toString()
+                    }
+                R.id.radio_bom ->
+                    if (checked) {
+                        avaliacao_dia = view.text.toString()
+                    }
+                R.id.radio_excelente ->
+                    if (checked) {
+                        avaliacao_dia = view.text.toString()
+                    }
+            }
+        }
     }
 
 }

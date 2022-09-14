@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.models.Psicologo
 import tcc.com.diario_digital_criptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -208,63 +209,41 @@ class CadastroActivity : AppCompatActivity() {
 
     //funções para criar usuario novo no banco
     private fun setUserData() : Usuario {
-        val nome = txt_nome.text.toString()
-        val cpf = txt_cpf.text.toString()
-        val data_nascimento = txt_data_nascimento.text.toString()
-        val telefone = txt_telefone.text.toString()
-        val email = txt_email.text.toString()
-
-
         val usuario = Usuario()
-        usuario.cpf = cpf
-        usuario.data_nascimento = data_nascimento
-        usuario.email = email
-        usuario.telefone = telefone
-        usuario.nome = nome
+        usuario.cpf = txt_cpf.text.toString()
+        usuario.data_nascimento = txt_data_nascimento.text.toString()
+        usuario.email = txt_email.text.toString()
+        usuario.telefone = txt_telefone.text.toString()
+        usuario.nome = txt_nome.text.toString()
         usuario.sexo = genero.toString()
         usuario.tipo_perfil = tipo_perfil.toString()
 
         return usuario
     }
     private fun writeUserDatabase(usuario: Usuario) {
-        val userUid = getCurrentUser()
+        val userUid = AuthUtil.getCurrentUser()
         val child = "users/$userUid"
         database.child(child).setValue(usuario)
     }
-    private fun getCurrentUser(): String? {
-        val usuario = auth.currentUser;
-        return if (usuario !== null)
-            usuario.uid;
-        else
-            null;
-    }
+
 
     //funções para criar psicologo novo no banco de dados
     private fun setPsicologoData() : Psicologo {
-        val nome = txt_nome.text.toString()
-        val cpf = txt_cpf.text.toString()
-        val data_nascimento = txt_data_nascimento.text.toString()
-        val telefone = txt_telefone.text.toString()
-        val email = txt_email.text.toString()
-        val numero_registro = txt_numero_registro.text.toString()
-        val estado_registro = estado_registro.toString()
-
-
         val psicologo = Psicologo()
-        psicologo.cpf = cpf
-        psicologo.data_nascimento = data_nascimento
-        psicologo.email = email
-        psicologo.telefone = telefone
-        psicologo.nome = nome
+        psicologo.cpf = txt_cpf.text.toString()
+        psicologo.data_nascimento = txt_data_nascimento.text.toString()
+        psicologo.email = txt_email.text.toString()
+        psicologo.telefone = txt_telefone.text.toString()
+        psicologo.nome = txt_nome.text.toString()
         psicologo.sexo = genero.toString()
         psicologo.tipo_perfil = tipo_perfil.toString()
-        psicologo.numero_registro = numero_registro
-        psicologo.estado_registro = estado_registro
+        psicologo.numero_registro = txt_numero_registro.text.toString()
+        psicologo.estado_registro = estado_registro.toString()
 
         return psicologo
     }
     private fun writePsicologoDatabase(psicologo: Psicologo) {
-        val userUid = getCurrentUser()
+        val userUid = AuthUtil.getCurrentUser()
         val child = "users/$userUid"
         database.child(child).setValue(psicologo)
     }

@@ -2,6 +2,7 @@ package tcc.com.diario_digital_criptografado;
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.models.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 
@@ -20,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        verifyUserIsLoggedIn()
 
         //Direciona para pagina de cadastro
         btn_ir_cadastro.setOnClickListener {
@@ -33,10 +38,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
-//        if(AuthUtil.userIsLoggedIn()) {
-//            startActivity(Intent(this, DirecionadorActivity::class.java))
-//        }
 
         //logar usuario com suas credenciais
         //dependendo do tipo de perfil, redireciona para uma tela de uso ideal
@@ -76,5 +77,21 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    private fun verifyUserIsLoggedIn(){
+        if(AuthUtil.userIsLoggedIn()){
+            database = FirebaseDatabase.getInstance().getReference("users")
+            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                val tipoUsuario = it.child("tipo_perfil").value.toString()
+                if(tipoUsuario == "Psicólogo"){
+                    val intent = Intent(this, ListagemPacientesActivity::class.java)
+                    startActivity(intent)
+                }else if (tipoUsuario == "Usuário do diário"){
+                    val intent = Intent(this, AgendaUsuarioActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        }
     }
 }

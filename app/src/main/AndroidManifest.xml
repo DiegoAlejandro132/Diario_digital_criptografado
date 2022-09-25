@@ -11,6 +11,9 @@
         android:theme="@style/Theme.Diario_digital_criptografado"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EditarPerfilUsuarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -28,11 +31,7 @@
         </activity>
         <activity
             android:name=".AgendaUsuarioActivity"
-            android:exported="true">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ListagemPacientesActivity"
             android:exported="true">
@@ -49,8 +48,7 @@
         </activity>
         <activity
             android:name=".FormularioDiarioActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

@@ -72,7 +72,7 @@ class CadastroActivity : AppCompatActivity() {
                         "Usuario cadastrado com sucesso",
                         Toast.LENGTH_SHORT
                     ).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }else{
                     if(tipo_perfil == "Psicólogo"){
                         writePsicologoDatabase(psicologo)
@@ -81,7 +81,7 @@ class CadastroActivity : AppCompatActivity() {
                             "Psicólogo cadastrado com sucesso",
                             Toast.LENGTH_SHORT
                         ).show()
-                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
                     }else{
                         Toast.makeText(
                             this@CadastroActivity,

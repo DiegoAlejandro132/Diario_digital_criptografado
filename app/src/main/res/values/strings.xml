@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">diario_digital_criptografado</string>
+    <string name="outbox_title">outbox_title</string>
+    <string name="favourites_title">favourites_title</string>
+    <string name="header_title">header_title</string>
+    <string name="header_text">header_text</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string-array name="array_genero">
         <item>Selecione</item>
         <item>Masculino</item>
@@ -40,6 +46,5 @@
         <item>São Paulo-CRP 6ª Região</item>
         <item>Sergipe-CRP 19ª Região</item>
         <item>Tocantins-CRP 23ª Região</item>
-
     </string-array>
 </resources>

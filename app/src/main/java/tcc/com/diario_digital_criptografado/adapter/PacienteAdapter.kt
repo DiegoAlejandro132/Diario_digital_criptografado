@@ -5,8 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.storage.FirebaseStorage
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ImageUtil
+import java.io.File
 
 class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
 
@@ -29,6 +33,7 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
         val current = pacienteslist[position]
         holder.nomeList.text = current.nome
         holder.telefoneList.text = current.telefone
+        holder.emailList.text = current.email
 
     }
 
@@ -40,6 +45,7 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
     inner class ViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
         val nomeList : TextView = itemView.findViewById(R.id.txt_nome_list)
         val telefoneList : TextView = itemView.findViewById(R.id.txt_telefone_list)
+        val emailList : TextView = itemView.findViewById(R.id.txt_email_list)
 
         init {
             itemView.setOnClickListener{

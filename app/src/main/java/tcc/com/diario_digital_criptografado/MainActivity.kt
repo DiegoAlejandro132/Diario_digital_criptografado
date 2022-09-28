@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
                         database = FirebaseDatabase.getInstance().getReference("users")
                         database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                              val tipo_perfil = it.child("tipo_perfil").value
-
                              when (tipo_perfil){
                                  "Usuário do diário" -> startActivity(Intent(this, AgendaUsuarioActivity::class.java))
                                  "Psicólogo" -> startActivity(Intent(this, ListagemPacientesActivity::class.java))

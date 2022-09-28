@@ -9,6 +9,16 @@
     android:orientation="vertical"
     android:layout_margin="15dp">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_foto_perfil"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:src="@drawable/imagem_perfil_default"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +26,7 @@
     <EditText
         android:id="@+id/txt_editar_nome_usuario"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="45dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +36,7 @@
     <com.vicmikhailau.maskededittext.MaskedEditText
         android:id="@+id/txt_editar_data_nascimento"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         app:mask="##/##/####"
         android:inputType="date|datetime" />
 
@@ -38,7 +48,7 @@
     <com.vicmikhailau.maskededittext.MaskedEditText
         android:id="@+id/txt_editar_telefone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         app:mask="(##)#########" />
 
     <TextView
@@ -49,7 +59,7 @@
     <EditText
         android:id="@+id/txt_editar_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:enabled="false"/>
 
     <TextView
@@ -60,7 +70,7 @@
     <EditText
         android:id="@+id/txt_editar_cpf"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:enabled="false"/>
 
     <Button
@@ -68,8 +78,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Salvar"/>
+
 
 
 

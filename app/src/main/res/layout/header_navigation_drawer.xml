@@ -15,6 +15,6 @@
             android:textSize="20sp"
             android:textAppearance="?attr/textAppearanceHeadlineSmall"
             android:textColor="?attr/colorOnSurface"
-            android:text="s" />
+            android:text="" />
 
     </LinearLayout>

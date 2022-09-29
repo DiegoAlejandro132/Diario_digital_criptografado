@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
                         database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                              val tipo_perfil = it.child("tipo_perfil").value
                              when (tipo_perfil){
-                                 "Usuário do diário" -> startActivity(Intent(this, AgendaUsuarioActivity::class.java))
-                                 "Psicólogo" -> startActivity(Intent(this, ListagemPacientesActivity::class.java))
+                                 "Usuário do diário" -> loginUsuario()
+                                 "Psicólogo" -> logInPsicologo()
                                  else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
                              }
                         }
@@ -92,5 +92,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun loginUsuario(){
+        startActivity(Intent(this, AgendaUsuarioActivity::class.java))
+        finish()
+    }
+
+    private fun logInPsicologo(){
+        startActivity(Intent(this, ListagemPacientesActivity::class.java))
+        finish()
     }
 }

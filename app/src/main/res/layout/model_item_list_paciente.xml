@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="10dp"
     app:cardCornerRadius="30dp"
@@ -21,8 +21,8 @@
             android:layout_margin="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/imagem_perfil_default"/>
 
         </LinearLayout>
@@ -40,7 +40,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:text="Nome:"/>
 
                 <TextView
@@ -48,27 +48,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:text="Nome completo"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:text="Telefone:"/>
 
             <TextView
                 android:id="@+id/txt_telefone_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:layout_marginLeft="5dp"
                 android:text="(##)#########"/>
 
@@ -82,12 +82,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email:"
-                    android:textSize="16sp"/>
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/txt_email_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="teste@email.com"
                     android:layout_marginLeft="5dp"/>
 

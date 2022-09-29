@@ -62,6 +62,10 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             saveUserData()
             uploadImage()
         }
+
+        btn_voltar_editar_perfil.setOnClickListener{
+            finish()
+        }
     }
 
 

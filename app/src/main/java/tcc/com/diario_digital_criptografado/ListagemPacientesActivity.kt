@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -45,6 +47,11 @@ class ListagemPacientesActivity : AppCompatActivity(){
         getUsuarioData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateUserData()
+    }
+
     // <---------------------------------------------------- funções ----------------------------------------------------->
     // <---------------------------------------------------- funções ----------------------------------------------------->
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -74,8 +81,11 @@ class ListagemPacientesActivity : AppCompatActivity(){
                             startActivity(intent)
                         }
                     })
-                    val nomeusuario = "<b>" + snapshot.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                    nav_header_nome_usuario.setText(Html.fromHtml(nomeusuario))
+                    val nomeUsuario = "<b>" + snapshot.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                    val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
+                    val headerView : View = navigationView.getHeaderView(0)
+                    val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                    navNomeusuario.text = Html.fromHtml(nomeUsuario)
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -134,5 +144,24 @@ class ListagemPacientesActivity : AppCompatActivity(){
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
+    }
+
+    private fun updateUserData(){
+        database = FirebaseDatabase.getInstance().getReference("users")
+        database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
+                val headerView : View = navigationView.getHeaderView(0)
+                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                navNomeusuario.text = Html.fromHtml(nomeUsuario)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@ListagemPacientesActivity, "Houve um erro na atualização dos dados.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ListagemPacientesActivity, error.toString(), Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }

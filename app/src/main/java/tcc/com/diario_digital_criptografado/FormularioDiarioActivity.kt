@@ -17,9 +17,11 @@ import tcc.com.diario_digital_criptografado.util.AuthUtil
 class FormularioDiarioActivity : AppCompatActivity() {
     private val database = Firebase.database.reference
     private lateinit var dbRef : DatabaseReference
+
     private lateinit var avaliacao_dia : String
     private lateinit var dataSelecionada : String
     private lateinit var emailUsuarioSelecionado : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         verifyUser()
         super.onCreate(savedInstanceState)
@@ -39,11 +41,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         }
 
         btn_voltar_formulario_diario.setOnClickListener(){
-            val intent = Intent(this, AgendaUsuarioActivity::class.java)
-            if(emailUsuarioSelecionado != ""){
-                intent.putExtra("email", emailUsuarioSelecionado)
-            }
-            startActivity(intent)
+            finish()
         }
     }
 
@@ -72,11 +70,9 @@ class FormularioDiarioActivity : AppCompatActivity() {
     //função para uso do radio buttom
     fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
-            // Is the button now checked?
+
             val checked = view.isChecked
 
-
-            // Check which radio button was clicked
             when (view.getId()) {
                 R.id.radio_pessimo ->
                     if (checked) {

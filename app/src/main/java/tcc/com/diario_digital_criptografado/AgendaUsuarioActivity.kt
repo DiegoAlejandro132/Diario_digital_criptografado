@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -74,6 +76,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 Toast.makeText(this@AgendaUsuarioActivity, "Data futura não é permitida", Toast.LENGTH_SHORT).show()
             }
         }
+
+        btn_voltar_agenda.setOnClickListener{
+            finish()
+        }
     }
 
     override fun onResume() {
@@ -96,12 +102,15 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             if(it.exists()){
                 tipoUsuario = it.child("tipo_perfil").value.toString()
                 val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                Toast.makeText(this, Html.fromHtml(nomeUsuario), Toast.LENGTH_SHORT).show()
-                nav_header_nome_usuario.setText(Html.fromHtml(nomeUsuario))
+                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                val headerView : View = navigationView.getHeaderView(0)
+                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                navNomeusuario.text = Html.fromHtml(nomeUsuario)
                 if(tipoUsuario == "Psicólogo"){
                     val intent = intent
                     emailUsuarioSelecionado = intent.getStringExtra("email").toString()
                     navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
+                    btn_voltar_agenda.setVisibility(View.VISIBLE)
                 }else if (tipoUsuario == "Usuário do diário"){
                     emailUsuarioSelecionado = ""
                     navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
@@ -163,7 +172,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                nav_header_nome_usuario.setText(Html.fromHtml(nomeUsuario))
+                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                val headerView : View = navigationView.getHeaderView(0)
+                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                navNomeusuario.text = Html.fromHtml(nomeUsuario)
             }
 
             override fun onCancelled(error: DatabaseError) {

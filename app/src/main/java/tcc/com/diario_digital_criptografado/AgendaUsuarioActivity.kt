@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -74,6 +76,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 Toast.makeText(this@AgendaUsuarioActivity, "Data futura não é permitida", Toast.LENGTH_SHORT).show()
             }
         }
+
+        btn_voltar_agenda.setOnClickListener{
+            finish()
+        }
     }
 
     override fun onResume() {
@@ -93,16 +99,22 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun verifyUser(){
         database = FirebaseDatabase.getInstance().getReference("users")
         database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-            tipoUsuario = it.child("tipo_perfil").value.toString()
-            val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-            nav_header_nome_usuario.setText(Html.fromHtml(nomeUsuario))
-            if(tipoUsuario == "Psicólogo"){
-                val intent = intent
-                emailUsuarioSelecionado = intent.getStringExtra("email").toString()
-                navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
-            }else if (tipoUsuario == "Usuário do diário"){
-                emailUsuarioSelecionado = ""
-                navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
+            if(it.exists()){
+                tipoUsuario = it.child("tipo_perfil").value.toString()
+                val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                val headerView : View = navigationView.getHeaderView(0)
+                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                navNomeusuario.text = Html.fromHtml(nomeUsuario)
+                if(tipoUsuario == "Psicólogo"){
+                    val intent = intent
+                    emailUsuarioSelecionado = intent.getStringExtra("email").toString()
+                    navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
+                    btn_voltar_agenda.setVisibility(View.VISIBLE)
+                }else if (tipoUsuario == "Usuário do diário"){
+                    emailUsuarioSelecionado = ""
+                    navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
+                }
             }
         }
     }
@@ -124,19 +136,18 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 //opções do acesso do usuario comum
-                R.id.nav_acesso_perfil_usuario -> startActivity(Intent(this, EditarPerfilUsuarioActivity::class.java))
+                R.id.nav_acesso_perfil_usuario -> goEditUser()
                 R.id.nav_acesso_meu_psicologo -> Toast.makeText(this, "acessar meu psicologo", Toast.LENGTH_SHORT).show()
                 R.id.nav_acesso_solicitacoes -> Toast.makeText(this, "acessar solicitações", Toast.LENGTH_SHORT).show()
                 R.id.nav_logout_usuario -> showDialogLogOut()
                 //opções de acesso do psicologo
-                R.id.nav_perfil_psicologo -> Toast.makeText(this, "acessar perfil psicologo", Toast.LENGTH_SHORT).show()
+                R.id.nav_acesso_perfil_psicologo -> goEditUser()
                 R.id.nav_adicionar_paciente -> Toast.makeText(this, "acessar adicionar paciente", Toast.LENGTH_SHORT).show()
-                R.id.nav_logout_psicologo -> Toast.makeText(this, "acessar logout psicologo", Toast.LENGTH_SHORT).show()
+                R.id.nav_logout_psicologo -> showDialogLogOut()
             }
             true
         }
     }
-
     private fun showDialogLogOut(){
         auth = Firebase.auth
         val dialogBuilder = AlertDialog.Builder(this@AgendaUsuarioActivity)
@@ -150,7 +161,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun signOut(){
         Firebase.auth.signOut()
         val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
+        finish()
     }
 
     private fun updateUserData(){
@@ -158,7 +172,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                nav_header_nome_usuario.setText(Html.fromHtml(nomeUsuario))
+                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                val headerView : View = navigationView.getHeaderView(0)
+                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                navNomeusuario.text = Html.fromHtml(nomeUsuario)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -167,6 +184,12 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun goEditUser(){
+        intent = Intent(this, EditarPerfilUsuarioActivity::class.java)
+        intent.putExtra("tipoUsuario", tipoUsuario)
+        startActivity(intent)
     }
 
 }

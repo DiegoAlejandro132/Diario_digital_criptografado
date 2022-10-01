@@ -1,7 +1,10 @@
 package tcc.com.diario_digital_criptografado
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,10 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.models.Psicologo
 import tcc.com.diario_digital_criptografado.models.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import java.io.IOException
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -24,9 +30,12 @@ class CadastroActivity : AppCompatActivity() {
     private var genero : String? = null
     private var estado_registro : String? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
+
 
         //seta todos os adapters dos spinners
         setAdapters()
@@ -218,8 +227,9 @@ class CadastroActivity : AppCompatActivity() {
         usuario.email = txt_email.text.toString()
         usuario.telefone = txt_telefone.text.toString()
         usuario.nome = txt_nome.text.toString()
-        usuario.sexo = genero.toString()
+        usuario.genero = genero.toString()
         usuario.tipo_perfil = tipo_perfil.toString()
+        usuario.bitmap_string = ""
 
         return usuario
     }
@@ -250,4 +260,5 @@ class CadastroActivity : AppCompatActivity() {
         val child = "users/$userUid"
         database.child(child).setValue(psicologo)
     }
+
 }

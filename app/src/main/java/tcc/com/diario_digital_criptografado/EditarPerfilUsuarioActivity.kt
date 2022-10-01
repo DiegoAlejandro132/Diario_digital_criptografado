@@ -15,8 +15,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_editar_perfil_psicologo.*
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.*
 import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.btn_salvar_dados_editar_perfil
+import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.btn_voltar_editar_perfil
 import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.img_foto_perfil
 import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_cpf
 import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_data_nascimento
@@ -58,14 +58,16 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             selectImage()
         }
 
+        btn_voltar_editar_perfil.setOnClickListener{
+            finish()
+        }
+
         btn_salvar_dados_editar_perfil.setOnClickListener{
             saveUserData()
             uploadImage()
         }
 
-        btn_voltar_editar_perfil.setOnClickListener{
-            finish()
-        }
+
     }
 
 
@@ -88,7 +90,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         val localFile = File.createTempFile("tempImage", "")
         storageref.getFile(localFile).addOnSuccessListener {
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            val bitmapResize = Bitmap.createScaledBitmap(bitmap, 400,500, true)
+            val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
             img_foto_perfil.setImageBitmap(bitmapResize)
         }.addOnFailureListener{
             Toast.makeText(this, "Deu pau na imagem", Toast.LENGTH_SHORT).show()
@@ -129,7 +131,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         if(requestCode == 100 && resultCode == RESULT_OK){
             imageUri = data?.data!!
             val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-            val bitmapResize = Bitmap.createScaledBitmap(bitmap,400, 500, true)
+            val bitmapResize = Bitmap.createScaledBitmap(bitmap,450, 450, true)
             img_foto_perfil.setImageBitmap(bitmapResize)
         }
     }

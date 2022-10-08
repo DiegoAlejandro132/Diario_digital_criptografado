@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tcc.com.diario_digital_criptografado">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diario_digital_criptografado"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".usuarioActivities.MeuPsicologoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usuarioActivities.SolicitacoesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".psicologoActivities.AdicionarPacienteActivity"
+            android:exported="false" />
         <activity
             android:name=".EditarPerfilUsuarioActivity"
             android:exported="false" />
@@ -26,31 +35,31 @@
         </activity>
         <activity
             android:name=".CadastroActivity"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".AgendaUsuarioActivity"
-            android:exported="true"/>
+            android:exported="false" />
         <activity
-            android:name=".ListagemPacientesActivity"
-            android:exported="true">
+            android:name=".psicologoActivities.ListagemPacientesActivity"
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".RedefinirSenhaActivity"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".FormularioDiarioActivity"
-            android:exported="true"/>
+            android:name=".usuarioActivities.FormularioDiarioActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

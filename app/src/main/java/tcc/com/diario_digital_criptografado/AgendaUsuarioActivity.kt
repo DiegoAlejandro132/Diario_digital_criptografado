@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -19,7 +20,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
-import kotlinx.android.synthetic.main.header_navigation_drawer.*
+import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
+import tcc.com.diario_digital_criptografado.usuarioActivities.FormularioDiarioActivity
+import tcc.com.diario_digital_criptografado.usuarioActivities.MeuPsicologoActivity
+import tcc.com.diario_digital_criptografado.usuarioActivities.SolicitacoesActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.Validation
 import java.time.LocalDateTime
@@ -97,25 +101,31 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     // <---------------------------------------------------- funções ----------------------------------------------------->
 
     private fun verifyUser(){
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-            if(it.exists()){
-                tipoUsuario = it.child("tipo_perfil").value.toString()
-                val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
-                val headerView : View = navigationView.getHeaderView(0)
-                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                navNomeusuario.text = Html.fromHtml(nomeUsuario)
-                if(tipoUsuario == "Psicólogo"){
-                    val intent = intent
-                    emailUsuarioSelecionado = intent.getStringExtra("email").toString()
-                    navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
-                    btn_voltar_agenda.setVisibility(View.VISIBLE)
-                }else if (tipoUsuario == "Usuário do diário"){
-                    emailUsuarioSelecionado = ""
-                    navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
+
+        try{
+            database = FirebaseDatabase.getInstance().getReference("users")
+            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                if(it.exists()){
+                    tipoUsuario = it.child("tipo_perfil").value.toString()
+                    val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                    val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                    val headerView : View = navigationView.getHeaderView(0)
+                    val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                    navNomeusuario.text = Html.fromHtml(nomeUsuario)
+                    if(tipoUsuario == "Psicólogo"){
+                        val intent = intent
+                        emailUsuarioSelecionado = intent.getStringExtra("email").toString()
+                        navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
+                        btn_voltar_agenda.setVisibility(View.VISIBLE)
+                    }else if (tipoUsuario == "Usuário do diário"){
+                        emailUsuarioSelecionado = ""
+                        navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
+                    }
                 }
             }
+        }catch (e:Exception){
+            Toast.makeText(this@AgendaUsuarioActivity, "Erro ao verificar o usuário.", Toast.LENGTH_SHORT).show()
+            Log.e("verifyUser", e.message.toString())
         }
     }
     override fun onOptionsItemSelected(item : MenuItem) : Boolean{
@@ -137,53 +147,65 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             when(it.itemId){
                 //opções do acesso do usuario comum
                 R.id.nav_acesso_perfil_usuario -> goEditUser()
-                R.id.nav_acesso_meu_psicologo -> Toast.makeText(this, "acessar meu psicologo", Toast.LENGTH_SHORT).show()
-                R.id.nav_acesso_solicitacoes -> Toast.makeText(this, "acessar solicitações", Toast.LENGTH_SHORT).show()
+                R.id.nav_acesso_meu_psicologo -> goMeuPsicologo()
+                R.id.nav_acesso_solicitacoes -> goSolicitacoes()
                 R.id.nav_logout_usuario -> showDialogLogOut()
                 //opções de acesso do psicologo
                 R.id.nav_acesso_perfil_psicologo -> goEditUser()
-                R.id.nav_adicionar_paciente -> Toast.makeText(this, "acessar adicionar paciente", Toast.LENGTH_SHORT).show()
+                R.id.nav_adicionar_paciente -> goAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
             }
             true
         }
     }
     private fun showDialogLogOut(){
-        auth = Firebase.auth
         val dialogBuilder = AlertDialog.Builder(this@AgendaUsuarioActivity)
         dialogBuilder.setMessage("Você deseja mesmo fazer log out? Ao tentar entrar novamente precisara realizar novo log in.")
-            .setPositiveButton("Sim", DialogInterface.OnClickListener { dialog, id ->  signOut() })
-            .setNegativeButton("Não", DialogInterface.OnClickListener { dialog, id ->  dialog.dismiss()})
+            .setPositiveButton("Sim", { dialog, id ->  signOut() })
+            .setNegativeButton("Não", { dialog, id ->  dialog.dismiss()})
         val b = dialogBuilder.create()
         b.show()
     }
 
     private fun signOut(){
-        Firebase.auth.signOut()
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        finish()
+
+        try{
+            Firebase.auth.signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }catch (e:Exception){
+            Toast.makeText(this@AgendaUsuarioActivity, "Erro ao sair.", Toast.LENGTH_SHORT).show()
+            Log.e("signOut", e.message.toString())
+        }
     }
 
     private fun updateUserData(){
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
-                val headerView : View = navigationView.getHeaderView(0)
-                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                navNomeusuario.text = Html.fromHtml(nomeUsuario)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@AgendaUsuarioActivity, "Houve um erro na atualização dos dados.", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this@AgendaUsuarioActivity, error.toString(), Toast.LENGTH_SHORT).show()
-            }
+        try{
+            database = FirebaseDatabase.getInstance().getReference("users")
+            database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                    val navigationView : NavigationView  = findViewById(R.id.navigation_view_agenda)
+                    val headerView : View = navigationView.getHeaderView(0)
+                    val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
+                    navNomeusuario.text = Html.fromHtml(nomeUsuario)
+                }
 
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@AgendaUsuarioActivity, "Houve um erro na atualização dos dados.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AgendaUsuarioActivity, error.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }catch (e:Exception){
+            Toast.makeText(this@AgendaUsuarioActivity, "Erro ao atualizar os dados do usuário.", Toast.LENGTH_SHORT).show()
+            Log.e("updateUserData", e.message.toString())
+        }
     }
 
     private fun goEditUser(){
@@ -191,5 +213,21 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         intent.putExtra("tipoUsuario", tipoUsuario)
         startActivity(intent)
     }
+
+    private fun goSolicitacoes(){
+        intent = Intent(this, SolicitacoesActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goMeuPsicologo(){
+        intent = Intent(this, MeuPsicologoActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goAdicionarPaciente() {
+        intent = Intent(this, AdicionarPacienteActivity::class.java)
+        startActivity(intent)
+    }
+
 
 }

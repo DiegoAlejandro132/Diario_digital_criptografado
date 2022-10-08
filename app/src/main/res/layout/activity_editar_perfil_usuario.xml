@@ -1,110 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EditarPerfilUsuarioActivity"
-    android:orientation="vertical"
-    android:layout_margin="15dp">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_foto_perfil"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_gravity="center"
-        android:src="@drawable/imagem_perfil_default"
-        android:layout_marginTop="20dp"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome"/>
-    <EditText
-        android:id="@+id/txt_editar_nome_usuario"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data de nascimento"
-        android:layout_marginTop="30dp"/>
-    <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/txt_editar_data_nascimento"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        app:mask="##/##/####"
-        android:inputType="date|datetime" />
-
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Telefone"/>
-    <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/txt_editar_telefone"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        app:mask="(##)#########" />
-
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"/>
-    <EditText
-        android:id="@+id/txt_editar_email"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:enabled="false"/>
-
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CPF"/>
-    <EditText
-        android:id="@+id/txt_editar_cpf"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:enabled="false"/>
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:layout_height="match_parent"
+        tools:context=".EditarPerfilUsuarioActivity"
+        android:orientation="vertical"
+        android:layout_margin="15dp">
 
-        <Button
-            android:id="@+id/btn_salvar_dados_editar_perfil"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_foto_perfil"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/imagem_perfil_default"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:text="Salvar"/>
+            android:text="Nome"/>
+        <EditText
+            android:id="@+id/txt_editar_nome_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data de nascimento"
+            android:layout_marginTop="30dp"/>
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/txt_editar_data_nascimento"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:mask="##/##/####"
+            android:inputType="date|datetime" />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefone"/>
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/txt_editar_telefone"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:mask="(##)#########" />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"/>
+        <EditText
+            android:id="@+id/txt_editar_email"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:enabled="false"/>
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CPF"/>
+        <EditText
+            android:id="@+id/txt_editar_cpf"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:enabled="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Código de usuário"
+            android:layout_marginTop="30dp"/>
+
+        <EditText
+            android:id="@+id/txt_codigo_usuario_psicologo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"
+            android:enabled="false"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/btn_salvar_dados_editar_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Salvar"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/btn_voltar_editar_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/voltar_color"
+                android:textColor="@color/yellow"
+                android:text="Voltar"/>
+        </LinearLayout>
 
         <Space
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"/>
 
-        <Button
-            android:id="@+id/btn_voltar_editar_perfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="20dp"
-            android:text="Voltar"/>
     </LinearLayout>
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"/>
+</ScrollView>
 
-</LinearLayout>

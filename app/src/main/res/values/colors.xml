@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#e4e2e2</color>
+    <color name="red">#FF0000</color>
+    <color name="reject_color_back">#ffadad</color>
+    <color name="acept_color_back">#b0ffa8</color>
+    <color name="green">#11cc00</color>
+    <color name="voltar_color">#fff09e</color>
+    <color name="yellow">#e0b700</color>
 </resources>

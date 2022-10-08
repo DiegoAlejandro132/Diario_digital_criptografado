@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_
 import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_telefone
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import java.io.File
-import java.lang.Exception
+import kotlin.Exception
 
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
@@ -41,11 +41,9 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         val tipoUsuario = intent.getStringExtra("tipoUsuario")
         tipoUsuarioGlobal = tipoUsuario!!
         if(tipoUsuario == "Usuário do diário"){
-            Toast.makeText(this, tipoUsuario, Toast.LENGTH_SHORT).show()
             setContentView(R.layout.activity_editar_perfil_usuario)
 
         }else if(tipoUsuario == "Psicólogo"){
-            Toast.makeText(this, tipoUsuario, Toast.LENGTH_SHORT).show()
             setContentView(R.layout.activity_editar_perfil_psicologo)
         }
 
@@ -72,28 +70,35 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
 
     private fun retrieveUserData(){
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-            txt_editar_nome_usuario.setText(it.child("nome").value.toString())
-            txt_editar_data_nascimento.setText(it.child("data_nascimento").value.toString())
-            txt_editar_telefone.setText(it.child("telefone").value.toString())
-            txt_editar_email.setText(it.child("email").value.toString())
-            txt_editar_cpf.setText(it.child("cpf").value.toString())
-            if(tipoUsuarioGlobal == "Psicólogo"){
-                txt_editar_numero_registro.setText(it.child("numero_registro").value.toString())
-                txt_editar_regiao.setText(it.child("estado_registro").value.toString())
-            }
-        }
-        val nomeImagem = AuthUtil.getCurrentUser()
-        val storageref = FirebaseStorage.getInstance().reference.child("fotos_perfil/${nomeImagem}")
 
-        val localFile = File.createTempFile("tempImage", "")
-        storageref.getFile(localFile).addOnSuccessListener {
-            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
-            img_foto_perfil.setImageBitmap(bitmapResize)
-        }.addOnFailureListener{
-            Toast.makeText(this, "Deu pau na imagem", Toast.LENGTH_SHORT).show()
+        try{
+            database = FirebaseDatabase.getInstance().getReference("users")
+            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                txt_editar_nome_usuario.setText(it.child("nome").value.toString())
+                txt_editar_data_nascimento.setText(it.child("data_nascimento").value.toString())
+                txt_editar_telefone.setText(it.child("telefone").value.toString())
+                txt_editar_email.setText(it.child("email").value.toString())
+                txt_editar_cpf.setText(it.child("cpf").value.toString())
+                txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
+                if(tipoUsuarioGlobal == "Psicólogo"){
+                    txt_editar_numero_registro.setText(it.child("numero_registro").value.toString())
+                    txt_editar_regiao.setText(it.child("estado_registro").value.toString())
+                }
+            }
+            val nomeImagem = AuthUtil.getCurrentUser()
+            val storageref = FirebaseStorage.getInstance().reference.child("fotos_perfil/${nomeImagem}")
+
+            val localFile = File.createTempFile("tempImage", "")
+            storageref.getFile(localFile).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
+                img_foto_perfil.setImageBitmap(bitmapResize)
+            }.addOnFailureListener{
+                Toast.makeText(this, "Não foi possível carregar a imagem", Toast.LENGTH_SHORT).show()
+            }
+        }catch (e:Exception){
+            Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao trazer os dados do usuário.", Toast.LENGTH_SHORT).show()
+            Log.e("retrieveUserData", e.message.toString())
         }
     }
 
@@ -137,9 +142,14 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
     }
 
     private fun uploadImage(){
-        if(imageUri != null){
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.putFile(imageUri!!)
+        try{
+            if(imageUri != null){
+                val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+                storageReference.putFile(imageUri!!)
+            }
+        }catch (e:Exception){
+            Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()
+            Log.e("uploadImage", e.message.toString())
         }
     }
 

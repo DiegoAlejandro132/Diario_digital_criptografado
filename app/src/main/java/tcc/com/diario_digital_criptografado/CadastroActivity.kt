@@ -1,10 +1,8 @@
 package tcc.com.diario_digital_criptografado
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,13 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_cadastro.*
-import tcc.com.diario_digital_criptografado.models.Psicologo
-import tcc.com.diario_digital_criptografado.models.Usuario
+import tcc.com.diario_digital_criptografado.model.Psicologo
+import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.io.IOException
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -123,6 +118,7 @@ class CadastroActivity : AppCompatActivity() {
         }
         return false
     }
+
     private fun validatePassword() : Boolean{
         if(txt_senha.text.toString().equals(txt_confirmar_senha.text.toString())){
             return true
@@ -130,9 +126,6 @@ class CadastroActivity : AppCompatActivity() {
         return false
     }
 
-    private fun validateDate() : Boolean {
-        return true
-    }
 
     //funões para setar o spinner de genero
     private fun setGeneroAdapter(){
@@ -161,10 +154,6 @@ class CadastroActivity : AppCompatActivity() {
             .also { adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spn_tipo_perfil.adapter = adapter
             }
-        lbl_estado_regiao.setVisibility(View.INVISIBLE)
-        spn_regiao.setVisibility(View.INVISIBLE)
-        lbl_numero_registro.setVisibility(View.INVISIBLE)
-        txt_numero_registro.setVisibility(View.INVISIBLE)
         setTipoCadastroOnItemSelected()
     }
     private fun setTipoCadastroOnItemSelected(){
@@ -178,10 +167,10 @@ class CadastroActivity : AppCompatActivity() {
                     txt_numero_registro.setVisibility(View.VISIBLE)
                 }else{
                     if((tipo_perfil == "Usuário do diário") || (tipo_perfil == "Selecione")){
-                        lbl_numero_registro.setVisibility(View.INVISIBLE)
-                        spn_regiao.setVisibility(View.INVISIBLE)
-                        lbl_estado_regiao.setVisibility(View.INVISIBLE)
-                        txt_numero_registro.setVisibility(View.INVISIBLE)
+                        lbl_numero_registro.setVisibility(View.GONE)
+                        spn_regiao.setVisibility(View.GONE)
+                        lbl_estado_regiao.setVisibility(View.GONE)
+                        txt_numero_registro.setVisibility(View.GONE)
                     }
                 }
             }
@@ -229,14 +218,23 @@ class CadastroActivity : AppCompatActivity() {
         usuario.nome = txt_nome.text.toString()
         usuario.genero = genero.toString()
         usuario.tipo_perfil = tipo_perfil.toString()
-        usuario.bitmap_string = ""
+        usuario.tem_psicologo = false
+        usuario.tem_solicitacao = false
+        usuario.codigo_psicologo = ""
+        usuario.codigo_psicologo_solicitacao = ""
 
         return usuario
     }
     private fun writeUserDatabase(usuario: Usuario) {
-        val userUid = AuthUtil.getCurrentUser()
-        val child = "users/$userUid"
-        database.child(child).setValue(usuario)
+
+        try{
+            val userUid = AuthUtil.getCurrentUser()
+            val child = "users/$userUid"
+            database.child(child).setValue(usuario)
+        }catch (e:Exception){
+            Toast.makeText(this@CadastroActivity, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show()
+            Log.e("writeUserDatabase", e.message.toString())
+        }
     }
 
 
@@ -256,9 +254,17 @@ class CadastroActivity : AppCompatActivity() {
         return psicologo
     }
     private fun writePsicologoDatabase(psicologo: Psicologo) {
-        val userUid = AuthUtil.getCurrentUser()
-        val child = "users/$userUid"
-        database.child(child).setValue(psicologo)
+
+        try{
+
+            val userUid = AuthUtil.getCurrentUser()
+            val child = "users/$userUid"
+            database.child(child).setValue(psicologo)
+
+        }catch (e:Exception){
+            Toast.makeText(this@CadastroActivity, "Erro ao cadastrar psicólogo.", Toast.LENGTH_SHORT).show()
+            Log.e("writePsicologoDatabase", e.message.toString())
+        }
     }
 
 }

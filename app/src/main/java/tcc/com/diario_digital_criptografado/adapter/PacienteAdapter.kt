@@ -1,23 +1,27 @@
 package tcc.com.diario_digital_criptografado.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import tcc.com.diario_digital_criptografado.R
-import tcc.com.diario_digital_criptografado.models.Usuario
-import tcc.com.diario_digital_criptografado.util.AuthUtil
-import tcc.com.diario_digital_criptografado.util.ImageUtil
-import java.io.File
+import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 
 class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
+
+    private lateinit var database : DatabaseReference
 
     private lateinit var listener : onItemClickListener
 
     interface onItemClickListener{
         fun onItemClick(position : Int)
+        fun onItemLongClickListener(position : Int)
     }
 
     fun setOnItemClickListener(listener: onItemClickListener){
@@ -37,7 +41,6 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
 
     }
 
-
     override fun getItemCount(): Int {
         return pacienteslist.size
     }
@@ -47,9 +50,15 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
         val telefoneList : TextView = itemView.findViewById(R.id.txt_telefone_list)
         val emailList : TextView = itemView.findViewById(R.id.txt_email_list)
 
+
         init {
             itemView.setOnClickListener{
                 listener.onItemClick(adapterPosition)
+            }
+
+            itemView.setOnLongClickListener {
+                listener.onItemLongClickListener(adapterPosition)
+                true
             }
         }
     }

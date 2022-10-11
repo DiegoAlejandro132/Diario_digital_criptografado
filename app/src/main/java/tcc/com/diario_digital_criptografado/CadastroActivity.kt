@@ -222,6 +222,7 @@ class CadastroActivity : AppCompatActivity() {
         usuario.tem_solicitacao = false
         usuario.codigo_psicologo = ""
         usuario.codigo_psicologo_solicitacao = ""
+        usuario.foto = ""
 
         return usuario
     }

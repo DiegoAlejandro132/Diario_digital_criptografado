@@ -9,9 +9,6 @@
     android:fillViewport="true">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".EditarPerfilUsuarioActivity"
@@ -32,10 +29,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nome"/>
+
         <EditText
             android:id="@+id/txt_editar_nome_usuario"
             android:layout_width="match_parent"
             android:layout_height="45dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Código de usuário"
+            android:layout_marginTop="30dp"/>
+
+        <EditText
+            android:id="@+id/txt_codigo_usuario_psicologo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,16 +94,32 @@
             android:enabled="false"/>
 
         <TextView
+            android:id="@+id/lbl_editar_numero_registro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Código de usuário"
+            android:text="Número de registro"
+            android:visibility="gone"
+            android:layout_marginTop="30dp"/>
+        <EditText
+            android:id="@+id/txt_editar_numero_registro"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:visibility="gone"
+            android:enabled="false"/>
+
+        <TextView
+            android:id="@+id/lbl_editar_numero_regiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Região"
+            android:visibility="gone"
             android:layout_marginTop="30dp"/>
 
         <EditText
-            android:id="@+id/txt_codigo_usuario_psicologo"
+            android:id="@+id/txt_editar_regiao"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
+            android:layout_height="45dp"
+            android:visibility="gone"
             android:enabled="false"/>
 
         <LinearLayout
@@ -134,4 +161,3 @@
     </LinearLayout>
 
 </ScrollView>
-

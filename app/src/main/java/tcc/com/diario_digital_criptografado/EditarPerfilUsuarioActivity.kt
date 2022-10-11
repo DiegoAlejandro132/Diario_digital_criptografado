@@ -9,20 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_editar_perfil_psicologo.*
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.btn_salvar_dados_editar_perfil
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.btn_voltar_editar_perfil
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.img_foto_perfil
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_cpf
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_data_nascimento
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_email
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_nome_usuario
-import kotlinx.android.synthetic.main.activity_editar_perfil_usuario.txt_editar_telefone
+import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import java.io.File
 import kotlin.Exception
@@ -38,19 +31,10 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tipoUsuario = intent.getStringExtra("tipoUsuario")
-        tipoUsuarioGlobal = tipoUsuario!!
-        if(tipoUsuario == "Usuário do diário"){
-            setContentView(R.layout.activity_editar_perfil_usuario)
+        setContentView(R.layout.activity_editar_perfil)
 
-        }else if(tipoUsuario == "Psicólogo"){
-            setContentView(R.layout.activity_editar_perfil_psicologo)
-        }
 
-        firebaseStore = FirebaseStorage.getInstance()
-        storageReference = FirebaseStorage.getInstance().reference
-
-        retrieveUserData()
+        trazerDadosUsuario()
 
         img_foto_perfil.setOnClickListener{
             selectImage()
@@ -69,9 +53,11 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
     }
 
 
-    private fun retrieveUserData(){
+    private fun trazerDadosUsuario(){
 
         try{
+            firebaseStore = FirebaseStorage.getInstance()
+            storageReference = FirebaseStorage.getInstance().reference
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
@@ -80,8 +66,15 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 txt_editar_email.setText(it.child("email").value.toString())
                 txt_editar_cpf.setText(it.child("cpf").value.toString())
                 txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
-                if(tipoUsuarioGlobal == "Psicólogo"){
+
+                if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
+
+                    lbl_editar_numero_registro.setVisibility(View.VISIBLE)
+                    txt_editar_numero_registro.setVisibility(View.VISIBLE)
                     txt_editar_numero_registro.setText(it.child("numero_registro").value.toString())
+
+                    lbl_editar_numero_regiao.setVisibility(View.VISIBLE)
+                    txt_editar_regiao.setVisibility(View.VISIBLE)
                     txt_editar_regiao.setText(it.child("estado_registro").value.toString())
                 }
             }

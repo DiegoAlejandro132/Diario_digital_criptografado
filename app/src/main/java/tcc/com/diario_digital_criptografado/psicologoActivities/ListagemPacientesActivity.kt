@@ -1,6 +1,5 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -22,14 +21,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
-import tcc.com.diario_digital_criptografado.AgendaUsuarioActivity
-import tcc.com.diario_digital_criptografado.EditarPerfilUsuarioActivity
-import tcc.com.diario_digital_criptografado.MainActivity
+import kotlinx.android.synthetic.main.header_navigation_drawer.*
+import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.security.spec.ECField
 
 class ListagemPacientesActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
@@ -51,12 +48,18 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         pacienteList = arrayListOf<Usuario>()
 
-        getUsuarioData()
+        listarDadosPacientes()
+
+        swipe_listagem_pacientes.setOnRefreshListener {
+            listarDadosPacientes()
+
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        updateUserData()
+        setHeaderNavigationDrawer()
+        listarDadosPacientes()
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -66,58 +69,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
     // <---------------------------------------------------- funções ----------------------------------------------------->
     // <---------------------------------------------------- funções ----------------------------------------------------->
 
-    private fun getUsuarioData2() {
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                pacienteList.clear()
-                if(snapshot.exists()){
-                    for(item in snapshot.children){
-                        val itemData = item.getValue(Usuario::class.java)
-                        if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
-                            pacienteList.add(itemData)
-                    }
-                    var adapter = PacienteAdapter(pacienteList)
-                    recyclerView.adapter = adapter
 
-                    adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
-                        override fun onItemClick(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            adapter.notifyItemChanged(position)
-                            val intent = Intent(getApplicationContext(), AgendaUsuarioActivity::class.java)
-                            intent.putExtra("email", clickedItem.email)
-                            startActivity(intent)
-                        }
-
-                        override fun onItemLongClickListener(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            adapter.notifyItemChanged(position)
-                            val email = clickedItem.email
-                            val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
-                            dialogBuilder.setMessage("Deseja excluir o paciente?")
-                                .setPositiveButton("Sim", { dialog, id ->  excluirPaciente(email) })
-                                .setNegativeButton("Não", { dialog, id ->  dialog.dismiss() })
-                            val b = dialogBuilder.create()
-                            b.show()
-
-                        }
-                    })
-
-                    val nomeUsuario = "<b>" + snapshot.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                    val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
-                    val headerView : View = navigationView.getHeaderView(0)
-                    val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                    navNomeusuario.text = Html.fromHtml(nomeUsuario)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-
-    }
-
-    private fun getUsuarioData(){
+    private fun listarDadosPacientes(){
         try{
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
@@ -140,23 +93,47 @@ class ListagemPacientesActivity : AppCompatActivity(){
                             startActivity(intent)
                         }
 
-                        override fun onItemLongClickListener(position: Int) {
+                        override fun excluirPaciente(position: Int) {
                             val clickedItem = pacienteList[position]
                             adapter.notifyItemChanged(position)
                             val email = clickedItem.email
-                            val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
-                            dialogBuilder.setMessage("Deseja excluir o paciente?")
-                                .setPositiveButton("Sim", { dialog, id ->  excluirPaciente(email) })
-                                .setNegativeButton("Não", { dialog, id ->  dialog.dismiss() })
-                            val b = dialogBuilder.create()
-                            b.show()
+                            
+                            pacienteList.removeAt(position)
+                            excluirPaciente(email)
 
+                            // TODO: implementar dialog build para confirmação de exclusao 
+//                            val posicao = position
+//                            val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
+//                            dialogBuilder.setMessage("Deseja excluir ${clickedItem.nome} da sua lista de pacientes?")
+//                                .setPositiveButton("Sim") { dialog, id -> pacienteList.removeAt(posicao) }
+//                                .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
+//                            val b = dialogBuilder.create()
+//                            b.show()
                         }
                     })
+
+                    if(swipe_listagem_pacientes.isRefreshing){
+                        swipe_listagem_pacientes.isRefreshing = false
+                    }
                 }
             }
         }catch (e : Exception){
             Log.e("getUsuarioData", e.message.toString())
+        }
+    }
+
+    private fun atualizarListaPacientes(){
+        database = FirebaseDatabase.getInstance().getReference("users")
+        database.get().addOnSuccessListener {
+            pacienteList.clear()
+            if(it.exists()){
+                for(item in it.children){
+                    val itemData = item.getValue(Usuario::class.java)
+                    if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
+                        pacienteList.add(itemData)
+                }
+                Toast.makeText(this@ListagemPacientesActivity, "atualizou", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -173,25 +150,16 @@ class ListagemPacientesActivity : AppCompatActivity(){
         try {
 
             database = FirebaseDatabase.getInstance().getReference("users")
-            database.addValueEventListener(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val nomeUsuario = "<b>" + snapshot.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                    Toast.makeText(this@ListagemPacientesActivity, nomeUsuario, Toast.LENGTH_SHORT).show()
-                    val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
-                    val headerView : View = navigationView.getHeaderView(0)
-                    val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                    navNomeusuario.text = Html.fromHtml(nomeUsuario)
-                }
+            database.get().addOnSuccessListener {
+                val nomeUsuario = "<b>" + it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
         }catch (e : Exception){
             Toast.makeText(this@ListagemPacientesActivity, "Erro de dados na barra de menu.", Toast.LENGTH_SHORT).show()
             Log.e("HeaderNavigationDrawer", e.message.toString())
         }
+
     }
 
     private fun setNavigationDrawer(){
@@ -203,7 +171,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.nav_acesso_perfil_psicologo -> goEditUser()
+                R.id.nav_acesso_perfil_psicologo -> irVisualizarPerfil()
                 R.id.nav_adicionar_paciente -> goAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
             }
@@ -217,17 +185,16 @@ class ListagemPacientesActivity : AppCompatActivity(){
         startActivity(intent)
     }
 
-    private fun goEditUser(){
-        intent = Intent(this, EditarPerfilUsuarioActivity::class.java)
-        intent.putExtra("tipoUsuario", "Psicólogo")
+    private fun irVisualizarPerfil(){
+        intent = Intent(this, MeuPerfilActivity::class.java)
         startActivity(intent)
     }
 
     private fun showDialogLogOut(){
         val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
-        dialogBuilder.setMessage("Você deseja mesmo fazer log out? Ao tentar entrar novamente precisara realizar novo log in.")
-            .setPositiveButton("Sim", DialogInterface.OnClickListener { dialog, id ->  signOut() })
-            .setNegativeButton("Não", DialogInterface.OnClickListener { dialog, id ->  dialog.dismiss()})
+        dialogBuilder.setMessage("Deseja encerrar a sessão?")
+            .setPositiveButton("Sim") { dialog, id ->  signOut() }
+            .setNegativeButton("Não") { dialog, id ->  dialog.dismiss()}
         val b = dialogBuilder.create()
         b.show()
     }
@@ -242,43 +209,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
         finish()
     }
 
-    private fun updateUserData2(){
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.child(AuthUtil.getCurrentUser()!!).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val nomeUsuario = "<b>" + snapshot.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
-                val headerView : View = navigationView.getHeaderView(0)
-                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                navNomeusuario.text = Html.fromHtml(nomeUsuario)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@ListagemPacientesActivity, "Houve um erro na atualização dos dados.", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this@ListagemPacientesActivity, error.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-        })
-    }
-
-    private fun updateUserData(){
-
-        try {
-            database = FirebaseDatabase.getInstance().getReference("users")
-            database.get().addOnSuccessListener {
-                val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                val navigationView : NavigationView  = findViewById(R.id.navigation_view_listagem_pacientes)
-                val headerView : View = navigationView.getHeaderView(0)
-                val navNomeusuario : TextView = headerView.findViewById(R.id.nav_header_nome_usuario)
-                navNomeusuario.text = Html.fromHtml(nomeUsuario)
-            }.addOnFailureListener {
-                Toast.makeText(this@ListagemPacientesActivity, "Houve um erro na atualização dos dados.", Toast.LENGTH_SHORT).show()
-            }
-        }catch (e : Exception){
-            Toast.makeText(this@ListagemPacientesActivity, "Erro ao atualizar dados.", Toast.LENGTH_SHORT).show()
-            Log.e("updateUserData", e.message.toString())
-        }
-    }
 
     private fun excluirPaciente(email : String){
 
@@ -299,4 +229,5 @@ class ListagemPacientesActivity : AppCompatActivity(){
             Log.e("excluirPaciente", e.message.toString())
         }
     }
+
 }

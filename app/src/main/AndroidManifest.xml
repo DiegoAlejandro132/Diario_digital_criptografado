@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Diario_digital_criptografado"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MeuPerfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".usuarioActivities.MeuPsicologoActivity"
             android:exported="false" />
         <activity

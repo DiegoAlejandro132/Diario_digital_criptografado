@@ -1,4 +1,4 @@
-package tcc.com.diario_digital_criptografado.models;
+package tcc.com.diario_digital_criptografado.model;
 
 class Psicologo (var nome : String = "", var data_nascimento : String = "", var cpf : String = "",
                  var telefone : String = "", var email : String = "",

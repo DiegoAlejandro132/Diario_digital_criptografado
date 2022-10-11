@@ -306,6 +306,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:visibility="gone"
                 android:text="Número de registro"/>
 
             <Space
@@ -318,6 +319,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="11dp"
+                android:visibility="gone"
                 android:text="Estado/Região do registro"/>
         </LinearLayout>
 
@@ -332,6 +334,7 @@
                 android:layout_height="48dp"
                 android:ems="10"
                 android:layout_marginLeft="20dp"
+                android:visibility="gone"
                 android:inputType="textPersonName"/>
 
             <Space
@@ -344,6 +347,7 @@
                 android:layout_width="155dp"
                 android:layout_height="48dp"
                 android:layout_marginRight="20dp"
+                android:visibility="gone"
                 android:contentDescription="spinner de genero"/>
         </LinearLayout>
 
@@ -352,7 +356,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="30dp">
 
             <Button
                 android:id="@+id/btn_cadastrar"
@@ -367,7 +371,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="Cancelar" />
+                android:backgroundTint="@color/voltar_color"
+                android:textColor="@color/yellow"
+                android:text="Voltar" />
         </LinearLayout>
 
     </LinearLayout>

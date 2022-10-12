@@ -7,9 +7,11 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import tcc.com.diario_digital_criptografado.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.R
@@ -110,6 +112,12 @@ class FormularioDiarioActivity : AppCompatActivity() {
     private fun retrieveDayData(dataSelecionada : String){
 
         try {
+
+            if(!progressive_formulario.isVisible){
+                linear_layout_conteudo_formulario.setVisibility(View.GONE)
+                progressive_formulario.isVisible = true
+            }
+
             dbRef = FirebaseDatabase.getInstance().getReference("users")
             dbRef.get().addOnSuccessListener {
                 if(it.value != null){
@@ -143,6 +151,12 @@ class FormularioDiarioActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                if(progressive_formulario.isVisible){
+                    progressive_formulario.isVisible = false
+                    linear_layout_conteudo_formulario.isVisible = true
+                }
+
             }
         }catch (e:Exception){
             Toast.makeText(this@FormularioDiarioActivity, "Erro ao trazer os dados do dia.", Toast.LENGTH_SHORT).show()

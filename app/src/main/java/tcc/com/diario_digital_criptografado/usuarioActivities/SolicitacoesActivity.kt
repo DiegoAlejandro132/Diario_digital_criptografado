@@ -1,8 +1,6 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -11,13 +9,16 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.io.File
 import kotlin.Exception
 
 class SolicitacoesActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class SolicitacoesActivity : AppCompatActivity() {
         storageReference = FirebaseStorage.getInstance().reference
         retrievePsicologoData()
 
-        var textoObservacao = "Antes de aceitar qualquer solicitação \nverifique a veracidade dos dados no <a href='https://cadastro.cfp.org.br/'>cadastro nacional de psicólogos</a>"
+        var textoObservacao = "Antes de aceitar qualquer solicitação \nverifique a veracidade dos dados acessando o <a href='https://cadastro.cfp.org.br/'>cadastro nacional de psicólogos</a>"
         lbl_observacoes_solicitacoes.text = Html.fromHtml(textoObservacao)
         lbl_observacoes_solicitacoes.movementMethod = LinkMovementMethod.getInstance()
 
@@ -111,6 +112,12 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun retrievePsicologoData(){
 
         try{
+
+            if(!progressive_solicitacoes.isVisible){
+                linear_layout_conteudo_meu_perfil.setVisibility(View.GONE)
+                progressive_solicitacoes.isVisible = true
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
 
@@ -125,17 +132,14 @@ class SolicitacoesActivity : AppCompatActivity() {
                         lbl_numero_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("numero_registro").value.toString())
                         lbl_regiao_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
 
-                        val codigoPsicologoFoto = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").value.toString()
-                        val storageRef = FirebaseStorage.getInstance().reference.child("fotos_perfil/${codigoPsicologoFoto}")
+                        val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
+                        Glide.with(this).load(fotoUri).into(img_foto_psicologo_solicitacao)
 
-                        val localFile = File.createTempFile("tempImage", "")
-                        storageRef.getFile(localFile).addOnSuccessListener{
-                            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                            val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
-                            img_foto_psicologo_soliitacao.setImageBitmap(bitmapResize)
-                        }.addOnFailureListener{
-                            Toast.makeText(this@SolicitacoesActivity, "Não foi possível carregar a imagem", Toast.LENGTH_SHORT).show()
+                        if(progressive_solicitacoes.isVisible){
+                            progressive_solicitacoes.isVisible = false
+                            linear_layout_conteudo_solicitacoes.isVisible = true
                         }
+
                         lbl_sem_solicitacoes.setVisibility(View.GONE)
                         linear_layout_dados_psicologo_solicitacao.setVisibility(View.VISIBLE)
 
@@ -143,6 +147,11 @@ class SolicitacoesActivity : AppCompatActivity() {
 
                         lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
                         linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
+
+                        if(progressive_solicitacoes.isVisible){
+                            progressive_solicitacoes.isVisible = false
+                            linear_layout_conteudo_solicitacoes.isVisible = true
+                        }
 
                     }
                 }

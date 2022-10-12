@@ -91,9 +91,11 @@ class MainActivity : AppCompatActivity() {
                     if(tipoUsuario == "Psicólogo"){
                         val intent = Intent(this, ListagemPacientesActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }else if (tipoUsuario == "Usuário do diário"){
                         val intent = Intent(this, AgendaUsuarioActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }

@@ -9,13 +9,15 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.Usuario
 
-class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
+class PacienteAdapter (private val context : Context, private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
 
 
     private lateinit var listener : onItemClickListener
@@ -40,7 +42,8 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
         holder.nomeList.text = current.nome
         holder.telefoneList.text = current.telefone
         holder.emailList.text = current.email
-
+        //holder.fotoPerfil.setImageURI(current.foto_perfil.toUri())
+        Glide.with(context).load(pacienteslist[position].foto_perfil).into(holder.fotoPerfil)
     }
 
     override fun getItemCount(): Int {
@@ -52,6 +55,7 @@ class PacienteAdapter (private val pacienteslist : ArrayList<Usuario>) : Recycle
         val telefoneList : TextView = itemView.findViewById(R.id.txt_telefone_list)
         val emailList : TextView = itemView.findViewById(R.id.txt_email_list)
         val lixeira : ImageView = itemView.findViewById(R.id.btn_excluir_paciente)
+        val fotoPerfil : ImageView = itemView.findViewById(R.id.img_fotoPerfil_card_listagem)
 
 
         init {

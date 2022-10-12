@@ -10,118 +10,135 @@
         android:paddingRight="16dp"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/txt_data"
+        <ProgressBar
+            android:id="@+id/progressive_formulario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="20dp"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:text="" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="De maneira geral, como foi seu dia?"/>
+            android:indeterminateTint="@color/red"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
 
         <LinearLayout
+            android:id="@+id/linear_layout_conteudo_formulario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioGroup
-                android:id="@+id/checkboxGroup"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:text="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="De maneira geral, como foi seu dia?"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioGroup
+                    android:id="@+id/checkboxGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <RadioButton android:id="@+id/radio_pessimo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Péssimo"
+                        android:textSize="13dp"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/radio_ruim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ruim"
+                        android:textSize="13dp"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/radio_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Regular"
+                        android:textSize="13dp"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/radio_bom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bom"
+                        android:textSize="13dp"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/radio_excelente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Excelente"
+                        android:textSize="13dp"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/txt_pergunta1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/text_view_txt_diario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diário"
+                android:layout_marginTop="35dp"/>
+
+            <EditText
+                android:id="@+id/txt_diario"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:ems="10"
+                android:inputType="text|textMultiLine"
+                android:hint="Escreva suas anotações diárias aqui" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
-                >
-                <RadioButton android:id="@+id/radio_pessimo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Péssimo"
-                    android:textSize="13dp"
-                    android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_ruim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ruim"
-                    android:textSize="13dp"
-                    android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Regular"
-                    android:textSize="13dp"
-                    android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_bom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bom"
-                    android:textSize="13dp"
-                    android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_excelente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Excelente"
-                    android:textSize="13dp"
-                    android:onClick="onRadioButtonClicked"/>
-            </RadioGroup>
+                android:layout_marginTop="30dp">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_voltar_formulario_diario"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:backgroundTint="@color/voltar_color"
+                    android:textColor="@color/yellow"
+                    android:text="voltar" />
 
-        <EditText
-            android:id="@+id/txt_pergunta1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/text_view_txt_diario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Diário"
-            android:layout_marginTop="35dp"/>
+                <Button
+                    android:id="@+id/btn_salvar_diario"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="20dp"
+                    android:text="salvar" />
 
-        <EditText
-            android:id="@+id/txt_diario"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:gravity="top"
-            android:ems="10"
-            android:inputType="text|textMultiLine"
-            android:hint="Escreva suas anotações diárias aqui" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp">
-
-            <Button
-                android:id="@+id/btn_voltar_formulario_diario"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:backgroundTint="@color/voltar_color"
-                android:textColor="@color/yellow"
-                android:text="voltar" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
-
-            <Button
-                android:id="@+id/btn_salvar_diario"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:text="salvar" />
+            </LinearLayout>
 
         </LinearLayout>
 

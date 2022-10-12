@@ -11,11 +11,15 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import java.io.File
 import kotlin.Exception
@@ -56,6 +60,12 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private fun trazerDadosUsuario(){
 
         try{
+
+            if(!progressive_editar_perfil.isVisible){
+                linear_layout_conteudo_editar_perfil.setVisibility(View.GONE)
+                progressive_editar_perfil.isVisible = true
+            }
+
             firebaseStore = FirebaseStorage.getInstance()
             storageReference = FirebaseStorage.getInstance().reference
             database = FirebaseDatabase.getInstance().getReference("users")
@@ -67,6 +77,13 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 txt_editar_cpf.setText(it.child("cpf").value.toString())
                 txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
 
+                val fotoUri = it.child("foto_perfil").value.toString().toUri()
+                if(fotoUri.toString() != ""){
+                    Glide.with(this).load(fotoUri).into(img_foto_perfil)
+                }else{
+                    Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_perfil)
+                }
+
                 if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
 
                     lbl_editar_numero_registro.setVisibility(View.VISIBLE)
@@ -76,18 +93,14 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                     lbl_editar_numero_regiao.setVisibility(View.VISIBLE)
                     txt_editar_regiao.setVisibility(View.VISIBLE)
                     txt_editar_regiao.setText(it.child("estado_registro").value.toString())
-                }
-            }
-            val nomeImagem = AuthUtil.getCurrentUser()
-            val storageref = FirebaseStorage.getInstance().reference.child("fotos_perfil/${nomeImagem}")
 
-            val localFile = File.createTempFile("tempImage", "")
-            storageref.getFile(localFile).addOnSuccessListener {
-                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
-                img_foto_perfil.setImageBitmap(bitmapResize)
-            }.addOnFailureListener{
-                Toast.makeText(this, "Não foi possível carregar a imagem", Toast.LENGTH_SHORT).show()
+                }
+
+                if(progressive_editar_perfil.isVisible){
+                    progressive_editar_perfil.isVisible = false
+                    linear_layout_conteudo_editar_perfil.isVisible = true
+                }
+
             }
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao trazer os dados do usuário.", Toast.LENGTH_SHORT).show()
@@ -128,9 +141,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
         if(requestCode == 100 && resultCode == RESULT_OK){
             imageUri = data?.data!!
-            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-            val bitmapResize = Bitmap.createScaledBitmap(bitmap,450, 450, true)
-            img_foto_perfil.setImageBitmap(bitmapResize)
+            Glide.with(this).load(imageUri).into(img_foto_perfil)
         }
     }
 
@@ -139,6 +150,12 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             if(imageUri != null){
                 val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
                 storageReference.putFile(imageUri!!)
+                storageReference.downloadUrl.addOnSuccessListener {
+                    var fotoUri = it.toString()
+                    database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+                    database.child("foto_perfil").setValue(fotoUri)
+                }
+
             }
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()

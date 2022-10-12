@@ -222,7 +222,7 @@ class CadastroActivity : AppCompatActivity() {
         usuario.tem_solicitacao = false
         usuario.codigo_psicologo = ""
         usuario.codigo_psicologo_solicitacao = ""
-        usuario.foto = ""
+        usuario.foto_perfil = ""
 
         return usuario
     }
@@ -251,6 +251,7 @@ class CadastroActivity : AppCompatActivity() {
         psicologo.tipo_perfil = tipo_perfil.toString()
         psicologo.numero_registro = txt_numero_registro.text.toString()
         psicologo.estado_registro = estado_registro.toString()
+        psicologo.foto_perfil = ""
 
         return psicologo
     }

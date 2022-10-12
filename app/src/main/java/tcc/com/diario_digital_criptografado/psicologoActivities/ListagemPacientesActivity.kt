@@ -81,7 +81,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
                             pacienteList.add(itemData)
                     }
-                    var adapter = PacienteAdapter(pacienteList)
+                    var adapter = PacienteAdapter(this@ListagemPacientesActivity , pacienteList,)
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
@@ -95,20 +95,12 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
                         override fun excluirPaciente(position: Int) {
                             val clickedItem = pacienteList[position]
-                            adapter.notifyItemChanged(position)
                             val email = clickedItem.email
-                            
+
+                            adapter.notifyItemChanged(position)
                             pacienteList.removeAt(position)
                             excluirPaciente(email)
 
-                            // TODO: implementar dialog build para confirmação de exclusao 
-//                            val posicao = position
-//                            val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
-//                            dialogBuilder.setMessage("Deseja excluir ${clickedItem.nome} da sua lista de pacientes?")
-//                                .setPositiveButton("Sim") { dialog, id -> pacienteList.removeAt(posicao) }
-//                                .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
-//                            val b = dialogBuilder.create()
-//                            b.show()
                         }
                     })
 
@@ -119,21 +111,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
             }
         }catch (e : Exception){
             Log.e("getUsuarioData", e.message.toString())
-        }
-    }
-
-    private fun atualizarListaPacientes(){
-        database = FirebaseDatabase.getInstance().getReference("users")
-        database.get().addOnSuccessListener {
-            pacienteList.clear()
-            if(it.exists()){
-                for(item in it.children){
-                    val itemData = item.getValue(Usuario::class.java)
-                    if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
-                        pacienteList.add(itemData)
-                }
-                Toast.makeText(this@ListagemPacientesActivity, "atualizou", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

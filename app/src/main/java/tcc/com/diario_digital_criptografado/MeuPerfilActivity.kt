@@ -1,20 +1,23 @@
 package tcc.com.diario_digital_criptografado
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.io.File
 
 class MeuPerfilActivity : AppCompatActivity() {
 
@@ -36,11 +39,24 @@ class MeuPerfilActivity : AppCompatActivity() {
             finish()
         }
 
+        btn_copiar_codigo_usuario_meu_perfil.setOnClickListener {
+            copiarCodigoUsuario()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        trazerDadosUsuario()
     }
 
 
     private fun trazerDadosUsuario(){
         try{
+            if(!progressive_meu_perfil.isVisible){
+                linear_layout_conteudo_meu_perfil.setVisibility(View.GONE)
+                progressive_meu_perfil.isVisible = true
+            }
             firebaseStore = FirebaseStorage.getInstance()
             storageReference = FirebaseStorage.getInstance().reference
             database = FirebaseDatabase.getInstance().getReference("users")
@@ -56,6 +72,13 @@ class MeuPerfilActivity : AppCompatActivity() {
                     lbl_meu_cpf.text = it.child(AuthUtil.getCurrentUser()!!).child("cpf").value.toString()
                     lbl_meu_codigo_usuario.text = it.child(AuthUtil.getCurrentUser()!!).key.toString()
 
+                    val fotoUri = it.child(AuthUtil.getCurrentUser()!!).child("foto_perfil").value.toString().toUri()
+                    if(fotoUri.toString() != ""){
+                        Glide.with(this).load(fotoUri).into(img_foto_meu_perfil)
+                    }else{
+                        Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_meu_perfil)
+                    }
+
                     if(tipoUsuario == "Psicólogo"){
                         lbl_meu_numero_registro.visibility = View.VISIBLE
                         lbl_meu_numero_registro_titulo.visibility = View.VISIBLE
@@ -66,19 +89,10 @@ class MeuPerfilActivity : AppCompatActivity() {
                         lbl_meu_numero_registro.text = it.child(AuthUtil.getCurrentUser()!!).child("numero_registro").value.toString()
                         lbl_meu_regiao_registro.text = it.child(AuthUtil.getCurrentUser()!!).child("estado_registro").value.toString()
                     }
-
-                    val nomeImagem = AuthUtil.getCurrentUser()
-                    val storageref = FirebaseStorage.getInstance().reference.child("fotos_perfil/${nomeImagem}")
-
-                    val localFile = File.createTempFile("tempImage", "")
-                    storageref.getFile(localFile).addOnSuccessListener {
-                        val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                        val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
-                        img_foto_meu_perfil.setImageBitmap(bitmapResize)
-                    }.addOnFailureListener{
-                        Toast.makeText(this, "Não foi possível carregar a imagem", Toast.LENGTH_SHORT).show()
+                    if(progressive_meu_perfil.isVisible){
+                        progressive_meu_perfil.isVisible = false
+                        linear_layout_conteudo_meu_perfil.isVisible = true
                     }
-
                 }
             }.addOnFailureListener {
                 Toast.makeText(this@MeuPerfilActivity, "nao pegou snapshot", Toast.LENGTH_SHORT).show()
@@ -92,6 +106,15 @@ class MeuPerfilActivity : AppCompatActivity() {
     private fun irEditarPerfil(){
         intent = Intent(this, EditarPerfilUsuarioActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun copiarCodigoUsuario(){
+        val codigoUsuario = lbl_meu_codigo_usuario.text
+
+        val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", codigoUsuario)
+        clipboardManager.setPrimaryClip(clipData)
+        Toast.makeText(this, "Código copiado para a área de transferência", Toast.LENGTH_LONG).show()
     }
 
 }

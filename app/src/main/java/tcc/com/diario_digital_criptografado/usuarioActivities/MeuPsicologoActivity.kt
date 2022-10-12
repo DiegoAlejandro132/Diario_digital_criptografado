@@ -9,9 +9,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_psicologo.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.R
@@ -70,6 +74,12 @@ class MeuPsicologoActivity : AppCompatActivity() {
     private fun retrievePsicologoData(){
 
         try{
+
+            if(!progressive_meu_psicologo.isVisible){
+                linear_layout_conteudo_meu_psicologo.visibility = View.GONE
+                progressive_meu_psicologo.isVisible = true
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 if(it.exists()){
@@ -82,20 +92,23 @@ class MeuPsicologoActivity : AppCompatActivity() {
                         lbl_meu_psicologo_estado_inscricao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
                         linear_layout_meu_psicologo.setVisibility(View.VISIBLE)
 
-                        val codigoPsicologoFoto = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").value.toString()
-                        val storageRef = FirebaseStorage.getInstance().reference.child("fotos_perfil/${codigoPsicologoFoto}")
+                        val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
+                        Glide.with(this).load(fotoUri).into(img_foto_meu_psicologo)
 
-                        val localFile = File.createTempFile("tempImage", "")
-                        storageRef.getFile(localFile).addOnSuccessListener{
-                            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                            val bitmapResize = Bitmap.createScaledBitmap(bitmap, 450,450, true)
-                            img_foto_meu_psicologo.setImageBitmap(bitmapResize)
-                        }.addOnFailureListener{
-                            Toast.makeText(this@MeuPsicologoActivity, "Deu pau na imagem", Toast.LENGTH_SHORT).show()
+                        if(progressive_meu_psicologo.isVisible){
+                            progressive_meu_psicologo.isVisible = false
+                            linear_layout_conteudo_meu_psicologo.isVisible = true
                         }
+
                     }else{
                         linear_layout_meu_psicologo.setVisibility(View.GONE)
                         lbl_sem_meu_psicologo.setVisibility(View.VISIBLE)
+
+                        if(progressive_meu_psicologo.isVisible){
+                            progressive_meu_psicologo.isVisible = false
+                            linear_layout_conteudo_meu_psicologo.isVisible = true
+                        }
+
                     }
                 }
             }

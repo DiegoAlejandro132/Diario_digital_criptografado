@@ -8,6 +8,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -15,6 +17,10 @@ import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -31,12 +37,18 @@ class CadastroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-
         //seta todos os adapters dos spinners
         setAdapters()
 
+        txt_data_nascimento.setOnClickListener{
+
+            selecionarDataNascimento()
+
+        }
+
         //usuario volta pra tela de login ao clicar em cancelar
         btn_cancelar.setOnClickListener {
+
             startActivity(Intent(this, MainActivity::class.java))
         }
 
@@ -161,16 +173,14 @@ class CadastroActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 tipo_perfil = p0?.getItemAtPosition(p2).toString()
                 if(tipo_perfil == "Psicólogo"){
-                    lbl_numero_registro.setVisibility(View.VISIBLE)
-                    spn_regiao.setVisibility(View.VISIBLE)
-                    lbl_estado_regiao.setVisibility(View.VISIBLE)
-                    txt_numero_registro.setVisibility(View.VISIBLE)
+
+                    linear_layout_cadastro_psicologo.isVisible = true
+
                 }else{
                     if((tipo_perfil == "Usuário do diário") || (tipo_perfil == "Selecione")){
-                        lbl_numero_registro.setVisibility(View.GONE)
-                        spn_regiao.setVisibility(View.GONE)
-                        lbl_estado_regiao.setVisibility(View.GONE)
-                        txt_numero_registro.setVisibility(View.GONE)
+
+                        linear_layout_cadastro_psicologo.visibility = View.GONE
+
                     }
                 }
             }
@@ -267,6 +277,26 @@ class CadastroActivity : AppCompatActivity() {
             Toast.makeText(this@CadastroActivity, "Erro ao cadastrar psicólogo.", Toast.LENGTH_SHORT).show()
             Log.e("writePsicologoDatabase", e.message.toString())
         }
+    }
+
+    private fun selecionarDataNascimento(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecione sua data de nascimento")
+                .build()
+        datePicker.show(supportFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+
+            val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            utc.timeInMillis = it
+            val data = "${utc.get(Calendar.DAY_OF_MONTH)}-${utc.get(Calendar.MONTH)+1}-${utc.get(Calendar.YEAR)}"
+            txt_data_nascimento.text = data
+
+//            val l = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+//            Toast.makeText(this, l.toString(), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 }

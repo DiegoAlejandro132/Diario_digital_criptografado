@@ -6,6 +6,7 @@
     <string name="header_text">header_text</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="selecione_a_data">Selecione a data</string>
     <string-array name="array_genero">
         <item>Selecione</item>
         <item>Masculino</item>

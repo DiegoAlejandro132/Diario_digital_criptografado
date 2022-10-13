@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="Sexo"/>
+                android:text="Genero"/>
 
             <Space
                 android:layout_width="0dp"
@@ -154,29 +154,30 @@
                 android:id="@+id/txt_cpf"
                 android:layout_width="155dp"
                 android:layout_height="48dp"
-                android:ems="10"
                 android:layout_marginLeft="20dp"
+                android:ems="10"
                 android:hint="CPF"
-                app:mask="###.###.###-##"
-                android:inputType="text"
-                android:textSize="14sp"/>
+                android:inputType="number"
+                android:textSize="14sp"
+                app:mask="###.###.###-##" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
-            <com.vicmikhailau.maskededittext.MaskedEditText
+            <TextView
                 android:id="@+id/txt_data_nascimento"
                 android:layout_width="155dp"
                 android:layout_height="48dp"
-                android:ems="10"
-                android:hint="Data de nascimento"
-                app:mask="##/##/####"
-                android:inputType="date"
                 android:layout_gravity="end"
                 android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="@string/selecione_a_data"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
                 android:textSize="14sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -214,10 +215,10 @@
                 android:id="@+id/txt_email"
                 android:layout_width="155dp"
                 android:layout_height="48dp"
-                android:ems="10"
                 android:layout_marginLeft="20dp"
+                android:ems="10"
                 android:hint="Email"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textSize="14sp" />
 
             <Space
@@ -296,60 +297,67 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linear_layout_cadastro_psicologo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/lbl_numero_registro"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:visibility="gone"
-                android:text="Número de registro"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="25dp">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/lbl_numero_registro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Número de registro"/>
 
-            <TextView
-                android:id="@+id/lbl_estado_regiao"
-                android:layout_width="wrap_content"
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/lbl_estado_regiao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="11dp"
+                    android:text="Estado/Região do registro"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="11dp"
-                android:visibility="gone"
-                android:text="Estado/Região do registro"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txt_numero_registro"
+                    android:layout_width="155dp"
+                    android:layout_height="48dp"
+                    android:ems="10"
+                    android:layout_marginLeft="20dp"
+                    android:inputType="textPersonName"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <Spinner
+                    android:id="@+id/spn_regiao"
+                    android:layout_width="155dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="20dp"
+                    android:contentDescription="spinner de genero"/>
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/txt_numero_registro"
-                android:layout_width="155dp"
-                android:layout_height="48dp"
-                android:ems="10"
-                android:layout_marginLeft="20dp"
-                android:visibility="gone"
-                android:inputType="textPersonName"/>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
-
-            <Spinner
-                android:id="@+id/spn_regiao"
-                android:layout_width="155dp"
-                android:layout_height="48dp"
-                android:layout_marginRight="20dp"
-                android:visibility="gone"
-                android:contentDescription="spinner de genero"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -362,7 +370,7 @@
                 android:id="@+id/btn_cadastrar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="100dp"
                 android:text="Cadastrar"/>
 
 

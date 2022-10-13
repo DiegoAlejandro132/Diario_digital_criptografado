@@ -11,9 +11,7 @@ import androidx.core.view.isVisible
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
-import tcc.com.diario_digital_criptografado.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.util.AuthUtil

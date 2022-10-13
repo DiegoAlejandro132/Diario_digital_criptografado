@@ -1,13 +1,10 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -26,6 +23,7 @@ import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
 import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 class ListagemPacientesActivity : AppCompatActivity(){

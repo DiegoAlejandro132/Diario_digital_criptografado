@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
+import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 

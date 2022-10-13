@@ -44,7 +44,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".AgendaUsuarioActivity"
+            android:name=".usuarioActivities.AgendaUsuarioActivity"
             android:exported="false" />
         <activity
             android:name=".psicologoActivities.ListagemPacientesActivity"

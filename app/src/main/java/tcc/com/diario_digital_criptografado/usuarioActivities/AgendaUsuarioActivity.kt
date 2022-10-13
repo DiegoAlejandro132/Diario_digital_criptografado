@@ -1,4 +1,4 @@
-package tcc.com.diario_digital_criptografado
+package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.Intent
 import android.os.Build
@@ -7,7 +7,6 @@ import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,10 +20,10 @@ import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
+import tcc.com.diario_digital_criptografado.MainActivity
+import tcc.com.diario_digital_criptografado.MeuPerfilActivity
+import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
-import tcc.com.diario_digital_criptografado.usuarioActivities.FormularioDiarioActivity
-import tcc.com.diario_digital_criptografado.usuarioActivities.MeuPsicologoActivity
-import tcc.com.diario_digital_criptografado.usuarioActivities.SolicitacoesActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.Validation
 import java.time.LocalDateTime

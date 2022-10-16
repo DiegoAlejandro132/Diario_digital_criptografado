@@ -80,6 +80,7 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun dialogAceitarSolicitacao(){
         val dialogBuilder = AlertDialog.Builder(this@SolicitacoesActivity)
         dialogBuilder.setMessage("Deseja mesmo aceitar? Você pesquisou a veracidade dos dados do psicólogo?")
+            .setTitle("Aceitar Solicitação")
             .setPositiveButton("Sim", { dialog, id ->  aceitarSolicitacao() })
             .setNegativeButton("Não", { dialog, id ->  dialog.dismiss()})
         val b = dialogBuilder.create()
@@ -103,6 +104,7 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun dialogRejeitarSolicitacao(){
         val dialogBuilder = AlertDialog.Builder(this@SolicitacoesActivity)
         dialogBuilder.setMessage("Deseja mesmo rejeitar?")
+            .setTitle("Rejeitar solicitação")
             .setPositiveButton("Sim", { dialog, id ->  rejeitarSolicitacao() })
             .setNegativeButton("Não", { dialog, id ->  dialog.dismiss() })
         val b = dialogBuilder.create()

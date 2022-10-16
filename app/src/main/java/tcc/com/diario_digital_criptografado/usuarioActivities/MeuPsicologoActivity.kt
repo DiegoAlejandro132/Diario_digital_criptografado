@@ -65,6 +65,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
     private fun dialogExcluirPsicologo(){
         val dialogBuilder = AlertDialog.Builder(this@MeuPsicologoActivity)
         dialogBuilder.setMessage("Deseja mesmo excluir o psicólogo da sua conta?")
+            .setTitle("Excluir psicólogo")
             .setPositiveButton("Sim", { dialog, id ->  excluirPsicologo() })
             .setNegativeButton("Não", { dialog, id ->  dialog.dismiss() })
         val b = dialogBuilder.create()

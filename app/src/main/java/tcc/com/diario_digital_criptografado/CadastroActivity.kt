@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CadastroActivity : AppCompatActivity() {
@@ -54,14 +51,8 @@ class CadastroActivity : AppCompatActivity() {
 
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
-            if(validateForm()){
-                if(validatePassword()){
-                    createUser()
-                }else{
-                    Toast.makeText(this@CadastroActivity, "As senhas tem que ser iguais", Toast.LENGTH_SHORT).show()
-                }
-            }else{
-                Toast.makeText(this@CadastroActivity, "Preencha todos os campos do formulario", Toast.LENGTH_SHORT).show()
+            if(validarCadastro()){
+                createUser()
             }
         }
     }
@@ -83,61 +74,184 @@ class CadastroActivity : AppCompatActivity() {
             if(task.isSuccessful){
                 if(tipo_perfil == "Usuário do diário") {
                     writeUserDatabase(usuario)
-                    Toast.makeText(
-                        this@CadastroActivity,
-                        "Usuario cadastrado com sucesso",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                     finish()
                 }else{
                     if(tipo_perfil == "Psicólogo"){
                         writePsicologoDatabase(psicologo)
-                        Toast.makeText(
-                            this@CadastroActivity,
-                            "Psicólogo cadastrado com sucesso",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                         finish()
                     }else{
-                        Toast.makeText(
-                            this@CadastroActivity,
-                            "Não foi possivel criar a conta, tente novamente mais tarde",
-                            Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta, tente novamente mais tarde", Toast.LENGTH_LONG).show()
                     }
                 }
             }else{
-                Toast.makeText(this@CadastroActivity, "Usuário ja possui cadastro no sistema", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta, tente novamente mais tarde", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     //função que garante que os dados do formulario estejam validos
-    private fun validateForm () : Boolean {
-        if ((txt_cpf.text.toString() != "" && txt_cpf != null)
-            && (txt_email.text.toString() != "" && txt_email != null)
-            && (txt_data_nascimento.text.toString() != "" && txt_data_nascimento != null)
-            && (txt_nome.text.toString() != "" && txt_nome != null)
-            && (txt_telefone.text.toString() != "" && txt_telefone != null)
-            && (genero != "" && genero != "Selecione" && genero != null)
-            && (tipo_perfil != null && tipo_perfil != "" && tipo_perfil != "Selecione")
-            && (txt_senha.text.toString() != "" && txt_confirmar_senha != null)
-        ) {
-            if (tipo_perfil == "Psicólogo") {
-                return estado_registro != "Selecione" && txt_numero_registro.text.toString() != "" && txt_numero_registro != null
+    private fun validarCadastro() : Boolean{
+
+        validarNome()
+        validarCpf()
+        validarSenhas()
+        validarSpinners()
+        validarEmail()
+        validarDataNascimento()
+        validarTelefone()
+        if(tipo_perfil == "Psicólogo"){
+            validarPsicologo()
+        }
+
+        return validarNome() && validarCpf() && validarSenhas() && validarSpinners()
+                && validarEmail() && validarDataNascimento() && if(tipo_perfil == "Psicólogo") validarPsicologo() else true
+    }
+
+    private fun validarNome() : Boolean{
+        val valido = txt_nome.text.toString() != "" && txt_nome.text[0].toString() != " "
+                && txt_nome.text[txt_nome.text.length - 1].toString() != " " && "1" !in txt_nome.text
+                && "2" !in txt_nome.text && "3" !in txt_nome.text && "4" !in txt_nome.text
+                && "5" !in txt_nome.text && "6" !in txt_nome.text && "7" !in txt_nome.text
+                && "8" !in txt_nome.text && "9" !in txt_nome.text
+
+        if(!valido)
+            lbl_advertencia_cadastrar_usuario_nome.isVisible = true
+        else
+            lbl_advertencia_cadastrar_usuario_nome.visibility = View.GONE
+
+        return valido
+    }
+
+    private fun validarSpinners() : Boolean{
+        val valido = genero != "" && genero != "Selecione" && tipo_perfil != "" && tipo_perfil != "Selecione"
+
+        if(valido)
+            lbl_advertencia_cadastrar_usuario_spiners.visibility = View.GONE
+        else
+            lbl_advertencia_cadastrar_usuario_spiners.isVisible = true
+
+        return valido
+    }
+
+    private fun validarEmail() : Boolean{
+        val email = txt_email.text.toString()
+        val valido = " " !in email && "@" in email && ".com" in email
+
+        if(valido)
+            lbl_advertencia_cadastrar_usuario_email.visibility = View.GONE
+        else
+            lbl_advertencia_cadastrar_usuario_email.isVisible = true
+
+        return valido
+    }
+
+    private fun validarSenhas() : Boolean{
+        val senha = txt_senha.text.toString()
+        val confirmarSenha = txt_confirmar_senha.text.toString()
+
+        val senha1Valida = senha != "" && " " !in senha && senha.length >= 6
+        val senhasIguais = senha.equals(confirmarSenha)
+
+        if(senha1Valida)
+            linear_layout_cadastrar_senha_invalida.visibility = View.GONE
+        else
+            linear_layout_cadastrar_senha_invalida.isVisible = true
+
+        if(senhasIguais)
+            lbl_advertencia_cadastrar_usuario_senhas.visibility = View.GONE
+        else
+            lbl_advertencia_cadastrar_usuario_senhas.isVisible = true
+
+        return senha1Valida && senhasIguais
+    }
+
+    private fun validarPsicologo() : Boolean{
+        var valido = true
+        if (tipo_perfil == "Psicólogo"){
+            val numeroRegistro = txt_numero_registro.text.toString()
+            valido = numeroRegistro != "" && " " !in numeroRegistro
+                    && estado_registro != "Selecione"
+        }
+
+        if(valido)
+            lbl_advertencia_cadastrar_usuario_psicologo.visibility = View.GONE
+        else
+            lbl_advertencia_cadastrar_usuario_psicologo.isVisible = true
+
+        return valido
+    }
+
+    private fun validarDataNascimento() : Boolean{
+        val dataNascimento = txt_data_nascimento.text.toString()
+        val valido = dataNascimento != ""
+
+        if(valido)
+            lbl_advertencia_cadastrar_usuario_data_nascimento.visibility = View.GONE
+        else {
+            lbl_advertencia_cadastrar_usuario_data_nascimento.isVisible = true
+        }
+
+        return valido
+    }
+
+    private fun validarCpf() : Boolean{
+        val valido = txt_cpf.text.toString() != "" && txt_cpf.text!![0].toString() != " "
+                && txt_cpf.text.toString().length == 14
+
+        var cpf = txt_cpf.text.toString().replace(".", "").replace("-", "")
+        var cpfValido = ""
+
+        var i = 10
+        var total1 = 0
+        for(n in cpf){
+            cpfValido += n
+            total1 += (n.toString().toInt() * i)
+            i--
+            if(i == 1){
+                break
             }
-            return true
         }
-        return false
+        val totalPrimeiroDigito = total1 % 11
+        val primeiroDigito = if(totalPrimeiroDigito < 2) 0 else 11 - totalPrimeiroDigito
+        cpfValido += primeiroDigito.toString()
+
+
+        var j = 11
+        var total2 = 0
+        for(n in cpf){
+            total2 += (n.toString().toInt() * j)
+            j--
+            if(j == 1){
+                break
+            }
+        }
+        val totalSegundoDigito = total2 % 11
+        val segundoDigito = if(totalSegundoDigito < 2) 0 else 11 - totalSegundoDigito
+
+        cpfValido += segundoDigito
+
+        if(valido && cpf == cpfValido){
+            lbl_advertencia_cpf_invalido.visibility = View.GONE
+        }else{
+            lbl_advertencia_cpf_invalido.isVisible = true
+        }
+
+        return valido && cpf == cpfValido
     }
 
-    private fun validatePassword() : Boolean{
-        if(txt_senha.text.toString().equals(txt_confirmar_senha.text.toString())){
-            return true
-        }
-        return false
-    }
+    private fun validarTelefone() : Boolean{
+        val telefone = txt_telefone.text.toString().replace("(", "").replace(")", "")
+        val valido = telefone != "" && telefone.length == 11
 
+        if(valido)
+            lbl_advertencia_cadastrar_usuario_telefone.visibility = View.GONE
+        else
+            lbl_advertencia_cadastrar_usuario_telefone.isVisible = true
+
+        return valido
+    }
 
     //funões para setar o spinner de genero
     private fun setGeneroAdapter(){

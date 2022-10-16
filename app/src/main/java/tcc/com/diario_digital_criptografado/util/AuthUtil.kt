@@ -16,4 +16,5 @@ internal object AuthUtil {
     fun userIsLoggedIn(): Boolean {
         return getCurrentUser() != null
     }
+
 }

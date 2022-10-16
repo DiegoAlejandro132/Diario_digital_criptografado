@@ -157,6 +157,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun showDialogLogOut(){
         val dialogBuilder = AlertDialog.Builder(this@AgendaUsuarioActivity)
         dialogBuilder.setMessage("Deseja encerrar a sessão?")
+            .setTitle("Encerrar sessão")
             .setPositiveButton("Sim") { dialog, id ->  signOut() }
             .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
         val b = dialogBuilder.create()

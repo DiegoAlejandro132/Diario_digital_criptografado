@@ -1,5 +1,6 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
+import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 
@@ -18,6 +20,7 @@ class AdicionarPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adicionar_paciente)
 
+        usuarioEstaLogado()
 
          btn_enviar_solicitacao.setOnClickListener {
              enviarSolicitacao()
@@ -55,6 +58,13 @@ class AdicionarPacienteActivity : AppCompatActivity() {
             Toast.makeText(this@AdicionarPacienteActivity, "Houve um erro ao tentar enviar a solicitação, tente mais tarde.", Toast.LENGTH_SHORT).show()
             Log.e("eviarSolicitacao", e.message.toString())
 
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

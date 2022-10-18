@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     private fun verifyUserIsLoggedIn(){
 
         try {
-            if(AuthUtil.userIsLoggedIn()){
+            if(AuthUtil.usuarioEstaLogado()){
                 database = FirebaseDatabase.getInstance().getReference("users")
                 database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                     val tipoUsuario = it.child("tipo_perfil").value.toString()

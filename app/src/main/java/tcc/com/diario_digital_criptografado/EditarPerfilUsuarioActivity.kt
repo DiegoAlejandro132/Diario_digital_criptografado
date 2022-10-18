@@ -36,7 +36,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_perfil)
-
+        usuarioEstaLogado()
 
         trazerDadosUsuario()
 
@@ -151,7 +151,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
                 storageReference.putFile(imageUri!!)
                 storageReference.downloadUrl.addOnSuccessListener {
-                    var fotoUri = it.toString()
+                    val fotoUri = it.toString()
                     database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
                     database.child("foto_perfil").setValue(fotoUri)
                 }
@@ -160,6 +160,13 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()
             Log.e("uploadImage", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

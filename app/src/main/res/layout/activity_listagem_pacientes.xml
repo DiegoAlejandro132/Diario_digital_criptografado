@@ -31,9 +31,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pacientes"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"/>
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/lbl_sem_pacientes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sem pacientes"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

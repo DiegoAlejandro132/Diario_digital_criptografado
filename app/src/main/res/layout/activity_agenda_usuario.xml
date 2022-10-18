@@ -9,6 +9,23 @@
     tools:context=".usuarioActivities.AgendaUsuarioActivity">
 
     <LinearLayout
+        android:id="@+id/progressive_agenda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/red"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_agenda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -20,7 +37,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:id="@+id/btn_voltar_agenda"
@@ -31,6 +48,22 @@
             android:backgroundTint="@color/voltar_color"
             android:textColor="@color/yellow"
             android:text="Voltar"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lbl_psicologo_nao_autorizado_agenda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:text="OPS..... \nParece que você não está mais autorizado a ter acesso aos dados deste paciente"/>
 
     </LinearLayout>
 

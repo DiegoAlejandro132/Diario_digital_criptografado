@@ -19,6 +19,22 @@
             android:layout_gravity="center"/>
 
         <LinearLayout
+            android:id="@+id/lbl_psicologo_nao_autorizado_formulario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:text="OPS..... \nParece que você não está mais autorizado a ter acesso aos dados deste paciente"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linear_layout_conteudo_formulario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,8 +48,7 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="20dp"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                android:text="" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,30 +101,56 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/txt_pergunta1"
+            <LinearLayout
+                android:id="@+id/linear_layout_formulario_diario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diário"
+                    android:layout_marginTop="35dp"/>
+
+                <EditText
+                    android:id="@+id/txt_diario"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:gravity="top"
+                    android:inputType="text|textMultiLine"
+                    android:hint="Conte como foi seu dia aqui" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/text_view_txt_diario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Diário"
+                android:text="Sentimentos bons"
                 android:layout_marginTop="35dp"/>
 
             <EditText
-                android:id="@+id/txt_diario"
+                android:id="@+id/txt_sentimentos_bons"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:gravity="top"
-                android:ems="10"
                 android:inputType="text|textMultiLine"
-                android:hint="Escreva suas anotações diárias aqui" />
+                android:hint="Conte aqui quais sentimentos bons você sentiu hoje"
+                android:text="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sentimentos ruins"
+                android:layout_marginTop="35dp"/>
+
+            <EditText
+                android:id="@+id/txt_sentimentos_ruins"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:inputType="text|textMultiLine"
+                android:hint="Conte aqui quais sentimentos ruins você sentiu hoje" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,6 +177,8 @@
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:layout_marginRight="20dp"
+                    android:backgroundTint="@color/acept_color_back"
+                    android:textColor="@color/green"
                     android:text="salvar" />
 
             </LinearLayout>

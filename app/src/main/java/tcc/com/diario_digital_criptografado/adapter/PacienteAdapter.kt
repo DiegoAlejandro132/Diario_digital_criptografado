@@ -42,8 +42,10 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
         holder.nomeList.text = current.nome
         holder.telefoneList.text = current.telefone
         holder.emailList.text = current.email
-        //holder.fotoPerfil.setImageURI(current.foto_perfil.toUri())
-        Glide.with(context).load(pacienteslist[position].foto_perfil).into(holder.fotoPerfil)
+        if(pacienteslist[position].foto_perfil != "")
+            Glide.with(context).load(pacienteslist[position].foto_perfil).into(holder.fotoPerfil)
+        else
+            Glide.with(context).load(R.drawable.imagem_perfil_default).into(holder.fotoPerfil)
     }
 
     override fun getItemCount(): Int {

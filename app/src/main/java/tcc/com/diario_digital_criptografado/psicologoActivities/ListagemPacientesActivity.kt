@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listagem_pacientes)
+
+        usuarioEstaLogado()
 
         setNavigationDrawer()
         setHeaderNavigationDrawer()
@@ -79,6 +83,11 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
                             pacienteList.add(itemData)
                     }
+                    if(pacienteList.size == 0)
+                        lbl_sem_pacientes.isVisible = true
+                    else
+                        lbl_sem_pacientes.visibility = View.GONE
+
                     var adapter = PacienteAdapter(this@ListagemPacientesActivity , pacienteList,)
                     recyclerView.adapter = adapter
 
@@ -203,6 +212,13 @@ class ListagemPacientesActivity : AppCompatActivity(){
             }
         }catch (e : Exception){
             Log.e("excluirPaciente", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

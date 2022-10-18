@@ -33,6 +33,7 @@ class MeuPerfilActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meu_perfil)
+        usuarioEstaLogado()
 
         trazerDadosUsuario()
 
@@ -167,6 +168,8 @@ class MeuPerfilActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+            }else{
+                Toast.makeText(this, "Não excluiu", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -181,4 +184,10 @@ class MeuPerfilActivity : AppCompatActivity() {
         b.show()
     }
 
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 }

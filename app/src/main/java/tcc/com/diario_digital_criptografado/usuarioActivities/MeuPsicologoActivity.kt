@@ -1,6 +1,7 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_psicologo.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
+import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import java.io.File
@@ -31,6 +33,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meu_psicologo)
+        usuarioEstaLogado()
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -94,7 +97,11 @@ class MeuPsicologoActivity : AppCompatActivity() {
                         linear_layout_meu_psicologo.setVisibility(View.VISIBLE)
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
-                        Glide.with(this).load(fotoUri).into(img_foto_meu_psicologo)
+                        if(fotoUri.toString() != ""){
+                            Glide.with(this).load(fotoUri).into(img_foto_meu_psicologo)
+                        }else{
+                            Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_meu_psicologo)
+                        }
 
                         if(progressive_meu_psicologo.isVisible){
                             progressive_meu_psicologo.isVisible = false
@@ -116,6 +123,13 @@ class MeuPsicologoActivity : AppCompatActivity() {
         }catch (e:Exception){
             Toast.makeText(this@MeuPsicologoActivity, "Erro ao trazer os dados do psicólogo", Toast.LENGTH_SHORT).show()
             Log.e("excluirPsicologo", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

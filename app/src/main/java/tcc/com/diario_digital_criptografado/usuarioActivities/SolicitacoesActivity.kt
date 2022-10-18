@@ -1,6 +1,7 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -15,8 +16,10 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
+import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import kotlin.Exception
@@ -29,6 +32,8 @@ class SolicitacoesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solicitacoes)
+
+        usuarioEstaLogado()
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -135,7 +140,12 @@ class SolicitacoesActivity : AppCompatActivity() {
                         lbl_regiao_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
-                        Glide.with(this).load(fotoUri).into(img_foto_psicologo_solicitacao)
+                        if(fotoUri.toString() != ""){
+                            Glide.with(this).load(fotoUri).into(img_foto_psicologo_solicitacao)
+                        }else{
+                            Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_psicologo_solicitacao)
+                        }
+
 
                         if(progressive_solicitacoes.isVisible){
                             progressive_solicitacoes.isVisible = false
@@ -161,6 +171,13 @@ class SolicitacoesActivity : AppCompatActivity() {
         }catch (e:Exception){
             Toast.makeText(this@SolicitacoesActivity, "Erro ao trazer os dados do psiólogo.", Toast.LENGTH_SHORT).show()
             Log.e("retrievePsicologoData", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

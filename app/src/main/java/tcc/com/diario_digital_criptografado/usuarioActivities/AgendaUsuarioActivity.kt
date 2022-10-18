@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -40,13 +41,14 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        trazerDadosUsuario()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agenda_usuario)
+        usuarioEstaLogado()
+        trazerDadosUsuario()
 
         setNavigationDrawer()
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
-        if(!AuthUtil.userIsLoggedIn()) {
+        if(!AuthUtil.usuarioEstaLogado()) {
             startActivity(Intent(this, MainActivity::class.java))
         }
         calendarView_user.setOnDateChangeListener {
@@ -86,7 +88,6 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         updateUserData()
     }
 
@@ -101,21 +102,41 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun trazerDadosUsuario(){
 
         try{
+
+            if(progressive_agenda.visibility == View.GONE){
+                linear_layout_agenda.visibility = View.GONE
+                progressive_agenda.isVisible = true
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
-            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+            database.get().addOnSuccessListener {
                 if(it.exists()){
-                    tipoUsuario = it.child("tipo_perfil").value.toString()
-                    val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
+                    tipoUsuario = it.child("${AuthUtil.getCurrentUser()}/tipo_perfil").value.toString()
+                    val nomeUsuario = "<b>" + it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
                     nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
                     if(tipoUsuario == "Psicólogo"){
                         val intent = intent
                         emailUsuarioSelecionado = intent.getStringExtra("email").toString()
+                        for(user in it.children){
+                            if(user.child("email").value == emailUsuarioSelecionado){
+                                if(user.child("codigo_psicologo").value != AuthUtil.getCurrentUser() || user.child("tem_psicologo").value == false){
+                                    progressive_agenda.visibility = View.GONE
+                                    linear_layout_agenda.visibility = View.GONE
+                                    lbl_psicologo_nao_autorizado_agenda.isVisible = true
+                                }else{
+                                    progressive_agenda.visibility = View.GONE
+                                    lbl_psicologo_nao_autorizado_agenda.visibility = View.GONE
+                                    linear_layout_agenda.isVisible = true
+                                }
+                            }
+                        }
                         navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_psicologo)
-                        btn_voltar_agenda.setVisibility(View.VISIBLE)
+                        btn_voltar_agenda.visibility = View.VISIBLE
                     }else if (tipoUsuario == "Usuário do diário"){
                         emailUsuarioSelecionado = ""
                         navigation_view_agenda.inflateMenu(R.menu.navigation_drawer_usuario)
-
+                        progressive_agenda.visibility = View.GONE
+                        linear_layout_agenda.isVisible = true
                     }
                 }
             }
@@ -223,6 +244,13 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun goAdicionarPaciente() {
         intent = Intent(this, AdicionarPacienteActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 

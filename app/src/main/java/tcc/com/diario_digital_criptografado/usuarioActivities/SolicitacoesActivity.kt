@@ -33,6 +33,9 @@ class SolicitacoesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solicitacoes)
 
+        supportActionBar?.title = "Minhas solicitações"
+
+
         usuarioEstaLogado()
 
         firebaseStore = FirebaseStorage.getInstance()

@@ -2,12 +2,10 @@ package tcc.com.diario_digital_criptografado
 
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.SystemClock.sleep
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -19,24 +17,21 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.io.File
 import kotlin.Exception
 
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
     private var imageUri: Uri? = null
-    private var firebaseStore: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
-
-    private lateinit var tipoUsuarioGlobal : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_perfil)
         usuarioEstaLogado()
+
+        supportActionBar?.title = "Editar perfil"
+
 
         trazerDadosUsuario()
 
@@ -50,7 +45,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
         btn_salvar_dados_editar_perfil.setOnClickListener{
             saveUserData()
-            uploadImage()
+            uploadImageToStorage()
         }
 
 
@@ -66,8 +61,6 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 progressive_editar_perfil.isVisible = true
             }
 
-            firebaseStore = FirebaseStorage.getInstance()
-            storageReference = FirebaseStorage.getInstance().reference
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
@@ -145,17 +138,11 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage(){
+    private fun uploadImageToStorage(){
         try{
             if(imageUri != null){
                 val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
                 storageReference.putFile(imageUri!!)
-                storageReference.downloadUrl.addOnSuccessListener {
-                    val fotoUri = it.toString()
-                    database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-                    database.child("foto_perfil").setValue(fotoUri)
-                }
-
             }
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()

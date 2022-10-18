@@ -35,6 +35,8 @@ class MeuPsicologoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_meu_psicologo)
         usuarioEstaLogado()
 
+        supportActionBar?.title = "Meu psicólogo"
+
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         retrievePsicologoData()

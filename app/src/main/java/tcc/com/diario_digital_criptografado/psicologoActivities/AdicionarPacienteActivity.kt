@@ -22,7 +22,9 @@ class AdicionarPacienteActivity : AppCompatActivity() {
 
         usuarioEstaLogado()
 
-         btn_enviar_solicitacao.setOnClickListener {
+        supportActionBar?.title = "Adicionar paciente"
+
+        btn_enviar_solicitacao.setOnClickListener {
              enviarSolicitacao()
          }
 

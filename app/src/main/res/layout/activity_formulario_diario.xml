@@ -42,19 +42,10 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/txt_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="20dp"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="De maneira geral, como foi seu dia?"/>
+                android:text="Qual avaliação você daria para hoje?"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +110,7 @@
                     android:layout_height="150dp"
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
-                    android:hint="Conte como foi seu dia aqui" />
+                    android:hint="Quais foram suas experiências hoje?" />
 
             </LinearLayout>
 
@@ -135,7 +126,7 @@
                 android:layout_height="100dp"
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
-                android:hint="Conte aqui quais sentimentos bons você sentiu hoje"
+                android:hint="Quais sentimentos bons você sentiu?"
                 android:text="" />
 
             <TextView
@@ -150,7 +141,7 @@
                 android:layout_height="100dp"
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
-                android:hint="Conte aqui quais sentimentos ruins você sentiu hoje" />
+                android:hint="Quais sentimentos bons você sentiu?" />
 
             <LinearLayout
                 android:layout_width="match_parent"

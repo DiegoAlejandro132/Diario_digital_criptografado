@@ -20,8 +20,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import java.lang.Thread.sleep
 
 class MeuPerfilActivity : AppCompatActivity() {
 
@@ -35,6 +37,12 @@ class MeuPerfilActivity : AppCompatActivity() {
         setContentView(R.layout.activity_meu_perfil)
         usuarioEstaLogado()
 
+        supportActionBar?.title = "Visualizar perfil"
+
+
+        definirFotoPerfil()
+
+        definirFotoPerfil()
         trazerDadosUsuario()
 
         btn_ir_editar_perfil.setOnClickListener{
@@ -52,10 +60,19 @@ class MeuPerfilActivity : AppCompatActivity() {
         btn_excluir_usuario.setOnClickListener{
             dialogExcluirUsuario()
         }
+
+        swipe_meu_perfil.setOnRefreshListener {
+            if(swipe_meu_perfil.isRefreshing){
+                swipe_meu_perfil.isRefreshing = false
+            }
+            definirFotoPerfil()
+            trazerDadosUsuario()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        definirFotoPerfil()
         trazerDadosUsuario()
     }
 
@@ -188,6 +205,15 @@ class MeuPerfilActivity : AppCompatActivity() {
         if(!AuthUtil.usuarioEstaLogado()){
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun definirFotoPerfil(){
+        val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+        storageReference.downloadUrl.addOnSuccessListener {
+            val fotoUri = it.toString()
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+            database.child("foto_perfil").setValue(fotoUri)
         }
     }
 }

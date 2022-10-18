@@ -13,6 +13,9 @@ class RedefinirSenhaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_redefinir_senha)
 
+        supportActionBar?.title = "Redefinição de senha"
+
+
         btn_redefinir_senha.setOnClickListener {
             if(validateEmail()){
                 auth.sendPasswordResetEmail(txt_email_redefinir.text.toString()).addOnCompleteListener { task ->

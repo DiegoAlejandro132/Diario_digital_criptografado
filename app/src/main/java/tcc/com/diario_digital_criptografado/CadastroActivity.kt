@@ -34,6 +34,8 @@ class CadastroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
+        supportActionBar?.title = "Cadastro"
+
         //seta todos os adapters dos spinners
         setAdapters()
 

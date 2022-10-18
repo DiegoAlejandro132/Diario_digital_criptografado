@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.title = "Login"
+
+
         verifyUserIsLoggedIn()
 
         //Direciona para pagina de cadastro

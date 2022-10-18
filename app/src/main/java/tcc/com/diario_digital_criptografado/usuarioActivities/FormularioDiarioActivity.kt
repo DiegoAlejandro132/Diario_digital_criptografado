@@ -30,8 +30,12 @@ class FormularioDiarioActivity : AppCompatActivity() {
         setContentView(R.layout.activity_formulario_diario)
         usuarioEstaLogado()
 
+
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
-        txt_data.setText("Dia: ${dataSelecionada}")
+
+        supportActionBar?.title = "Como foi seu dia hoje?"
+        supportActionBar?.subtitle = "Dia: $dataSelecionada"
+
         trazerDadosDia(dataSelecionada)
 
         onRadioButtonClicked(checkboxGroup)

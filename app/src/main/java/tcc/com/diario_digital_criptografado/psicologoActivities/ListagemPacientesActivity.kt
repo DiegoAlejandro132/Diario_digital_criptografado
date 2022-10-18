@@ -41,6 +41,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         usuarioEstaLogado()
 
+        supportActionBar?.title = "Meus pacientes"
+
         setNavigationDrawer()
         setHeaderNavigationDrawer()
 
@@ -54,7 +56,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         swipe_listagem_pacientes.setOnRefreshListener {
             listarDadosPacientes()
-
         }
     }
 

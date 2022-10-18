@@ -14,6 +14,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        supportActionBar?.title = "Seu diário criptografado"
+
+
         //contador para mostrar splash antes de iniciar tarefa
         object : CountDownTimer(1500, 1000) {
 

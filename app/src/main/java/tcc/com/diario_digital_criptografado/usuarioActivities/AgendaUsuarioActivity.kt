@@ -44,6 +44,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agenda_usuario)
         usuarioEstaLogado()
+
+        supportActionBar?.title = "Minha agenda"
+
         trazerDadosUsuario()
 
         setNavigationDrawer()

@@ -6,7 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity

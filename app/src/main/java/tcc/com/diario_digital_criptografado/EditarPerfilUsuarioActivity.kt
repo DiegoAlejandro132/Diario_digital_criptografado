@@ -75,7 +75,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 if(!(it == null || it.toString() == ""))
                     Glide.with(this).load(it).into(img_foto_perfil)
             }.addOnFailureListener {
-                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+
             }
 
             database = FirebaseDatabase.getInstance().getReference("users")

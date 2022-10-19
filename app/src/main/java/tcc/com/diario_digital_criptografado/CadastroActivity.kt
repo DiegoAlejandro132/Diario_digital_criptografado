@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_cadastro.*
@@ -60,9 +61,26 @@ class CadastroActivity : AppCompatActivity() {
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
             if(validarCadastro()){
-                createUser()
+                var database = FirebaseDatabase.getInstance().getReference("users")
+                database.get().addOnSuccessListener {
+                    if(it.exists()){
+                        val cpf = txt_cpf.text.toString()
+                        var existe = false
+                        for (usuario in it.children){
+                            if(usuario.child("cpf").value == cpf)
+                                existe = true
+                        }
+                        if (existe) {
+                            lbl_advertencia_cpf_existente.isVisible = true
+                        }else {
+                            lbl_advertencia_cpf_existente.visibility = View.GONE
+                            createUser()
+                        }
+                    }
+                }
             }
         }
+
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -93,6 +111,11 @@ class CadastroActivity : AppCompatActivity() {
                     if(tipo_perfil == "Psicólogo"){
                         writePsicologoDatabase(psicologo)
                         Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
+                        Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
+                            if(it.isSuccessful){
+                                Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+                            }
+                        }
                         finish()
                     }else{
                         Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta, tente novamente mais tarde", Toast.LENGTH_LONG).show()
@@ -252,6 +275,9 @@ class CadastroActivity : AppCompatActivity() {
         }
 
         return valido && cpf == cpfValido
+    }
+
+    private fun verificarCpfExistente(){
     }
 
     private fun validarTelefone() : Boolean{

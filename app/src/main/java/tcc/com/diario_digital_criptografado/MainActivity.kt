@@ -50,14 +50,17 @@ class MainActivity : AppCompatActivity() {
                 if(validateLogin()){
                     auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            database = FirebaseDatabase.getInstance().getReference("users")
-                            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                                val tipo_perfil = it.child("tipo_perfil").value
-                                when (tipo_perfil){
-                                    "Usuário do diário" -> loginUsuario()
-                                    "Psicólogo" -> logInPsicologo()
-                                    else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                            if (auth.currentUser!!.isEmailVerified){
+                                database = FirebaseDatabase.getInstance().getReference("users")
+                                database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                                    when (it.child("tipo_perfil").value){
+                                        "Usuário do diário" -> loginUsuario()
+                                        "Psicólogo" -> logInPsicologo()
+                                        else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                                    }
                                 }
+                            }else{
+                                Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
                             }
                         }else{
                             Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()

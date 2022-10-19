@@ -10,12 +10,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_cadastro.*
+import kotlinx.android.synthetic.main.activity_cadastro.txt_email
+import kotlinx.android.synthetic.main.activity_cadastro.txt_senha
+import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
@@ -77,9 +81,13 @@ class CadastroActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
             if(task.isSuccessful){
                 if(tipo_perfil == "Usuário do diário") {
-                    //Firebase.auth.sendSignInLinkToEmail(txt_email.text.toString(), actionCodeSettings})
                     writeUserDatabase(usuario)
                     Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
+                    Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
+                        if(it.isSuccessful){
+                            Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+                        }
+                    }
                     finish()
                 }else{
                     if(tipo_perfil == "Psicólogo"){

@@ -14,12 +14,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.MeuPerfilActivity
@@ -111,12 +114,24 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 progressive_agenda.isVisible = true
             }
 
+            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+            storageReference.downloadUrl.addOnSuccessListener {
+                if(!(it == null || it.toString() == ""))
+                    Glide.with(this).load(it).into(nav_header_foto_perfil)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 if(it.exists()){
                     tipoUsuario = it.child("${AuthUtil.getCurrentUser()}/tipo_perfil").value.toString()
-                    val nomeUsuario = "<b>" + it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                    nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
+
+                    val nomeUsuario = it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() }
+                    val emailUsuario = it.child("${AuthUtil.getCurrentUser()}/email").value.toString()
+                    nav_header_nome_usuario.text = nomeUsuario
+                    nav_header_email_usuario.text = emailUsuario
+
                     if(tipoUsuario == "Psicólogo"){
                         val intent = intent
                         emailUsuarioSelecionado = intent.getStringExtra("email").toString()
@@ -207,6 +222,15 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun updateUserData(){
 
         try{
+
+            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+            storageReference.downloadUrl.addOnSuccessListener {
+                if(!(it == null || it.toString() == ""))
+                    Glide.with(this).load(it).into(nav_header_foto_perfil)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                 if(it.exists()){

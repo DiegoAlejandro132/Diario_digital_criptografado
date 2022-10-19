@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
+import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import java.lang.Thread.sleep
 
@@ -83,8 +84,15 @@ class MeuPerfilActivity : AppCompatActivity() {
                 linear_layout_conteudo_meu_perfil.setVisibility(View.GONE)
                 progressive_meu_perfil.isVisible = true
             }
-            firebaseStore = FirebaseStorage.getInstance()
-            storageReference = FirebaseStorage.getInstance().reference
+
+            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+            storageReference.downloadUrl.addOnSuccessListener {
+                if(!(it == null || it.toString() == ""))
+                    Glide.with(this).load(it).into(img_foto_meu_perfil)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 if(it.exists()){
@@ -98,12 +106,6 @@ class MeuPerfilActivity : AppCompatActivity() {
                     lbl_meu_cpf.text = it.child(AuthUtil.getCurrentUser()!!).child("cpf").value.toString()
                     lbl_meu_codigo_usuario.text = it.child(AuthUtil.getCurrentUser()!!).key.toString()
 
-                    val fotoUri = it.child(AuthUtil.getCurrentUser()!!).child("foto_perfil").value.toString().toUri()
-                    if(fotoUri.toString() != ""){
-                        Glide.with(this).load(fotoUri).into(img_foto_meu_perfil)
-                    }else{
-                        Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_meu_perfil)
-                    }
 
                     if(tipoUsuario == "Psicólogo"){
                         lbl_meu_numero_registro.visibility = View.VISIBLE

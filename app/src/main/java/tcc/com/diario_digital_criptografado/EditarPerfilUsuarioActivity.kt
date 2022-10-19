@@ -12,12 +12,17 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
+import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import java.util.*
 import kotlin.Exception
 
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
@@ -48,6 +53,10 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             uploadImageToStorage()
         }
 
+        txt_editar_data_nascimento.setOnClickListener {
+            selecionarDataNascimento()
+        }
+
 
     }
 
@@ -61,21 +70,23 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 progressive_editar_perfil.isVisible = true
             }
 
+            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+            storageReference.downloadUrl.addOnSuccessListener {
+                if(!(it == null || it.toString() == ""))
+                    Glide.with(this).load(it).into(img_foto_perfil)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
-                txt_editar_data_nascimento.setText(it.child("data_nascimento").value.toString())
+                txt_editar_data_nascimento.text = it.child("data_nascimento").value.toString()
                 txt_editar_telefone.setText(it.child("telefone").value.toString())
                 txt_editar_email.setText(it.child("email").value.toString())
                 txt_editar_cpf.setText(it.child("cpf").value.toString())
                 txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
 
-                val fotoUri = it.child("foto_perfil").value.toString().toUri()
-                if(fotoUri.toString() != ""){
-                    Glide.with(this).load(fotoUri).into(img_foto_perfil)
-                }else{
-                    Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_perfil)
-                }
 
                 if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
 
@@ -155,6 +166,25 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun selecionarDataNascimento(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecione sua data de nascimento")
+                .build()
+        datePicker.show(supportFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+
+            val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            utc.timeInMillis = it
+            val data = "${utc.get(Calendar.DAY_OF_MONTH)}-${utc.get(Calendar.MONTH)+1}-${utc.get(
+                Calendar.YEAR)}"
+            txt_editar_data_nascimento.text = data
+
+        }
+
     }
 
 }

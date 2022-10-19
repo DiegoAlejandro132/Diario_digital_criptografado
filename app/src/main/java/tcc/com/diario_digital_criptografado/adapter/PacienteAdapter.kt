@@ -39,7 +39,7 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = pacienteslist[position]
-        holder.nomeList.text = current.nome
+        holder.nomeList.text = current.nome.replaceFirstChar { it.toUpperCase() }
         holder.telefoneList.text = current.telefone
         holder.emailList.text = current.email
         if(pacienteslist[position].foto_perfil != "")

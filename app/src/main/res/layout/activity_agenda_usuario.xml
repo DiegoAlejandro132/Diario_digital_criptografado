@@ -74,7 +74,8 @@
         app:headerLayout="@layout/header_navigation_drawer"
         tools:ignore="MissingConstraints"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true"
+        app:itemIconTint="@color/pastel_orange"/>
 
 
 

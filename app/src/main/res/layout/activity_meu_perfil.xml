@@ -175,19 +175,6 @@
                     android:layout_marginTop="30dp">
 
                     <Button
-                        android:id="@+id/btn_ir_editar_perfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:text="Editar"/>
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
-
-                    <Button
                         android:id="@+id/btn_voltar_meu_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,6 +183,19 @@
                         android:backgroundTint="@color/voltar_color"
                         android:textColor="@color/yellow"
                         android:text="Voltar"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btn_ir_editar_perfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:text="Editar"/>
                 </LinearLayout>
 
                 <LinearLayout

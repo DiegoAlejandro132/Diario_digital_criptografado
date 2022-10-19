@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.Toast
 import com.google.firebase.database.FirebaseDatabase
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
@@ -34,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun usuarioEstaLogado(){
         var database = FirebaseDatabase.getInstance().getReference("users")
-        if(AuthUtil.getCurrentUser() !== null){
+        if(AuthUtil.getCurrentUser() != null){
             database.get().addOnSuccessListener {
                 if(it.child("${AuthUtil.getCurrentUser()}/tipo_perfil").value.toString() == "Usuário do diário"){
                     val intent = Intent(this, AgendaUsuarioActivity::class.java)
@@ -45,6 +46,11 @@ class SplashActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
+            }.addOnFailureListener {
+                Toast.makeText(this, "deu pau", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }else{
             val intent = Intent(this, MainActivity::class.java)

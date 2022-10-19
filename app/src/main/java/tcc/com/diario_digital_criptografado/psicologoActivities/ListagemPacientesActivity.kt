@@ -14,12 +14,15 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
+import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
@@ -75,6 +78,15 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
     private fun listarDadosPacientes(){
         try{
+
+            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
+            storageReference.downloadUrl.addOnSuccessListener {
+                if(!(it == null || it.toString() == ""))
+                    Glide.with(this).load(it).into(nav_header_foto_perfil)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Não foi posivel carregar a foto de perfil.", Toast.LENGTH_SHORT).show()
+            }
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 pacienteList.clear()
@@ -136,8 +148,11 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
-                val nomeUsuario = "<b>" + it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
+                val nomeUsuario = it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() }
+                val emailUsuario = it.child(AuthUtil.getCurrentUser()!!).child("email").value.toString()
+
+                nav_header_nome_usuario.text = nomeUsuario
+                nav_header_email_usuario.text = emailUsuario
             }
 
         }catch (e : Exception){
@@ -154,6 +169,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navView.itemIconTintList = null
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPerfil()

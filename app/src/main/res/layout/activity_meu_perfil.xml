@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_meu_perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,178 +45,222 @@
                     android:clickable="true"
                     android:focusable="true"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_marginTop="30dp"
-                    android:text="Nome"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_nome_usuario"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Código de usuário"
-                    android:textSize="16sp"
-                    android:layout_marginTop="30dp"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <TextView
-                        android:id="@+id/lbl_meu_codigo_usuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/azul_escuro"
+                        android:text="Nome"/>
+
+                    <TextView
+                        android:id="@+id/lbl_meu_nome_usuario"
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/azul_escuro"
+                        android:text="Código de usuário"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginTop="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/lbl_meu_codigo_usuario"
+                            android:layout_width="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageButton
+                            android:id="@+id/btn_copiar_codigo_usuario_meu_perfil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_content_copy_24"
+                            android:layout_marginLeft="20dp"
+                            android:text="copiar"/>
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Data de nascimento"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"/>
+                    <TextView
+                        android:id="@+id/lbl_meu_data_nascimento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:inputType="date|datetime" />
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:text="Telefone"/>
+                    <TextView
+                        android:id="@+id/lbl_meu_telefone"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:text="Email"/>
+                    <TextView
+                        android:id="@+id/lbl_meu_email"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
                         android:layout_height="wrap_content"/>
 
-                    <ImageButton
-                        android:id="@+id/btn_copiar_codigo_usuario_meu_perfil"
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:text="CPF"/>
+
+                    <TextView
+                        android:id="@+id/lbl_meu_cpf"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/lbl_meu_numero_registro_titulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_content_copy_24"
-                        android:layout_marginLeft="30dp"
-                        android:text="copiar"/>
+                        android:textSize="16sp"
+                        android:text="Número de registro"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"/>
 
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Data de nascimento"
-                    android:layout_marginTop="30dp"/>
-                <TextView
-                    android:id="@+id/lbl_meu_data_nascimento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:textSize="16sp"
-                    android:inputType="date|datetime" />
-
-                <TextView
-                    android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="wrap_content"
-                    android:text="Telefone"/>
-                <TextView
-                    android:id="@+id/lbl_meu_telefone"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="45dp" />
-
-                <TextView
-                    android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Email"/>
-                <TextView
-                    android:id="@+id/lbl_meu_email"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="45dp"/>
-
-                <TextView
-                    android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="wrap_content"
-                    android:text="CPF"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_cpf"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="45dp"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_numero_registro_titulo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Número de registro"
-                    android:visibility="gone"
-                    android:layout_marginTop="30dp"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_numero_registro"
-                    android:layout_width="match_parent"
-                    android:textSize="16sp"
-                    android:layout_height="45dp"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_regiao_registro_titulo"
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_height="wrap_content"
-                    android:text="Região"
-                    android:visibility="gone"
-                    android:layout_marginTop="30dp"/>
-
-                <TextView
-                    android:id="@+id/lbl_meu_regiao_registro"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:textSize="16sp"
-                    android:visibility="gone"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="30dp">
-
-                    <Button
-                        android:id="@+id/btn_voltar_meu_perfil"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/lbl_meu_numero_registro"
+                        android:layout_width="match_parent"
+                        android:textSize="16sp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="20dp"
-                        android:backgroundTint="@color/voltar_color"
-                        android:textColor="@color/yellow"
-                        android:text="Voltar"/>
+                        android:textColor="@color/black"
+                        android:visibility="gone"/>
 
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
-
-                    <Button
-                        android:id="@+id/btn_ir_editar_perfil"
+                    <TextView
+                        android:id="@+id/lbl_meu_regiao_registro_titulo"
                         android:layout_width="wrap_content"
+                        android:textSize="16sp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:text="Editar"/>
-                </LinearLayout>
+                        android:text="Região"
+                        android:textColor="@color/azul_escuro"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:gravity="center">
-
-                    <Button
-                        android:id="@+id/btn_excluir_usuario"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/lbl_meu_regiao_registro"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/red"
-                        android:text="Excluir"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:visibility="gone"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
+
+                        <Button
+                            android:id="@+id/btn_voltar_meu_perfil"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="14sp"
+                            android:layout_marginEnd="20dp"
+                            android:drawableLeft="@drawable/ic_baseline_close_24"
+                            android:backgroundTint="@color/transparent_red"
+                            android:textStyle="bold"
+                            android:textColor="@color/red"
+                            android:text="Voltar"/>
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent" />
+
+                        <Button
+                            android:id="@+id/btn_ir_editar_perfil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="20dp"
+                            android:drawableLeft="@drawable/ic_baseline_edit_24"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:backgroundTint="@color/trasparent_orange"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:text="Editar"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/btn_excluir_usuario"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/red"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="@color/white"
+                            android:drawableLeft="@drawable/delete"
+                            android:text="Excluir conta"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
-
-
 
             <Space
                 android:layout_width="0dp"
@@ -227,5 +272,4 @@
 
     </ScrollView>
 
-
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -1,8 +1,9 @@
 package tcc.com.diario_digital_criptografado.util
 
-class Validation {
+import java.util.*
 
-    companion object {
+internal object ValidationUtil {
+
         fun validateDateCalendar(data : String, dataAtual : String) : Boolean{
             var dia : Int
             var mes : Int
@@ -39,8 +40,28 @@ class Validation {
             return false
         }
 
+        fun validarDataNascimento(dia : Int, mes : Int, ano : Int) : Boolean{
 
-    }
+            var valido = false
+
+            val utc = Calendar.getInstance(TimeZone.getTimeZone("GMT-4"))
+            val diaAtual = utc.get(Calendar.DAY_OF_MONTH)
+            val mesAtual = utc.get(Calendar.MONTH)+1
+            val anoAtual = utc.get(Calendar.YEAR)
+
+
+            if(anoAtual - ano >= 18)
+                if(anoAtual - ano > 18)
+                    valido = true
+                else if(anoAtual - ano == 18)
+                        if(mesAtual >= mes)
+                            if(mesAtual > mes)
+                                valido = true
+                            else if(diaAtual >= dia)
+                                valido = true
+
+            return valido
+        }
 
 
 }

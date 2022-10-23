@@ -1,6 +1,8 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
@@ -32,7 +34,6 @@ import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActiv
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 
 class ListagemPacientesActivity : AppCompatActivity(){
-    private lateinit var auth: FirebaseAuth
     private lateinit var recyclerView : RecyclerView
     private lateinit var pacienteList : ArrayList<Usuario>
     private lateinit var database : DatabaseReference

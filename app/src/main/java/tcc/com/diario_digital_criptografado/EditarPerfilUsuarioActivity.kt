@@ -5,23 +5,23 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.SystemClock.sleep
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ValidationUtil
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.Exception
 
@@ -85,7 +85,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
                 txt_editar_telefone.setText(it.child("telefone").value.toString())
                 txt_editar_email.setText(it.child("email").value.toString())
                 txt_editar_cpf.setText(it.child("cpf").value.toString())
-                txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
+                txt_codigo_usuario.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
 
 
                 if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
@@ -177,12 +177,20 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
         datePicker.addOnPositiveButtonClickListener {
 
-            val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-            utc.timeInMillis = it
-            val data = "${utc.get(Calendar.DAY_OF_MONTH)}-${utc.get(Calendar.MONTH)+1}-${utc.get(
-                Calendar.YEAR)}"
-            txt_editar_data_nascimento.text = data
+            var dataErrada = Date(it)
+            var localDate = dataErrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            localDate = localDate.plusDays(1)
+            var dataCerta = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate)
+            Toast.makeText(this, dataCerta.toString() , Toast.LENGTH_SHORT).show()
 
+            val valido = ValidationUtil.validarDataNascimento(localDate.dayOfMonth, localDate.monthValue, localDate.year)
+
+            if(valido) {
+                txt_editar_data_nascimento.text = dataCerta.toString()
+                lbl_advertencia_editar_usuario_menor_de_idade.visibility = View.GONE
+            }else {
+                lbl_advertencia_editar_usuario_menor_de_idade.isVisible = true
+            }
         }
 
     }

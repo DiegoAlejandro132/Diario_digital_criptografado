@@ -12,26 +12,30 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.MeuPerfilActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import tcc.com.diario_digital_criptografado.util.Validation
+import tcc.com.diario_digital_criptografado.util.ValidationUtil
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AgendaUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
@@ -61,29 +65,31 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 calendarView, i, i2, i3 ->
 
             var ano = i
-            var mes = i2+1
+            var mes = i2
             var dia = i3
-            val data = "${dia}-${mes}-${ano}"
 
-            var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
-
-            val diaAtual = LocalDateTime.now()
-            val dataFormatada = diaAtual.format(formatter)
+            val calendar = Calendar.getInstance()
+            calendar.set(ano, mes, dia)
+            val calendarioLong = calendar.timeInMillis
+            val dateSelecionado = Date(calendarioLong)
+            val localDateSelecionado = dateSelecionado.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            val dataCertaSelecionada = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDateSelecionado)
+            val diaAtual = LocalDate.now()
 
             val intentEmail = intent
             emailUsuarioSelecionado = if(tipoUsuario == "Psicólogo"){
                 intentEmail.getStringExtra("email").toString()
             }else ""
 
-            if(Validation.validateDateCalendar(data, dataFormatada)){
+            if(diaAtual.isAfter(localDateSelecionado) || diaAtual.equals(localDateSelecionado)){
                 val intent = Intent(this, FormularioDiarioActivity::class.java)
-                intent.putExtra("dataSelecionada", data)
+                intent.putExtra("dataSelecionada", dataCertaSelecionada)
                 if(tipoUsuario == "Psicólogo")
                     intent.putExtra("emailUsuarioSelecionado", emailUsuarioSelecionado)
                 startActivity(intent)
             }else{
-                Toast.makeText(this@AgendaUsuarioActivity, "Data futura não é permitida", Toast.LENGTH_SHORT).show()
+                Snackbar.make(calendarView_user, "Data futura não é permitida", Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
 

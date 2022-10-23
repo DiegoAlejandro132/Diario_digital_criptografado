@@ -3,6 +3,7 @@ package tcc.com.diario_digital_criptografado.usuarioActivities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
@@ -34,7 +35,8 @@ class FormularioDiarioActivity : AppCompatActivity() {
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
 
         supportActionBar?.title = "Como foi seu dia hoje?"
-        supportActionBar?.subtitle = "Dia: $dataSelecionada"
+        val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
+        supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
         trazerDadosDia(dataSelecionada)
 
@@ -164,7 +166,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
                                     val sentimentosRuins = CriptografiaUtil.decrypt(if(item.child("dias").child(dataSelecionada).child("sentimentos_ruins").value != null) item.child("dias").child(dataSelecionada).child("sentimentos_ruins").value.toString() else "")
                                     txt_sentimentos_ruins.setText(sentimentosRuins)
 
-                                    val avaliacaoDia = CriptografiaUtil.decrypt(if(it.child("dias").child(dataSelecionada).child("avaliacaoDia").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString() else "")
+                                    val avaliacaoDia = CriptografiaUtil.decrypt(if(item.child("dias").child(dataSelecionada).child("avaliacaoDia").value != null) item.child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString() else "")
                                     avaliacao_dia = avaliacaoDia
 
                                     when(avaliacao_dia){

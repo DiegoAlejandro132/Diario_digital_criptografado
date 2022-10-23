@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Esqueci minha senha"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/reset_password"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="86dp"
-        android:layout_marginEnd="71dp"
+        android:layout_marginTop="30dp"
         android:text="Insira o email da sua conta para redefinição"
-        app:layout_constraintBottom_toTopOf="@+id/txt_email_redefinir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
 
     <EditText
         android:id="@+id/txt_email_redefinir"
-        android:layout_width="277dp"
+        android:layout_width="300dp"
         android:layout_height="54dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="101dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:inputType="textWebEmailAddress"
+        android:background="@drawable/borda_edit_text"
+        android:textSize="16sp"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/lock_reset"
+        android:minHeight="48dp"/>
 
     <Button
         android:id="@+id/btn_redefinir_senha"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/green"
+        android:drawableLeft="@drawable/ic_baseline_done_24"
+        android:backgroundTint="@color/transparent_green"
         android:text="Enviar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.316" />
+        app:layout_constraintVertical_bias="0.404" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -44,6 +44,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/azul_escuro"
+                android:textStyle="bold"
                 android:layout_marginTop="40dp"
                 android:text="Qual avaliação você daria para hoje?"/>
 
@@ -62,31 +65,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Péssimo"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_ruim"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ruim"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Regular"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_bom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bom"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_excelente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Excelente"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
 
@@ -102,6 +105,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Diário"
+                    android:textSize="16sp"
+                    android:textColor="@color/azul_escuro"
+                    android:textStyle="bold"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="35dp"/>
 
@@ -121,6 +127,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textColor="@color/azul_escuro"
+                android:textStyle="bold"
                 android:text="Sentimentos bons"
                 android:layout_marginTop="35dp"/>
 
@@ -140,6 +149,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="Sentimentos ruins"
+                android:textSize="16sp"
+                android:textColor="@color/azul_escuro"
+                android:textStyle="bold"
                 android:layout_marginTop="35dp"/>
 
             <EditText
@@ -160,12 +172,15 @@
 
                 <Button
                     android:id="@+id/btn_voltar_formulario_diario"
-                    android:layout_width="100dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginLeft="20dp"
-                    android:backgroundTint="@color/voltar_color"
-                    android:textColor="@color/yellow"
-                    android:text="voltar" />
+                    android:backgroundTint="@color/transparent_red"
+                    android:textColor="@color/red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
+                    android:text="Voltar" />
 
                 <Space
                     android:layout_width="0dp"
@@ -174,17 +189,20 @@
 
                 <Button
                     android:id="@+id/btn_salvar_diario"
-                    android:layout_width="100dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginRight="20dp"
-                    android:backgroundTint="@color/acept_color_back"
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/transparent_green"
                     android:textColor="@color/green"
-                    android:text="salvar" />
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
+                    android:text="Salvar" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </ScrollView>

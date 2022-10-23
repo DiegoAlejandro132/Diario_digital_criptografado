@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.actionCodeSettings
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_cadastro.txt_email
 import kotlinx.android.synthetic.main.activity_cadastro.txt_senha
@@ -24,6 +26,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ValidationUtil
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CadastroActivity : AppCompatActivity() {
@@ -61,23 +69,9 @@ class CadastroActivity : AppCompatActivity() {
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
             if(validarCadastro()){
-                var database = FirebaseDatabase.getInstance().getReference("users")
-                database.get().addOnSuccessListener {
-                    if(it.exists()){
-                        val cpf = txt_cpf.text.toString()
-                        var existe = false
-                        for (usuario in it.children){
-                            if(usuario.child("cpf").value == cpf)
-                                existe = true
-                        }
-                        if (existe) {
-                            lbl_advertencia_cpf_existente.isVisible = true
-                        }else {
-                            lbl_advertencia_cpf_existente.visibility = View.GONE
-                            createUser()
-                        }
-                    }
-                }
+                linear_layout_conteudo_cadastrar.visibility = View.GONE
+                progressive_cadastro.isVisible = true
+                createUser()
             }
         }
 
@@ -93,13 +87,10 @@ class CadastroActivity : AppCompatActivity() {
 
     //função que cria a conta do usuario e do seu tipo de cadastro
     private fun createUser(){
-        val usuario = setUserData()
-        val psicologo = setPsicologoData()
-
         auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
             if(task.isSuccessful){
                 if(tipo_perfil == "Usuário do diário") {
-                    writeUserDatabase(usuario)
+                    criarUsuario()
                     Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                     Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                         if(it.isSuccessful){
@@ -109,7 +100,7 @@ class CadastroActivity : AppCompatActivity() {
                     finish()
                 }else{
                     if(tipo_perfil == "Psicólogo"){
-                        writePsicologoDatabase(psicologo)
+                        writePsicologoDatabase()
                         Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                         Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                             if(it.isSuccessful){
@@ -118,11 +109,26 @@ class CadastroActivity : AppCompatActivity() {
                         }
                         finish()
                     }else{
-                        Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta, tente novamente mais tarde", Toast.LENGTH_LONG).show()
+                        linear_layout_conteudo_cadastrar.isVisible = true
+                        progressive_cadastro.visibility = View.GONE
+                        Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta psicologo", Toast.LENGTH_LONG).show()
                     }
                 }
             }else{
-                Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta, tente novamente mais tarde", Toast.LENGTH_LONG).show()
+                try {
+                    linear_layout_conteudo_cadastrar.isVisible = true
+                    progressive_cadastro.visibility = View.GONE
+                    throw task.exception!!
+                }catch (e:FirebaseNetworkException){
+                    Log.e("criar usuario", e.message.toString())
+                    Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                }catch (e:FirebaseAuthUserCollisionException){
+                    Log.e("criar usuario", e.message.toString())
+                    Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
+                }catch (e:Exception){
+                    Log.e("criar usuario", e.toString())
+                    Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -277,9 +283,6 @@ class CadastroActivity : AppCompatActivity() {
         return valido && cpf == cpfValido
     }
 
-    private fun verificarCpfExistente(){
-    }
-
     private fun validarTelefone() : Boolean{
         val telefone = txt_telefone.text.toString().replace("(", "").replace(")", "")
         val valido = telefone != "" && telefone.length == 11
@@ -371,27 +374,24 @@ class CadastroActivity : AppCompatActivity() {
         setEstadoRegiaoAdapter()
     }
 
-    //funções para criar usuario novo no banco
-    private fun setUserData() : Usuario {
-        val usuario = Usuario()
-        usuario.cpf = txt_cpf.text.toString()
-        usuario.data_nascimento = txt_data_nascimento.text.toString()
-        usuario.email = txt_email.text.toString()
-        usuario.telefone = txt_telefone.text.toString()
-        usuario.nome = txt_nome.text.toString()
-        usuario.genero = genero.toString()
-        usuario.tipo_perfil = tipo_perfil.toString()
-        usuario.tem_psicologo = false
-        usuario.tem_solicitacao = false
-        usuario.codigo_psicologo = ""
-        usuario.codigo_psicologo_solicitacao = ""
-        usuario.foto_perfil = ""
-
-        return usuario
-    }
-    private fun writeUserDatabase(usuario: Usuario) {
+    private fun criarUsuario() {
 
         try{
+
+            val usuario = Usuario()
+            usuario.cpf = txt_cpf.text.toString()
+            usuario.data_nascimento = txt_data_nascimento.text.toString()
+            usuario.email = txt_email.text.toString()
+            usuario.telefone = txt_telefone.text.toString()
+            usuario.nome = txt_nome.text.toString()
+            usuario.genero = genero.toString()
+            usuario.tipo_perfil = tipo_perfil.toString()
+            usuario.tem_psicologo = false
+            usuario.tem_solicitacao = false
+            usuario.codigo_psicologo = ""
+            usuario.codigo_psicologo_solicitacao = ""
+            usuario.foto_perfil = ""
+
             val userUid = AuthUtil.getCurrentUser()
             val child = "users/$userUid"
             database.child(child).setValue(usuario)
@@ -402,25 +402,21 @@ class CadastroActivity : AppCompatActivity() {
     }
 
 
-    //funções para criar psicologo novo no banco de dados
-    private fun setPsicologoData() : Psicologo {
-        val psicologo = Psicologo()
-        psicologo.cpf = txt_cpf.text.toString()
-        psicologo.data_nascimento = txt_data_nascimento.text.toString()
-        psicologo.email = txt_email.text.toString()
-        psicologo.telefone = txt_telefone.text.toString()
-        psicologo.nome = txt_nome.text.toString()
-        psicologo.sexo = genero.toString()
-        psicologo.tipo_perfil = tipo_perfil.toString()
-        psicologo.numero_registro = txt_numero_registro.text.toString()
-        psicologo.estado_registro = estado_registro.toString()
-        psicologo.foto_perfil = ""
-
-        return psicologo
-    }
-    private fun writePsicologoDatabase(psicologo: Psicologo) {
+    private fun writePsicologoDatabase() {
 
         try{
+
+            val psicologo = Psicologo()
+            psicologo.cpf = txt_cpf.text.toString()
+            psicologo.data_nascimento = txt_data_nascimento.text.toString()
+            psicologo.email = txt_email.text.toString()
+            psicologo.telefone = txt_telefone.text.toString()
+            psicologo.nome = txt_nome.text.toString()
+            psicologo.sexo = genero.toString()
+            psicologo.tipo_perfil = tipo_perfil.toString()
+            psicologo.numero_registro = txt_numero_registro.text.toString()
+            psicologo.estado_registro = estado_registro.toString()
+            psicologo.foto_perfil = ""
 
             val userUid = AuthUtil.getCurrentUser()
             val child = "users/$userUid"
@@ -441,12 +437,22 @@ class CadastroActivity : AppCompatActivity() {
 
         datePicker.addOnPositiveButtonClickListener {
 
-            val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-            utc.timeInMillis = it
-            val data = "${utc.get(Calendar.DAY_OF_MONTH)}-${utc.get(Calendar.MONTH)+1}-${utc.get(Calendar.YEAR)}"
-            txt_data_nascimento.text = data
+            var dataErrada = Date(it)
+            var localDate = dataErrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            localDate = localDate.plusDays(1)
+            var dataCerta = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate)
+            Toast.makeText(this, dataCerta.toString() , Toast.LENGTH_SHORT).show()
 
+            val valido = ValidationUtil.validarDataNascimento(localDate.dayOfMonth, localDate.monthValue, localDate.year)
+
+            if(valido) {
+                txt_data_nascimento.text = dataCerta.toString()
+                lbl_advertencia_cadastrar_usuario_menor_de_idade.visibility = View.GONE
+            }else {
+                lbl_advertencia_cadastrar_usuario_menor_de_idade.isVisible = true
+            }
         }
+
 
     }
 

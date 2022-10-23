@@ -3,13 +3,20 @@ package tcc.com.diario_digital_criptografado;
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.txt_email
+import kotlinx.android.synthetic.main.activity_main.txt_senha
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
@@ -46,6 +53,9 @@ class MainActivity : AppCompatActivity() {
 
             try {
 
+                progressive_login.isVisible = true
+                linear_layout_conteudo_login.visibility = View.GONE
+
                 val email = txt_email.text.toString()
                 val senha = txt_senha.text.toString()
 
@@ -62,10 +72,24 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 }
                             }else{
+                                progressive_login.visibility = View.GONE
                                 Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
                             }
                         }else{
-                            Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()
+                            try {
+                                progressive_login.visibility = View.GONE
+                                linear_layout_conteudo_login.isVisible = true
+                                throw task.exception!!
+                            }catch (e: FirebaseNetworkException){
+                                Log.e("criar usuario", e.message.toString())
+                                Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                            }catch (e: FirebaseAuthInvalidCredentialsException){
+                                Log.e("criar usuario", e.message.toString())
+                                Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
+                            } catch (e:Exception){
+                                Log.e("criar usuario", e.message.toString())
+                                Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                            }
                         }
                     }
                 }else{
@@ -94,17 +118,19 @@ class MainActivity : AppCompatActivity() {
 
         try {
             if(AuthUtil.usuarioEstaLogado()){
-                database = FirebaseDatabase.getInstance().getReference("users")
-                database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                    val tipoUsuario = it.child("tipo_perfil").value.toString()
-                    if(tipoUsuario == "Psicólogo"){
-                        val intent = Intent(this, ListagemPacientesActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }else if (tipoUsuario == "Usuário do diário"){
-                        val intent = Intent(this, AgendaUsuarioActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                if(auth.currentUser!!.isEmailVerified){
+                    database = FirebaseDatabase.getInstance().getReference("users")
+                    database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                        val tipoUsuario = it.child("tipo_perfil").value.toString()
+                        if(tipoUsuario == "Psicólogo"){
+                            val intent = Intent(this, ListagemPacientesActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else if (tipoUsuario == "Usuário do diário"){
+                            val intent = Intent(this, AgendaUsuarioActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                 }
             }

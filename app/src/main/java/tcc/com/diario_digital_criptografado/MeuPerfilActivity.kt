@@ -29,8 +29,6 @@ import java.lang.Thread.sleep
 class MeuPerfilActivity : AppCompatActivity() {
 
     private lateinit var database : DatabaseReference
-    private var firebaseStore: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,13 +60,6 @@ class MeuPerfilActivity : AppCompatActivity() {
             dialogExcluirUsuario()
         }
 
-        swipe_meu_perfil.setOnRefreshListener {
-            if(swipe_meu_perfil.isRefreshing){
-                swipe_meu_perfil.isRefreshing = false
-            }
-            definirFotoPerfil()
-            trazerDadosUsuario()
-        }
     }
 
     override fun onResume() {
@@ -80,10 +71,6 @@ class MeuPerfilActivity : AppCompatActivity() {
 
     private fun trazerDadosUsuario(){
         try{
-            if(!progressive_meu_perfil.isVisible){
-                linear_layout_conteudo_meu_perfil.setVisibility(View.GONE)
-                progressive_meu_perfil.isVisible = true
-            }
 
             val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
             storageReference.downloadUrl.addOnSuccessListener {

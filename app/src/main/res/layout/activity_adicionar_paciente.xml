@@ -58,7 +58,10 @@
                 <EditText
                     android:id="@+id/txt_codigo_paciente"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="60dp"
+                    android:inputType="text|textMultiLine"
+                    android:padding="5dp"
+                    android:background="@drawable/borda_edit_text"/>
 
                 <TextView
                     android:id="@+id/lbl_advertencia_adicionar_paciente"

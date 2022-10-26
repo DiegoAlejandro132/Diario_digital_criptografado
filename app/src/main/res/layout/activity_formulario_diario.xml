@@ -39,7 +39,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Título"
+                android:textColor="@color/azul_escuro"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/txt_titulo_dia"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/borda_edit_text"
+                android:hint="Adicione o nome de uma lembrança"
+                android:padding="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +124,6 @@
                     android:textSize="16sp"
                     android:textColor="@color/azul_escuro"
                     android:textStyle="bold"
-                    android:layout_marginStart="5dp"
                     android:layout_marginTop="35dp"/>
 
                 <EditText
@@ -126,7 +141,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
                 android:textSize="16sp"
                 android:textColor="@color/azul_escuro"
                 android:textStyle="bold"
@@ -147,7 +161,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
                 android:text="Sentimentos ruins"
                 android:textSize="16sp"
                 android:textColor="@color/azul_escuro"

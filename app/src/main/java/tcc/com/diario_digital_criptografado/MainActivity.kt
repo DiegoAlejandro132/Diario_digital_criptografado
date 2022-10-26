@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }else{
                                 progressive_login.visibility = View.GONE
+                                linear_layout_conteudo_login.isVisible = true
                                 Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
                             }
                         }else{

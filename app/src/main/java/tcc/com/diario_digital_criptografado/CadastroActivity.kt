@@ -441,7 +441,6 @@ class CadastroActivity : AppCompatActivity() {
             var localDate = dataErrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             localDate = localDate.plusDays(1)
             var dataCerta = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate)
-            Toast.makeText(this, dataCerta.toString() , Toast.LENGTH_SHORT).show()
 
             val valido = ValidationUtil.validarDataNascimento(localDate.dayOfMonth, localDate.monthValue, localDate.year)
 

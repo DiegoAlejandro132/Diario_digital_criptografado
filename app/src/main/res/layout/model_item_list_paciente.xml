@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="15dp"
-    app:cardBackgroundColor="@color/black"
     android:layout_margin="8dp">
     
     <LinearLayout
@@ -46,7 +45,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:maxLength="50"
+                    android:textColor="@color/black"
                     android:text="Nome completo"/>
             </LinearLayout>
             <LinearLayout
@@ -61,7 +61,7 @@
                 android:id="@+id/txt_telefone_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 android:text="(##)#########"/>
 
@@ -75,7 +75,7 @@
                     android:id="@+id/txt_email_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     android:text="teste@email.com"/>
 

@@ -84,8 +84,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
             storageReference.downloadUrl.addOnSuccessListener {
                 if(!(it == null || it.toString() == ""))
                     Glide.with(this).load(it).into(nav_header_foto_perfil)
-            }.addOnFailureListener {
-
             }
 
             database = FirebaseDatabase.getInstance().getReference("users")
@@ -109,7 +107,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         override fun onItemClick(position: Int) {
                             val clickedItem = pacienteList[position]
                             adapter.notifyItemChanged(position)
-                            val intent = Intent(getApplicationContext(), AgendaUsuarioActivity::class.java)
+                            val intent = Intent(this@ListagemPacientesActivity, AgendaUsuarioActivity::class.java)
                             intent.putExtra("email", clickedItem.email)
                             startActivity(intent)
                         }

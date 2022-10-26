@@ -31,6 +31,7 @@ class MeuPerfilActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meu_perfil)
@@ -68,6 +69,11 @@ class MeuPerfilActivity : AppCompatActivity() {
         trazerDadosUsuario()
     }
 
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
 
     private fun trazerDadosUsuario(){
         try{
@@ -99,7 +105,7 @@ class MeuPerfilActivity : AppCompatActivity() {
                         lbl_meu_numero_registro_titulo.visibility = View.VISIBLE
 
                         lbl_meu_regiao_registro.visibility = View.VISIBLE
-                        lbl_meu_numero_registro_titulo.visibility = View.VISIBLE
+                        lbl_meu_regiao_registro_titulo.visibility = View.VISIBLE
 
                         lbl_meu_numero_registro.text = it.child(AuthUtil.getCurrentUser()!!).child("numero_registro").value.toString()
                         lbl_meu_regiao_registro.text = it.child(AuthUtil.getCurrentUser()!!).child("estado_registro").value.toString()

@@ -232,7 +232,7 @@
                             android:layout_marginLeft="20dp"
                             android:drawableLeft="@drawable/ic_baseline_edit_24"
                             style="@style/Widget.Material3.Button.ElevatedButton"
-                            android:backgroundTint="@color/trasparent_orange"
+                            android:backgroundTint="@color/transparent_orange"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:text="Editar"/>

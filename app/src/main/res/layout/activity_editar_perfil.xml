@@ -82,15 +82,6 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/lbl_advertencia_editar_usuario_menor_de_idade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="* Usuário deve ser maior de 18 anos *"
-                    android:layout_marginRight="12dp"
-                    android:textColor="@color/red"
-                    android:visibility="gone"/>
-
-                <TextView
                     android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -174,8 +165,9 @@
                     android:id="@+id/txt_editar_numero_registro"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:textColor="@color/black"
                     android:visibility="gone"
+                    android:background="@drawable/borda_edit_text"
+                    android:padding="8dp"
                     android:enabled="false"/>
 
                 <TextView
@@ -193,8 +185,9 @@
                     android:id="@+id/txt_editar_regiao"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:textColor="@color/black"
                     android:visibility="gone"
+                    android:background="@drawable/borda_edit_text"
+                    android:padding="8dp"
                     android:enabled="false"/>
 
                 <LinearLayout

@@ -11,11 +11,13 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
@@ -181,15 +183,13 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             var localDate = dataErrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             localDate = localDate.plusDays(1)
             var dataCerta = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate)
-            Toast.makeText(this, dataCerta.toString() , Toast.LENGTH_SHORT).show()
 
             val valido = ValidationUtil.validarDataNascimento(localDate.dayOfMonth, localDate.monthValue, localDate.year)
 
             if(valido) {
                 txt_editar_data_nascimento.text = dataCerta.toString()
-                lbl_advertencia_editar_usuario_menor_de_idade.visibility = View.GONE
             }else {
-                lbl_advertencia_editar_usuario_menor_de_idade.isVisible = true
+                Snackbar.make(txt_editar_data_nascimento, "Usuário não pode ser menor de 18 anos", Snackbar.LENGTH_LONG).show()
             }
         }
 

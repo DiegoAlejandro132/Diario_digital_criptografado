@@ -18,6 +18,7 @@ import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
+import java.time.LocalDate
 
 class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
@@ -71,12 +72,17 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
         val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
         val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
+        val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
+        val data = CriptografiaUtil.encrypt(dataSelecionada)
+        val modificadoEm = CriptografiaUtil.encrypt(LocalDate.now().toString())
 
         dia.sentimentos_bons = sentimentosBons
         dia.sentimentos_ruins = sentimentosRuins
         dia.diario = diario
         dia.avaliacaoDia = avaliacaoDia
-
+        dia.titulo = titulo
+        dia.data = data
+        dia.modificado_em = modificadoEm
         database.child(dataSelecionada).setValue(dia)
 
     }

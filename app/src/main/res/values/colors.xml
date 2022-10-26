@@ -17,9 +17,10 @@
     <color name="voltar_color">#fff09e</color>
     <color name="yellow">#e0b700</color>
     <color name="pastel_orange">#ffb347</color>
-    <color name="trasparent_orange">#fff7e0</color>
+    <color name="transparent_orange">#fff7e0</color>
     <color name="azul_escuro">#2d4c72</color>
     <color name="azul_psicologo">#02008f</color>
     <color name="azul_psicologo_nav">#0300a3</color>
     <color name="azul_escuro_trasparente">#80002f75</color>
+    <color name="cor_agenda">#8e6bff</color>
 </resources>

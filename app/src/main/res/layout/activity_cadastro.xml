@@ -13,6 +13,7 @@
         android:indeterminateTint="@color/red"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:elevation="1dp"/>
 
     <ScrollView
@@ -524,14 +525,21 @@
 
                 <Button
                     android:id="@+id/btn_cancelar"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textSize="14sp"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/voltar_color"
-                    android:textColor="@color/yellow"
+                    android:backgroundTint="@color/transparent_red"
+                    android:textColor="@color/red"
                     android:text="Voltar" />
 
                 <Button
                     android:id="@+id/btn_cadastrar"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textSize="14sp"
+                    android:drawableLeft="@drawable/ic_baseline_add_24"
+                    android:backgroundTint="@color/transparent_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="100dp"

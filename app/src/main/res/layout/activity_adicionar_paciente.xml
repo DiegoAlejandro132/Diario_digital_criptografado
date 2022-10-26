@@ -73,20 +73,28 @@
 
                 <Button
                     android:id="@+id/btn_enviar_solicitacao"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Enviar solicitação"
+                    android:backgroundTint="@color/transparent_green"
+                    android:textColor="@color/green"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
                     android:layout_marginTop="30dp"/>
 
                 <Button
                     android:id="@+id/btn_voltar_adicionar_paciente"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/voltar_color"
-                    android:textColor="@color/yellow"
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/transparent_red"
+                    android:textColor="@color/red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
                     android:text="Voltar"/>
 
 

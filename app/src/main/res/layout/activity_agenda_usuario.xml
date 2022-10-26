@@ -24,24 +24,34 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:id="@+id/linear_layout_agenda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="vertical">
 
-        <CalendarView
-            android:id="@+id/calendarView_user"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:dateTextAppearance="@style/CalenderViewDateCustomText"
-            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"/>
+            android:layout_margin="10dp"
+            app:cardCornerRadius="30dp">
+
+            <CalendarView
+                android:id="@+id/calendarView_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dateTextAppearance="@style/CalenderViewDateCustomText"
+                android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"/>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            tools:listitem="@layout/model_item_list_registro_diario"/>
+            android:layout_height="280dp"
+            tools:listitem="@layout/model_item_list_registro_diario"
+            android:layout_margin="10dp"/>
 
         <Button
             android:id="@+id/btn_voltar_agenda"

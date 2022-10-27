@@ -3,12 +3,14 @@ package tcc.com.diario_digital_criptografado.psicologoActivities
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -104,6 +106,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
+                        @RequiresApi(Build.VERSION_CODES.O)
                         override fun onItemClick(position: Int) {
                             val clickedItem = pacienteList[position]
                             adapter.notifyItemChanged(position)

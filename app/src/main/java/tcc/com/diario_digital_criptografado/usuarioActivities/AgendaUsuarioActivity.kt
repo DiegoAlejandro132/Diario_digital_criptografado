@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -27,13 +28,18 @@ import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.MeuPerfilActivity
 import tcc.com.diario_digital_criptografado.R
+import tcc.com.diario_digital_criptografado.adapter.DiaAdapter
+import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
+@RequiresApi(Build.VERSION_CODES.O)
 class AgendaUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
     private lateinit var auth : FirebaseAuth
@@ -43,7 +49,6 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     private lateinit var toggle : ActionBarDrawerToggle
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agenda_usuario)
@@ -52,6 +57,8 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         supportActionBar?.title = "Agenda"
 
         trazerDadosUsuario()
+
+        listarDias()
 
         setNavigationDrawer()
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
@@ -89,6 +96,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                     .show()
             }
         }
+
 
         btn_voltar_agenda.setOnClickListener{
             finish()
@@ -146,6 +154,8 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                                     lbl_psicologo_nao_autorizado_agenda.isVisible = true
                                 }else{
                                     progressive_agenda.visibility = View.GONE
+                                    layout_recycler_agenda.visibility = View.GONE
+                                    btn_voltar_agenda.isVisible = true
                                     lbl_psicologo_nao_autorizado_agenda.visibility = View.GONE
                                     linear_layout_agenda.isVisible = true
                                 }
@@ -166,12 +176,64 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             Log.e("verifyUser", e.message.toString())
         }
     }
-    override fun onOptionsItemSelected(item : MenuItem) : Boolean{
 
+    override fun onOptionsItemSelected(item : MenuItem) : Boolean{
        if(toggle.onOptionsItemSelected(item)){
            return true
        }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun listarDias() {
+        try{
+            var dialist = ArrayList<DiaFormulario>()
+
+            var recryclerDias = recycler_dias
+            recryclerDias.layoutManager = LinearLayoutManager(this)
+            recryclerDias.setHasFixedSize(true)
+
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+            database.get().addOnCompleteListener{
+                if(it.isSuccessful){
+                    val dias = it.result
+                    val dataHoje = LocalDate.now()
+
+                    for(dia in dias.children){
+                        val expiraEm = CriptografiaUtil.decrypt(dia.child("modificado_em").value.toString())
+                        val dataExpiracaoMili = expiraEm.toLong()
+                        val dataExpiracaoDate = Date(dataExpiracaoMili)
+                        val dataExpiracao = dataExpiracaoDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(5)
+
+                        if(dataHoje <= dataExpiracao){
+                            val diaData = DiaFormulario()
+                            diaData.data = CriptografiaUtil.decrypt(dia.child("data").value.toString())
+                            diaData.avaliacaoDia = CriptografiaUtil.decrypt(if(dia.child("avaliacaoDia").value != null) dia.child("avaliacaoDia").value.toString() else "")
+                            diaData.titulo = CriptografiaUtil.decrypt(if(dia.child("titulo").value != null) dia.child("titulo").value.toString() else "" )
+                            dialist.add(diaData)
+                        }
+                    }
+
+                    var adapter = DiaAdapter(this@AgendaUsuarioActivity, dialist)
+                    recycler_dias.adapter = adapter
+
+                    adapter.setOnItemClickListener(object : DiaAdapter.onItemClickListener{
+                        override fun visualizarDia(position: Int) {
+                            val clickedItem = dialist[position]
+                            adapter.notifyItemChanged(position)
+                            intent = Intent(this@AgendaUsuarioActivity, FormularioDiarioActivity::class.java)
+                            intent.putExtra("dataSelecionada", clickedItem.data)
+                            startActivity(intent)
+                        }
+                    })
+                }
+            }
+        }catch (e:Exception){
+            Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
+            Log.e("listarDias", e.message.toString())
+            val intent = Intent(this, MeuPerfilActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setNavigationDrawer(){

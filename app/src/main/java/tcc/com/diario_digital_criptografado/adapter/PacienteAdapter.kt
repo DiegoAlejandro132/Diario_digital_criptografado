@@ -1,6 +1,5 @@
 package tcc.com.diario_digital_criptografado.adapter
 
-
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.Usuario
 
 class PacienteAdapter (private val context : Context, private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
-
 
     private lateinit var listener : onItemClickListener
 

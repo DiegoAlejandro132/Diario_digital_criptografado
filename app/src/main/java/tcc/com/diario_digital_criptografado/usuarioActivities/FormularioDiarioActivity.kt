@@ -35,7 +35,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
 
-        supportActionBar?.title = "Como foi seu dia hoje?"
+        supportActionBar?.title = "Como foi o dia hoje?"
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
         supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
@@ -74,7 +74,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
         val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
         val data = CriptografiaUtil.encrypt(dataSelecionada)
-        val modificadoEm = CriptografiaUtil.encrypt(LocalDate.now().toString())
+        val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
 
         dia.sentimentos_bons = sentimentosBons
         dia.sentimentos_ruins = sentimentosRuins
@@ -132,6 +132,9 @@ class FormularioDiarioActivity : AppCompatActivity() {
             database.get().addOnSuccessListener {
                 if(it.value != null){
                     if(it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString() == "Usuário do diário"){
+
+                        val tituloDia = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("titulo").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("titulo").value.toString() else "")
+                        txt_titulo_dia.setText(tituloDia)
 
                         val sentimentosBons = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_bons").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_bons").value.toString() else "")
                         txt_sentimentos_bons.setText(sentimentosBons)
@@ -208,6 +211,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         lbl_psicologo_nao_autorizado_formulario.visibility = View.GONE
 
         linear_layout_formulario_diario.visibility = View.GONE
+        layout_formulario_titulo.visibility = View.GONE
         btn_salvar_diario.visibility = View.GONE
         txt_sentimentos_bons.isEnabled = false
         txt_sentimentos_bons.hint = ""

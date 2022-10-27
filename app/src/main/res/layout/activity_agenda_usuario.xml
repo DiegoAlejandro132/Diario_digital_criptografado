@@ -24,8 +24,6 @@
 
     </LinearLayout>
 
-
-
     <LinearLayout
         android:id="@+id/linear_layout_agenda"
         android:layout_width="match_parent"
@@ -47,20 +45,41 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
+            android:id="@+id/layout_recycler_agenda"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            tools:listitem="@layout/model_item_list_registro_diario"
-            android:layout_margin="10dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Últimos lançamentos"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_dias"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                tools:listitem="@layout/model_item_list_registro_diario"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_voltar_agenda"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:textSize="14sp"
+            android:drawableLeft="@drawable/ic_baseline_close_24"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:backgroundTint="@color/voltar_color"
-            android:textColor="@color/yellow"
+            android:visibility="gone"
+            android:backgroundTint="@color/transparent_red"
+            android:textColor="@color/red"
             android:text="Voltar"/>
 
     </LinearLayout>

@@ -39,23 +39,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="">
+            android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Título"
-                android:textColor="@color/azul_escuro"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-
-            <EditText
-                android:id="@+id/txt_titulo_dia"
+            <LinearLayout
+                android:id="@+id/layout_formulario_titulo"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/borda_edit_text"
-                android:hint="Adicione o nome de uma lembrança"
-                android:padding="5dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Título"
+                    android:layout_marginTop="35dp"
+                    android:textColor="@color/azul_escuro"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/txt_titulo_dia"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/borda_edit_text"
+                    android:hint="Adicione o nome de uma lembrança"
+                    android:padding="8dp"/>
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,7 +143,7 @@
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
                     android:background="@drawable/borda_edit_text"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:hint="Quais foram suas experiências hoje?" />
 
             </LinearLayout>
@@ -154,7 +164,7 @@
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
                 android:background="@drawable/borda_edit_text"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:hint="Quais sentimentos bons você sentiu?"
                 android:text="" />
 
@@ -174,7 +184,7 @@
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
                 android:background="@drawable/borda_edit_text"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:hint="Quais sentimentos bons você sentiu?" />
 
             <LinearLayout

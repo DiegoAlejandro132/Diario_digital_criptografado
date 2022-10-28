@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +35,7 @@ import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 
 class ListagemPacientesActivity : AppCompatActivity(){
     private lateinit var recyclerView : RecyclerView
@@ -58,6 +60,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         pacienteList = arrayListOf<Usuario>()
 
+        FotoUtil.definirFotoPerfil()
         listarDadosPacientes()
 
         swipe_listagem_pacientes.setOnRefreshListener {
@@ -69,6 +72,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
         super.onResume()
         setHeaderNavigationDrawer()
         listarDadosPacientes()
+        FotoUtil.definirFotoPerfil()
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -90,6 +94,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
+
                 pacienteList.clear()
                 if(it.exists()){
                     for(item in it.children){
@@ -148,10 +153,13 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         try {
 
-            database = FirebaseDatabase.getInstance().getReference("users")
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
             database.get().addOnSuccessListener {
-                val nomeUsuario = it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() }
-                val emailUsuario = it.child(AuthUtil.getCurrentUser()!!).child("email").value.toString()
+                val nomeUsuario = it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() }
+                val emailUsuario = it.child("email").value.toString()
+                val fotoPerfil = it.child("foto_perfil").value.toString()
+                if(fotoPerfil != "")
+                    Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
 
                 nav_header_nome_usuario.text = nomeUsuario
                 nav_header_email_usuario.text = emailUsuario

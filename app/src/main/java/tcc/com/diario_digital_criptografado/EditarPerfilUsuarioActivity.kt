@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -68,20 +69,18 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         try{
 
             if(!progressive_editar_perfil.isVisible){
-                linear_layout_conteudo_editar_perfil.setVisibility(View.GONE)
+                linear_layout_conteudo_editar_perfil.visibility = View.GONE
                 progressive_editar_perfil.isVisible = true
-            }
-
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.downloadUrl.addOnSuccessListener {
-                if(!(it == null || it.toString() == ""))
-                    Glide.with(this).load(it).into(img_foto_perfil)
-            }.addOnFailureListener {
-
             }
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+
+                val fotoPerfil = it.child("foto_perfil").value.toString()
+                if (fotoPerfil != ""){
+                    Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_perfil)
+                }
+
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
                 txt_editar_data_nascimento.text = it.child("data_nascimento").value.toString()
                 txt_editar_telefone.setText(it.child("telefone").value.toString())
@@ -92,12 +91,12 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
                 if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
 
-                    lbl_editar_numero_registro.setVisibility(View.VISIBLE)
-                    txt_editar_numero_registro.setVisibility(View.VISIBLE)
+                    lbl_editar_numero_registro.visibility = View.VISIBLE
+                    txt_editar_numero_registro.visibility = View.VISIBLE
                     txt_editar_numero_registro.setText(it.child("numero_registro").value.toString())
 
-                    lbl_editar_numero_regiao.setVisibility(View.VISIBLE)
-                    txt_editar_regiao.setVisibility(View.VISIBLE)
+                    lbl_editar_numero_regiao.visibility = View.VISIBLE
+                    txt_editar_regiao.visibility = View.VISIBLE
                     txt_editar_regiao.setText(it.child("estado_registro").value.toString())
 
                 }
@@ -156,6 +155,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             if(imageUri != null){
                 val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
                 storageReference.putFile(imageUri!!)
+
             }
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()

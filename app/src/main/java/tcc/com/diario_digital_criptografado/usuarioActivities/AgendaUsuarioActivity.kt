@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -55,8 +57,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         usuarioEstaLogado()
 
         supportActionBar?.title = "Agenda"
-
+        FotoUtil.definirFotoPerfil()
         trazerDadosUsuario()
+
 
         listarDias()
 
@@ -125,14 +128,6 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 progressive_agenda.isVisible = true
             }
 
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.downloadUrl.addOnSuccessListener {
-                if(!(it == null || it.toString() == ""))
-                    Glide.with(this).load(it).into(nav_header_foto_perfil)
-            }.addOnFailureListener {
-
-            }
-
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 if(it.exists()){
@@ -140,6 +135,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
                     val nomeUsuario = it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() }
                     val emailUsuario = it.child("${AuthUtil.getCurrentUser()}/email").value.toString()
+                    val fotoperfil = it.child("${AuthUtil.getCurrentUser()}/foto_perfil").value.toString()
+                    if(fotoperfil != "")
+                        Glide.with(this).load(fotoperfil.toUri()).into(nav_header_foto_perfil)
                     nav_header_nome_usuario.text = nomeUsuario
                     nav_header_email_usuario.text = emailUsuario
 
@@ -194,6 +192,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             recryclerDias.setHasFixedSize(true)
 
             database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+            database.orderByChild("dias")
             database.get().addOnCompleteListener{
                 if(it.isSuccessful){
                     val dias = it.result
@@ -214,8 +213,16 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                         }
                     }
 
+                    dialist.reverse()
+
+                    if(dialist.size == 0)
+                        lbl_sem_lancamentos_dias.isVisible = true
+                    else
+                        lbl_sem_lancamentos_dias.visibility = View.GONE
+
                     var adapter = DiaAdapter(this@AgendaUsuarioActivity, dialist)
                     recycler_dias.adapter = adapter
+
 
                     adapter.setOnItemClickListener(object : DiaAdapter.onItemClickListener{
                         override fun visualizarDia(position: Int) {

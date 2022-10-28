@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import kotlin.Exception
 
 class SolicitacoesActivity : AppCompatActivity() {
@@ -36,6 +37,7 @@ class SolicitacoesActivity : AppCompatActivity() {
         supportActionBar?.title = "Minhas solicitações"
 
 
+        FotoUtil.definirFotoPerfil()
         usuarioEstaLogado()
 
         firebaseStore = FirebaseStorage.getInstance()

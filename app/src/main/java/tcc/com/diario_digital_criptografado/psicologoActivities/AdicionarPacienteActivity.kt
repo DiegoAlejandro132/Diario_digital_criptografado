@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 
 class AdicionarPacienteActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
@@ -20,6 +21,7 @@ class AdicionarPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adicionar_paciente)
 
+        FotoUtil.definirFotoPerfil()
         usuarioEstaLogado()
 
         supportActionBar?.title = "Adicionar paciente"

@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.io.File
 
 class MeuPsicologoActivity : AppCompatActivity() {
@@ -39,6 +40,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
+        FotoUtil.definirFotoPerfil()
         retrievePsicologoData()
 
         btn_excluir_psicologo.setOnClickListener {

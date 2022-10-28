@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.lang.Thread.sleep
 
 class MeuPerfilActivity : AppCompatActivity() {
@@ -40,9 +41,8 @@ class MeuPerfilActivity : AppCompatActivity() {
         supportActionBar?.title = "Visualizar perfil"
 
 
-        definirFotoPerfil()
+        FotoUtil.definirFotoPerfil()
 
-        definirFotoPerfil()
         trazerDadosUsuario()
 
         btn_ir_editar_perfil.setOnClickListener{
@@ -65,7 +65,7 @@ class MeuPerfilActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        definirFotoPerfil()
+        FotoUtil.definirFotoPerfil()
         trazerDadosUsuario()
     }
 
@@ -78,19 +78,15 @@ class MeuPerfilActivity : AppCompatActivity() {
     private fun trazerDadosUsuario(){
         try{
 
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.downloadUrl.addOnSuccessListener {
-                if(!(it == null || it.toString() == ""))
-                    Glide.with(this).load(it).into(img_foto_meu_perfil)
-            }.addOnFailureListener {
-
-            }
-
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
                 if(it.exists()){
 
                     val tipoUsuario = it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString()
+                    val fotoPerfil = it.child(AuthUtil.getCurrentUser()!!).child("foto_perfil").value.toString()
+                    if (fotoPerfil != ""){
+                        Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_meu_perfil)
+                    }
 
                     lbl_meu_nome_usuario.text = it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString()
                     lbl_meu_data_nascimento.text = it.child(AuthUtil.getCurrentUser()!!).child("data_nascimento").value.toString()
@@ -203,12 +199,4 @@ class MeuPerfilActivity : AppCompatActivity() {
         }
     }
 
-    private fun definirFotoPerfil(){
-        val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-        storageReference.downloadUrl.addOnSuccessListener {
-            val fotoUri = it.toString()
-            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-            database.child("foto_perfil").setValue(fotoUri)
-        }
-    }
 }

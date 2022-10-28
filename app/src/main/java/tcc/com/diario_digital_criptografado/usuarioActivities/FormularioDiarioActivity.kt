@@ -18,6 +18,7 @@ import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
 
 class FormularioDiarioActivity : AppCompatActivity() {
@@ -39,6 +40,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
         supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
+        FotoUtil.definirFotoPerfil()
         trazerDadosDia(dataSelecionada)
 
         onRadioButtonClicked(checkboxGroup)

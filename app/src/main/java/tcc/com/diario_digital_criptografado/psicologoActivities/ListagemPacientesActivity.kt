@@ -21,13 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
+
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
@@ -35,8 +34,10 @@ import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 
+@RequiresApi(Build.VERSION_CODES.M)
 class ListagemPacientesActivity : AppCompatActivity(){
     private lateinit var recyclerView : RecyclerView
     private lateinit var pacienteList : ArrayList<Usuario>
@@ -47,12 +48,20 @@ class ListagemPacientesActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listagem_pacientes)
 
-        usuarioEstaLogado()
-
         supportActionBar?.title = "Meus pacientes"
 
+
         setNavigationDrawer()
-        setHeaderNavigationDrawer()
+
+        usuarioEstaLogado()
+
+        if(ConexaoUtil.estaConectado(this)){
+            setHeaderNavigationDrawer()
+            FotoUtil.definirFotoPerfil()
+            listarDadosPacientes()
+        }else{
+            Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         recyclerView = recycler_pacientes
         recycler_pacientes.layoutManager = LinearLayoutManager(this)
@@ -60,19 +69,26 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         pacienteList = arrayListOf<Usuario>()
 
-        FotoUtil.definirFotoPerfil()
-        listarDadosPacientes()
 
         swipe_listagem_pacientes.setOnRefreshListener {
-            listarDadosPacientes()
+            if(ConexaoUtil.estaConectado(this)){
+                listarDadosPacientes()
+            }else{
+                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                swipe_listagem_pacientes.isRefreshing = false
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        setHeaderNavigationDrawer()
-        listarDadosPacientes()
-        FotoUtil.definirFotoPerfil()
+        if(ConexaoUtil.estaConectado(this)){
+            setHeaderNavigationDrawer()
+            FotoUtil.definirFotoPerfil()
+            listarDadosPacientes()
+        }else{
+            Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -85,12 +101,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
     private fun listarDadosPacientes(){
         try{
-
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.downloadUrl.addOnSuccessListener {
-                if(!(it == null || it.toString() == ""))
-                    Glide.with(this).load(it).into(nav_header_foto_perfil)
-            }
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
@@ -113,21 +123,29 @@ class ListagemPacientesActivity : AppCompatActivity(){
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
                         @RequiresApi(Build.VERSION_CODES.O)
                         override fun onItemClick(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            adapter.notifyItemChanged(position)
-                            val intent = Intent(this@ListagemPacientesActivity, AgendaUsuarioActivity::class.java)
-                            intent.putExtra("email", clickedItem.email)
-                            startActivity(intent)
+                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                val clickedItem = pacienteList[position]
+                                adapter.notifyItemChanged(position)
+                                val intent = Intent(this@ListagemPacientesActivity, AgendaUsuarioActivity::class.java)
+                                intent.putExtra("email", clickedItem.email)
+                                startActivity(intent)
+                            }else{
+                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                            }
+
                         }
 
                         override fun excluirPaciente(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            val email = clickedItem.email
+                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                val clickedItem = pacienteList[position]
+                                val email = clickedItem.email
 
-                            adapter.notifyItemChanged(position)
-                            pacienteList.removeAt(position)
-                            excluirPaciente(email)
-
+                                adapter.notifyItemChanged(position)
+                                pacienteList.removeAt(position)
+                                excluirPaciente(email)
+                            }else{
+                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                            }
                         }
                     })
 
@@ -152,7 +170,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
     private fun setHeaderNavigationDrawer(){
 
         try {
-
             database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
             database.get().addOnSuccessListener {
                 val nomeUsuario = it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() }

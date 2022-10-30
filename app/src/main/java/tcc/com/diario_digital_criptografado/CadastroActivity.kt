@@ -1,12 +1,14 @@
 package tcc.com.diario_digital_criptografado
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -18,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_cadastro.txt_email
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
 import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.ValidationUtil
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -34,6 +38,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.M)
 class CadastroActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
@@ -42,8 +47,6 @@ class CadastroActivity : AppCompatActivity() {
     private var tipo_perfil : String? = null
     private var genero : String? = null
     private var estado_registro : String? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +72,13 @@ class CadastroActivity : AppCompatActivity() {
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
             if(validarCadastro()){
-                linear_layout_conteudo_cadastrar.visibility = View.GONE
-                progressive_cadastro.isVisible = true
-                createUser()
+                if(ConexaoUtil.estaConectado(this)){
+                    linear_layout_conteudo_cadastrar.visibility = View.GONE
+                    progressive_cadastro.isVisible = true
+                    createUser()
+                }else{
+                    Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -194,7 +201,7 @@ class CadastroActivity : AppCompatActivity() {
         val confirmarSenha = txt_confirmar_senha.text.toString()
 
         val senha1Valida = senha != "" && " " !in senha && senha.length >= 6
-        val senhasIguais = senha.equals(confirmarSenha)
+        val senhasIguais = senha == confirmarSenha
 
         if(senha1Valida)
             linear_layout_cadastrar_senha_invalida.visibility = View.GONE
@@ -242,7 +249,7 @@ class CadastroActivity : AppCompatActivity() {
         val valido = txt_cpf.text.toString() != "" && txt_cpf.text!![0].toString() != " "
                 && txt_cpf.text.toString().length == 14
 
-        var cpf = txt_cpf.text.toString().replace(".", "").replace("-", "")
+        val cpf = txt_cpf.text.toString().replace(".", "").replace("-", "")
         var cpfValido = ""
 
         var i = 10

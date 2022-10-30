@@ -1,10 +1,12 @@
 package tcc.com.diario_digital_criptografado;
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
@@ -13,6 +15,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.txt_email
@@ -20,8 +23,9 @@ import kotlinx.android.synthetic.main.activity_main.txt_senha
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var database : DatabaseReference
@@ -53,48 +57,52 @@ class MainActivity : AppCompatActivity() {
 
             try {
 
-                progressive_login.isVisible = true
-                linear_layout_conteudo_login.visibility = View.GONE
+                if(ConexaoUtil.estaConectado(this)){
+                    progressive_login.isVisible = true
+                    linear_layout_conteudo_login.visibility = View.GONE
 
-                val email = txt_email.text.toString()
-                val senha = txt_senha.text.toString()
+                    val email = txt_email.text.toString()
+                    val senha = txt_senha.text.toString()
 
-                if(validateLogin()){
-                    auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            if (auth.currentUser!!.isEmailVerified){
-                                database = FirebaseDatabase.getInstance().getReference("users")
-                                database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                                    when (it.child("tipo_perfil").value){
-                                        "Usuário do diário" -> loginUsuario()
-                                        "Psicólogo" -> logInPsicologo()
-                                        else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                    if(validateLogin()){
+                        auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                if (auth.currentUser!!.isEmailVerified){
+                                    database = FirebaseDatabase.getInstance().getReference("users")
+                                    database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                                        when (it.child("tipo_perfil").value){
+                                            "Usuário do diário" -> loginUsuario()
+                                            "Psicólogo" -> logInPsicologo()
+                                            else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                                        }
                                     }
+                                }else{
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
                                 }
                             }else{
-                                progressive_login.visibility = View.GONE
-                                linear_layout_conteudo_login.isVisible = true
-                                Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
-                            }
-                        }else{
-                            try {
-                                progressive_login.visibility = View.GONE
-                                linear_layout_conteudo_login.isVisible = true
-                                throw task.exception!!
-                            }catch (e: FirebaseNetworkException){
-                                Log.e("criar usuario", e.message.toString())
-                                Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
-                            }catch (e: FirebaseAuthInvalidCredentialsException){
-                                Log.e("criar usuario", e.message.toString())
-                                Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
-                            } catch (e:Exception){
-                                Log.e("criar usuario", e.message.toString())
-                                Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                try {
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    throw task.exception!!
+                                }catch (e: FirebaseNetworkException){
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                }catch (e: FirebaseAuthInvalidCredentialsException){
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
+                                } catch (e:Exception){
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                }
                             }
                         }
+                    }else{
+                        Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
                     }
                 }else{
-                    Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
+                    Snackbar.make(btn_ir_cadastro, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
                 }
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, "Erro ao fazer login.", Toast.LENGTH_SHORT).show()

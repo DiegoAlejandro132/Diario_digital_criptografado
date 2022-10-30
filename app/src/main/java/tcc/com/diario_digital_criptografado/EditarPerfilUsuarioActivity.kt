@@ -3,11 +3,13 @@ package tcc.com.diario_digital_criptografado
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -16,18 +18,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
-import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.ValidationUtil
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.Exception
 
+@RequiresApi(Build.VERSION_CODES.M)
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
@@ -41,7 +41,13 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         supportActionBar?.title = "Editar perfil"
 
 
-        trazerDadosUsuario()
+        if(ConexaoUtil.estaConectado(this)){
+            trazerDadosUsuario()
+        }else{
+            progressive_editar_perfil.isVisible = false
+            linear_layout_conteudo_editar_perfil.isVisible = true
+            Snackbar.make(btn_voltar_editar_perfil, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         img_foto_perfil.setOnClickListener{
             selectImage()
@@ -52,8 +58,13 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }
 
         btn_salvar_dados_editar_perfil.setOnClickListener{
-            saveUserData()
-            uploadImageToStorage()
+            if(ConexaoUtil.estaConectado(this)){
+                saveUserData()
+                uploadImageToStorage()
+            }else{
+                Snackbar.make(btn_voltar_editar_perfil, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
+
         }
 
         txt_editar_data_nascimento.setOnClickListener {

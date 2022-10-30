@@ -2,6 +2,7 @@ package tcc.com.diario_digital_criptografado.usuarioActivities
 
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -9,51 +10,64 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import kotlin.Exception
 
+@RequiresApi(Build.VERSION_CODES.M)
 class SolicitacoesActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
-    private var firebaseStore: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solicitacoes)
 
         supportActionBar?.title = "Minhas solicitações"
-
-
-        FotoUtil.definirFotoPerfil()
         usuarioEstaLogado()
 
-        firebaseStore = FirebaseStorage.getInstance()
-        storageReference = FirebaseStorage.getInstance().reference
-        retrievePsicologoData()
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            retrievePsicologoData()
+        }else{
+            progressive_solicitacoes.visibility = View.GONE
+            linear_layout_conteudo_solicitacoes.isVisible = true
+            Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         var textoObservacao = "Antes de aceitar qualquer solicitação \nverifique a veracidade dos dados acessando o <a href='https://cadastro.cfp.org.br/'>cadastro nacional de psicólogos</a>"
         lbl_observacoes_solicitacoes.text = Html.fromHtml(textoObservacao)
         lbl_observacoes_solicitacoes.movementMethod = LinkMovementMethod.getInstance()
 
         btn_aceitar_solicitacao.setOnClickListener {
-            dialogAceitarSolicitacao()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogAceitarSolicitacao()
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_rejeitar_solicitacao.setOnClickListener {
-            dialogRejeitarSolicitacao()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogRejeitarSolicitacao()
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_voltar_solicitacoes.setOnClickListener {

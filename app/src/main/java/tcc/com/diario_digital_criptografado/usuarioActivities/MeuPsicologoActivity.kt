@@ -1,36 +1,35 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
+import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import kotlinx.android.synthetic.main.activity_meu_psicologo.*
-import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
-import java.io.File
 
+@RequiresApi(Build.VERSION_CODES.M)
 class MeuPsicologoActivity : AppCompatActivity() {
 
     private lateinit var database : DatabaseReference
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meu_psicologo)
@@ -40,11 +39,22 @@ class MeuPsicologoActivity : AppCompatActivity() {
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-        FotoUtil.definirFotoPerfil()
-        retrievePsicologoData()
+
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            retrievePsicologoData()
+        }else{
+            progressive_meu_psicologo.isVisible = false
+            linear_layout_conteudo_meu_psicologo.isVisible = true
+            Snackbar.make(btn_voltar_meu_psicologo, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         btn_excluir_psicologo.setOnClickListener {
-            dialogExcluirPsicologo()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogExcluirPsicologo()
+            }else{
+                Snackbar.make(btn_voltar_meu_psicologo, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_voltar_meu_psicologo.setOnClickListener {
@@ -92,7 +102,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
             database.get().addOnSuccessListener {
                 if(it.exists()){
                     if(it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").value.toString() != ""){
-                        lbl_sem_meu_psicologo.setVisibility(View.GONE)
+                        lbl_sem_meu_psicologo.visibility = View.GONE
                         val codigoPsicologo = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").value.toString()
                         lbl_meu_psicologo_nome.setText(it.child(codigoPsicologo).child("nome").value.toString())
                         lbl_meu_psicologo_cpf.setText(it.child(codigoPsicologo).child("cpf").value.toString())

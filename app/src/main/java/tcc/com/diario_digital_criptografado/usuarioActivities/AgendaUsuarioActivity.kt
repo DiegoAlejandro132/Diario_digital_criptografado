@@ -33,6 +33,7 @@ import tcc.com.diario_digital_criptografado.adapter.DiaAdapter
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
@@ -44,7 +45,6 @@ import kotlin.collections.ArrayList
 @RequiresApi(Build.VERSION_CODES.O)
 class AgendaUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
-    private lateinit var auth : FirebaseAuth
 
     private lateinit var emailUsuarioSelecionado : String
     private lateinit var tipoUsuario : String
@@ -57,11 +57,14 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         usuarioEstaLogado()
 
         supportActionBar?.title = "Agenda"
-        FotoUtil.definirFotoPerfil()
-        trazerDadosUsuario()
 
-
-        listarDias()
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            trazerDadosUsuario()
+            listarDias()
+        }else{
+            Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         setNavigationDrawer()
         //caso o usuario esteja logado, direciona para a sua pagina ao inves de fazer login de novo
@@ -92,11 +95,16 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 val intent = Intent(this, FormularioDiarioActivity::class.java)
                 intent.putExtra("dataSelecionada", dataCertaSelecionada)
                 if(tipoUsuario == "Psicólogo")
-                    intent.putExtra("emailUsuarioSelecionado", emailUsuarioSelecionado)
-                startActivity(intent)
+                    if(ConexaoUtil.estaConectado(this)){
+                        intent.putExtra("emailUsuarioSelecionado", emailUsuarioSelecionado)
+                        startActivity(intent)
+                    }else{
+                        Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                    }
+                else
+                    startActivity(intent)
             }else{
-                Snackbar.make(calendarView_user, "Data futura não é permitida", Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(calendarView_user, "Data futura não é permitida", Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -108,7 +116,12 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateUserData()
+        if(ConexaoUtil.estaConectado(this)){
+            updateUserData()
+            listarDias()
+        }else{
+            Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
     }
 
 
@@ -295,24 +308,20 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
         try{
 
-            val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
-            storageReference.downloadUrl.addOnSuccessListener {
-                if(!(it == null || it.toString() == ""))
-                    Glide.with(this).load(it).into(nav_header_foto_perfil)
-            }.addOnFailureListener {
-
-            }
-
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
                 if(it.exists()){
                     tipoUsuario = it.child("tipo_perfil").value.toString()
                     val nomeUsuario = "<b>" + it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
                     nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
+                    val fotoPerfil = it.child("foto_perfil").value.toString()
+                    if(fotoPerfil != ""){
+                        Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+                    }
                     if(tipoUsuario == "Psicólogo"){
                         val intent = intent
                         emailUsuarioSelecionado = intent.getStringExtra("email").toString()
-                        btn_voltar_agenda.setVisibility(View.VISIBLE)
+                        btn_voltar_agenda.visibility = View.VISIBLE
                     }else if (tipoUsuario == "Usuário do diário"){
                         emailUsuarioSelecionado = ""
                     }

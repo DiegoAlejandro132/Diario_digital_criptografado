@@ -4,15 +4,18 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -20,13 +23,16 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.lang.Thread.sleep
 
+@RequiresApi(Build.VERSION_CODES.M)
 class MeuPerfilActivity : AppCompatActivity() {
 
     private lateinit var database : DatabaseReference
@@ -40,10 +46,14 @@ class MeuPerfilActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Visualizar perfil"
 
-
-        FotoUtil.definirFotoPerfil()
-
-        trazerDadosUsuario()
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            trazerDadosUsuario()
+        }else{
+            progressive_meu_perfil.visibility = View.GONE
+            linear_layout_conteudo_meu_perfil.isVisible = true
+            Snackbar.make(btn_excluir_usuario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         btn_ir_editar_perfil.setOnClickListener{
             irEditarPerfil()
@@ -58,7 +68,12 @@ class MeuPerfilActivity : AppCompatActivity() {
         }
 
         btn_excluir_usuario.setOnClickListener{
-            dialogExcluirUsuario()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogExcluirUsuario()
+            }else{
+                Snackbar.make(btn_excluir_usuario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
+
         }
 
     }
@@ -107,7 +122,7 @@ class MeuPerfilActivity : AppCompatActivity() {
                         lbl_meu_regiao_registro.text = it.child(AuthUtil.getCurrentUser()!!).child("estado_registro").value.toString()
                     }
                     if(progressive_meu_perfil.isVisible){
-                        progressive_meu_perfil.isVisible = false
+                        progressive_meu_perfil.visibility = View.GONE
                         linear_layout_conteudo_meu_perfil.isVisible = true
                     }
                 }

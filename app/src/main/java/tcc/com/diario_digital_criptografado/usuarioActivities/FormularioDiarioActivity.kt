@@ -11,12 +11,15 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
@@ -40,15 +43,25 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
         supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
-        FotoUtil.definirFotoPerfil()
-        trazerDadosDia(dataSelecionada)
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            trazerDadosDia(dataSelecionada)
+        }else{
+            linear_layout_conteudo_formulario.isVisible = true
+            progressive_formulario.visibility = View.GONE
+            Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         onRadioButtonClicked(checkboxGroup)
 
-        btn_salvar_diario.setOnClickListener(){
-            salvarDadosDia()
-            val intent = Intent(this, AgendaUsuarioActivity::class.java)
-            startActivity(intent)
+        btn_salvar_diario.setOnClickListener{
+            if(ConexaoUtil.estaConectado(this)){
+                salvarDadosDia()
+                val intent = Intent(this, AgendaUsuarioActivity::class.java)
+                startActivity(intent)
+            }else{
+                Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_voltar_formulario_diario.setOnClickListener{

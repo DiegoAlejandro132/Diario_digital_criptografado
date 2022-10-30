@@ -1,12 +1,14 @@
 package tcc.com.diario_digital_criptografado
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
@@ -16,7 +18,9 @@ import kotlinx.android.synthetic.main.activity_cadastro.*
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
+@RequiresApi(Build.VERSION_CODES.M)
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +36,27 @@ class SplashActivity : AppCompatActivity() {
 
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onFinish() {
-                usuarioEstaLogado()
+                if (ConexaoUtil.estaConectado(this@SplashActivity)){
+                    usuarioEstaLogado()
+                }else{
+                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    Toast.makeText(this@SplashActivity, "Para poder entrar é necessário estar conectado à internet", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }.start()
 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun usuarioEstaLogado(){
-        var database = FirebaseDatabase.getInstance().getReference("users")
-        var auth = FirebaseAuth.getInstance()
+        val database = FirebaseDatabase.getInstance().getReference("users")
+        val auth = FirebaseAuth.getInstance()
         if(auth.currentUser != null){
             if(auth.currentUser!!.isEmailVerified){
                 database.get().addOnCompleteListener(this){ task ->
@@ -60,9 +74,9 @@ class SplashActivity : AppCompatActivity() {
                     }else{
                         try {
                             throw task.exception!!
-                        }catch (e:FirebaseNetworkException){
-                            Log.e("criar usuario", e.message.toString())
-                            Toast.makeText(this, "erro de conexão", Toast.LENGTH_SHORT).show()
+                        }catch (e:Exception){
+                            Log.e("usuario esta logado", e.message.toString())
+                            Toast.makeText(this, "Houve um erro ao iniciar a sessão", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

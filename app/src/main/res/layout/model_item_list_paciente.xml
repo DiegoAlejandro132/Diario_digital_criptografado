@@ -10,8 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="2dp">
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/alerta_dias_ruins_paciente"
+            android:layout_width="11dp"
+            android:layout_height="95dp"
+            app:cardCornerRadius="25dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="-2dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,7 +63,6 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp">
 
-
             <TextView
                 android:id="@+id/txt_telefone_list"
                 android:layout_width="wrap_content"
@@ -88,15 +94,16 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/btn_excluir_paciente"
                 android:layout_width="30dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_baseline_delete_24" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_baseline_delete_24"/>
 
         </LinearLayout>
 

@@ -19,11 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
@@ -56,6 +54,8 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         setContentView(R.layout.activity_agenda_usuario)
         usuarioEstaLogado()
 
+        atualizarContagemDiasRuins()
+
         supportActionBar?.title = "Agenda"
 
         if(ConexaoUtil.estaConectado(this)){
@@ -74,9 +74,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         calendarView_user.setOnDateChangeListener {
                 calendarView, i, i2, i3 ->
 
-            var ano = i
-            var mes = i2
-            var dia = i3
+
+            val ano = i
+            val mes = i2
+            val dia = i3
 
             val calendar = Calendar.getInstance()
             calendar.set(ano, mes, dia)
@@ -94,6 +95,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             if(diaAtual.isAfter(localDateSelecionado) || diaAtual.equals(localDateSelecionado)){
                 val intent = Intent(this, FormularioDiarioActivity::class.java)
                 intent.putExtra("dataSelecionada", dataCertaSelecionada)
+                intent.putExtra("dataSelecionadaLong", calendarioLong.toString())
                 if(tipoUsuario == "Psicólogo")
                     if(ConexaoUtil.estaConectado(this)){
                         intent.putExtra("emailUsuarioSelecionado", emailUsuarioSelecionado)
@@ -332,6 +334,43 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             Log.e("verifyUser", e.message.toString())
         }
     }
+
+    private fun atualizarContagemDiasRuins(){
+        database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+        database.get().addOnCompleteListener{
+            if(it.isSuccessful){
+                val snapshot = it.result
+                val hoje = LocalDate.now()
+                var qtdDiaRuim = 0
+                for (dia in snapshot.child("dias").children){
+                    val data = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
+                    val dataDate = Date(data.toLong())
+                    val dataLocalDate = dataDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    if((hoje.year == dataLocalDate.year) && (hoje.month == dataLocalDate.month)
+                        && (dataLocalDate.dayOfMonth - hoje.dayOfMonth <= 7)){
+
+                        val avaliacaoDia = CriptografiaUtil.decrypt(dia.child("avaliacaoDia").value.toString())
+                        val diaRuim = "Péssimo" in avaliacaoDia || "Ruim" in avaliacaoDia
+                        if(diaRuim){
+                            qtdDiaRuim ++
+                        }
+                    }
+                }
+                if (qtdDiaRuim >= 5){
+                    val trueString = CriptografiaUtil.encrypt("true")
+                    val databaseDiaRuim = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+                    databaseDiaRuim.child("diasRuinsConsecutivos").setValue(trueString)
+                }else{
+                    val falseString = CriptografiaUtil.encrypt("false")
+                    val databaseDiaRuim = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+                    databaseDiaRuim.child("diasRuinsConsecutivos").setValue(falseString)
+                }
+            }else{
+                Snackbar.make(btn_voltar_agenda, "Houve um erro ao atualizar os dados", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     private fun irVisualizarPefil(){
         intent = Intent(this, MeuPerfilActivity::class.java)

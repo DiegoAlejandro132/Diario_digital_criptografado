@@ -24,13 +24,14 @@ import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
     private lateinit var avaliacao_dia : String
     private lateinit var dataSelecionada : String
+    private lateinit var dataSelecionadaLong : String
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_diario)
@@ -38,6 +39,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
 
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
+        dataSelecionadaLong = intent.getStringExtra("dataSelecionadaLong").toString()
 
         supportActionBar?.title = "Como foi o dia hoje?"
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
@@ -78,7 +80,6 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
     //salva os dados inseridos no formulario do dia
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun salvarDadosDia(){
         database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
         val dia = DiaFormulario()
@@ -89,6 +90,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
         val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
         val data = CriptografiaUtil.encrypt(dataSelecionada)
+        val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
         val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
 
         dia.sentimentos_bons = sentimentosBons
@@ -98,6 +100,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         dia.titulo = titulo
         dia.data = data
         dia.modificado_em = modificadoEm
+        dia.data_long = dataLong
         database.child(dataSelecionada).setValue(dia)
 
     }
@@ -133,7 +136,6 @@ class FormularioDiarioActivity : AppCompatActivity() {
         }
     }
     //traz os dados do dia e os passa para os campos no layout
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun trazerDadosDia(dataSelecionada : String){
 
         try {
@@ -239,6 +241,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         radio_excelente.isClickable = false
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun usuarioEstaLogado(){
         if(!AuthUtil.usuarioEstaLogado()){
             intent = Intent(this, MainActivity::class.java)

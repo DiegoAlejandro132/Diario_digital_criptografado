@@ -17,10 +17,6 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
-import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
@@ -43,7 +39,7 @@ class SolicitacoesActivity : AppCompatActivity() {
 
         if(ConexaoUtil.estaConectado(this)){
             FotoUtil.definirFotoPerfil()
-            retrievePsicologoData()
+            trazerDadosPsicologo()
         }else{
             progressive_solicitacoes.visibility = View.GONE
             linear_layout_conteudo_solicitacoes.isVisible = true
@@ -135,7 +131,7 @@ class SolicitacoesActivity : AppCompatActivity() {
         b.show()
     }
 
-    private fun retrievePsicologoData(){
+    private fun trazerDadosPsicologo(){
 
         try{
 
@@ -157,6 +153,7 @@ class SolicitacoesActivity : AppCompatActivity() {
                         lbl_cpf_psiclogo_solicitacao.setText(it.child(codigoPsicologo).child("cpf").value.toString())
                         lbl_numero_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("numero_registro").value.toString())
                         lbl_regiao_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
+                        lbl_codigo_psicologo_solicitacao.setText(codigoPsicologo)
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
                         if(fotoUri.toString() != ""){

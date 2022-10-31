@@ -75,7 +75,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="20dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -88,6 +88,30 @@
 
                         <TextView
                             android:id="@+id/lbl_nome_psicologo_solicitacao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="teste"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Código de usuário: "
+                            android:textColor="@color/azul_escuro"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/lbl_codigo_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="teste"

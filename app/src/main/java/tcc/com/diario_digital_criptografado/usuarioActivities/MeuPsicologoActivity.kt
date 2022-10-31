@@ -108,6 +108,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
                         lbl_meu_psicologo_cpf.setText(it.child(codigoPsicologo).child("cpf").value.toString())
                         lbl_meu_psicologo_numero_inscricao.setText(it.child(codigoPsicologo).child("numero_registro").value.toString())
                         lbl_meu_psicologo_estado_inscricao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
+                        lbl_codigo_psicologo_meu_psicologo.setText(codigoPsicologo)
                         linear_layout_meu_psicologo.setVisibility(View.VISIBLE)
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()

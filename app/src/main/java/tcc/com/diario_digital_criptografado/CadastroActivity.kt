@@ -398,6 +398,7 @@ class CadastroActivity : AppCompatActivity() {
             usuario.codigo_psicologo = ""
             usuario.codigo_psicologo_solicitacao = ""
             usuario.foto_perfil = ""
+            usuario.diasRuinsConsecutivos = ""
 
             val userUid = AuthUtil.getCurrentUser()
             val child = "users/$userUid"
@@ -460,6 +461,15 @@ class CadastroActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun cpfExiste(){
+        val database = FirebaseDatabase.getInstance().getReference("users")
+        database.get().addOnCompleteListener{
+            if (it.isSuccessful){
+
+            }
+        }
     }
 
 }

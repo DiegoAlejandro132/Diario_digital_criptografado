@@ -225,6 +225,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                         if(dataHoje <= dataExpiracao){
                             val diaData = DiaFormulario()
                             diaData.data = CriptografiaUtil.decrypt(dia.child("data").value.toString())
+                            diaData.data_long = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
                             diaData.avaliacaoDia = CriptografiaUtil.decrypt(if(dia.child("avaliacaoDia").value != null) dia.child("avaliacaoDia").value.toString() else "")
                             diaData.titulo = CriptografiaUtil.decrypt(if(dia.child("titulo").value != null) dia.child("titulo").value.toString() else "" )
                             dialist.add(diaData)
@@ -247,6 +248,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                             val clickedItem = dialist[position]
                             adapter.notifyItemChanged(position)
                             intent = Intent(this@AgendaUsuarioActivity, FormularioDiarioActivity::class.java)
+                            intent.putExtra("dataSelecionadaLong", clickedItem.data_long)
                             intent.putExtra("dataSelecionada", clickedItem.data)
                             startActivity(intent)
                         }

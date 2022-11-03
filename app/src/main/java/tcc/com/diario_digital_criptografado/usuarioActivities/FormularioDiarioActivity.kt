@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_agenda_usuario.*
+import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
@@ -24,7 +25,6 @@ import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.time.LocalDate
 
-@RequiresApi(Build.VERSION_CODES.O)
 class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
@@ -71,6 +71,11 @@ class FormularioDiarioActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        usuarioEstaLogado()
+    }
+
     // <---------------------------------------------------- funções ----------------------------------------------------->
     // <---------------------------------------------------- funções ----------------------------------------------------->
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -81,27 +86,34 @@ class FormularioDiarioActivity : AppCompatActivity() {
     //salva os dados inseridos no formulario do dia
 
     private fun salvarDadosDia(){
-        database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
-        val dia = DiaFormulario()
+        try{
 
-        val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
-        val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
-        val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
-        val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
-        val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
-        val data = CriptografiaUtil.encrypt(dataSelecionada)
-        val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
-        val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+            val dia = DiaFormulario()
 
-        dia.sentimentos_bons = sentimentosBons
-        dia.sentimentos_ruins = sentimentosRuins
-        dia.diario = diario
-        dia.avaliacaoDia = avaliacaoDia
-        dia.titulo = titulo
-        dia.data = data
-        dia.modificado_em = modificadoEm
-        dia.data_long = dataLong
-        database.child(dataSelecionada).setValue(dia)
+            val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
+            val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
+            val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
+            val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
+            val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
+            val data = CriptografiaUtil.encrypt(dataSelecionada)
+            val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
+            val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
+
+            dia.sentimentos_bons = sentimentosBons
+            dia.sentimentos_ruins = sentimentosRuins
+            dia.diario = diario
+            dia.avaliacaoDia = avaliacaoDia
+            dia.titulo = titulo
+            dia.data = data
+            dia.modificado_em = modificadoEm
+            dia.data_long = dataLong
+            database.child(dataSelecionada).setValue(dia)
+
+        }catch (e:Exception){
+            Log.e("salvarDadosDia", e.message.toString())
+            Snackbar.make(btn_voltar_formulario_diario, "Não foi possível salvar os dados", Snackbar.LENGTH_LONG).show()
+        }
 
     }
 
@@ -213,6 +225,9 @@ class FormularioDiarioActivity : AppCompatActivity() {
                     progressive_formulario.isVisible = false
                 }
 
+            }.addOnFailureListener {
+                Toast.makeText(this@FormularioDiarioActivity, "Erro ao trazer os dados do dia.", Toast.LENGTH_SHORT).show()
+                Log.e("retrieveDayData", it.message.toString())
             }
         }catch (e:Exception){
             Toast.makeText(this@FormularioDiarioActivity, "Erro ao trazer os dados do dia.", Toast.LENGTH_SHORT).show()
@@ -241,7 +256,6 @@ class FormularioDiarioActivity : AppCompatActivity() {
         radio_excelente.isClickable = false
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun usuarioEstaLogado(){
         if(!AuthUtil.usuarioEstaLogado()){
             intent = Intent(this, MainActivity::class.java)

@@ -57,20 +57,20 @@
                         android:textSize="16sp"
                         android:layout_marginTop="20dp"
                         android:textStyle="bold"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:text="Nome"/>
 
                     <TextView
                         android:id="@+id/lbl_meu_nome_usuario"
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:text="Código de usuário"
                         android:textStyle="bold"
                         android:textSize="16sp"
@@ -84,7 +84,7 @@
                             android:id="@+id/lbl_meu_codigo_usuario"
                             android:layout_width="wrap_content"
                             android:textSize="16sp"
-                            android:textColor="@color/black"
+                            android:textColor="@color/cor_letras"
                             android:layout_height="wrap_content"/>
 
                         <ImageButton
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:text="Data de nascimento"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:layout_marginTop="20dp"/>
                     <TextView
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:inputType="date|datetime" />
 
                     <TextView
@@ -119,21 +119,21 @@
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:text="Telefone"/>
                     <TextView
                         android:id="@+id/lbl_meu_telefone"
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginTop="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:text="Email"/>
@@ -141,7 +141,7 @@
                         android:id="@+id/lbl_meu_email"
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:layout_height="wrap_content"/>
 
                     <TextView
@@ -149,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:text="CPF"/>
 
@@ -157,7 +157,7 @@
                         android:id="@+id/lbl_meu_cpf"
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:layout_height="wrap_content"/>
 
                     <TextView
@@ -166,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:text="Número de registro"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:visibility="gone"
                         android:layout_marginTop="20dp"/>
@@ -176,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:visibility="gone"/>
 
                     <TextView
@@ -185,7 +185,7 @@
                         android:textSize="16sp"
                         android:layout_height="wrap_content"
                         android:text="Região"
-                        android:textColor="@color/azul_escuro"
+                        android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:visibility="gone"
                         android:layout_marginTop="20dp"/>
@@ -195,7 +195,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/cor_letras"
                         android:visibility="gone"/>
 
 

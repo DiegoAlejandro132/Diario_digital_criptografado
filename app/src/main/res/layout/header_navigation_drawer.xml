@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/pastel_orange">
+    android:background="@color/cor_fundo_nav_drawer">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_marginStart="24dp"
             android:textSize="20sp"
             android:textAppearance="?attr/textAppearanceHeadlineSmall"
-            android:textColor="@color/white"
+            android:textColor="@color/cor_letras_nav_drawer"
             android:textStyle="bold"
             android:text="" />
 
@@ -46,8 +46,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/white" />
+            android:textColor="@color/cor_letras_nav_drawer" />
 
     </LinearLayout>
 
-    </LinearLayout>
+</LinearLayout>

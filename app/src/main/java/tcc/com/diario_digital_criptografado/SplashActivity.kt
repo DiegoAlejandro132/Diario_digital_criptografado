@@ -20,7 +20,7 @@ import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActiv
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
-@RequiresApi(Build.VERSION_CODES.M)
+
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
 
             }
 
-            @RequiresApi(Build.VERSION_CODES.O)
+
             override fun onFinish() {
                 if (ConexaoUtil.estaConectado(this@SplashActivity)){
                     usuarioEstaLogado()
@@ -53,7 +53,6 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun usuarioEstaLogado(){
         val database = FirebaseDatabase.getInstance().getReference("users")
         val auth = FirebaseAuth.getInstance()

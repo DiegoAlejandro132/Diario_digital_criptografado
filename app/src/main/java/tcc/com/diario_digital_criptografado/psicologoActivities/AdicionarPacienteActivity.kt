@@ -17,7 +17,6 @@ import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 
-@RequiresApi(Build.VERSION_CODES.M)
 class AdicionarPacienteActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 

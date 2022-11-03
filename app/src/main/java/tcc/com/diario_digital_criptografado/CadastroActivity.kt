@@ -38,7 +38,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.M)
+
 class CadastroActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()

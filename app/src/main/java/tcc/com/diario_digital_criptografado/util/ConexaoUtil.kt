@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 internal object ConexaoUtil {
-    @RequiresApi(Build.VERSION_CODES.M)
     fun estaConectado(context : Context) : Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

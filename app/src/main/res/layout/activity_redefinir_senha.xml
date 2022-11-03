@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Esqueci minha senha"
-        android:textColor="@color/black"
+        android:textColor="@color/cor_letras"
         android:textStyle="bold"
         android:textSize="26sp"
         android:layout_marginBottom="30dp"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Insira o email da sua conta para redefinição"
-        android:textColor="@color/black"
+        android:textColor="@color/cor_letras"
         android:textSize="16sp"
         android:layout_gravity="center"/>
 
@@ -43,6 +43,7 @@
         android:inputType="textWebEmailAddress"
         android:background="@drawable/borda_edit_text"
         android:textSize="16sp"
+        android:textColor="@color/cor_letras"
         android:padding="5dp"
         android:drawableLeft="@drawable/lock_reset"
         android:minHeight="48dp"/>

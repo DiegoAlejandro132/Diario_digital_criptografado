@@ -32,7 +32,6 @@ import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import java.lang.Thread.sleep
 
-@RequiresApi(Build.VERSION_CODES.M)
 class MeuPerfilActivity : AppCompatActivity() {
 
     private lateinit var database : DatabaseReference

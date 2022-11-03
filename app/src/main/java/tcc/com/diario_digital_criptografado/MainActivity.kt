@@ -25,7 +25,6 @@ import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActiv
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
-@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var database : DatabaseReference
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.title = "Login"
-
 
         verifyUserIsLoggedIn()
 
@@ -99,6 +97,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }else{
+                        progressive_login.visibility = View.GONE
+                        linear_layout_conteudo_login.isVisible = true
                         Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
                     }
                 }else{

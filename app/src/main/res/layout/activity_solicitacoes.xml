@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
+                    android:textColor="@color/cor_letras"
                     android:text="Solicitações"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -54,6 +55,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="Não há nenhuma solicitação"
+                    android:textColor="@color/cor_letras"
                     android:textSize="18sp" />
 
 
@@ -82,7 +84,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nome: "
-                            android:textColor="@color/azul_escuro"
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -90,8 +92,8 @@
                             android:id="@+id/lbl_nome_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="teste"
-                            android:textColor="@color/black"
+                            android:text=""
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp" />
 
                     </LinearLayout>
@@ -106,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Código de usuário: "
-                            android:textColor="@color/azul_escuro"
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -114,8 +116,8 @@
                             android:id="@+id/lbl_codigo_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="teste"
-                            android:textColor="@color/black"
+                            android:text=""
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp" />
 
                     </LinearLayout>
@@ -134,8 +136,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
                                 android:text="CPF: "
-                                android:textColor="@color/azul_escuro"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -143,8 +145,8 @@
                                 android:id="@+id/lbl_cpf_psiclogo_solicitacao"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="teste"
-                                android:textColor="@color/black"
+                                android:text=""
+                                android:textColor="@color/cor_letras"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -161,7 +163,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Número de inscrição: "
-                            android:textColor="@color/azul_escuro"
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -169,8 +171,8 @@
                             android:id="@+id/lbl_numero_inscricao_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="teste"
-                            android:textColor="@color/black"
+                            android:text=""
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp" />
 
                     </LinearLayout>
@@ -185,16 +187,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Região/estado de inscrição: "
-                            android:textColor="@color/azul_escuro"
-                            android:textSize="16sp"
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/lbl_regiao_inscricao_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="testeteste"
-                            android:textColor="@color/black"
+                            android:text=""
+                            android:textColor="@color/cor_letras"
                             android:textSize="16sp" />
 
                     </LinearLayout>

@@ -2,7 +2,6 @@ package tcc.com.diario_digital_criptografado.usuarioActivities
 
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -10,7 +9,6 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -26,7 +24,6 @@ import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 import kotlin.Exception
 
-@RequiresApi(Build.VERSION_CODES.M)
 class SolicitacoesActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
@@ -101,8 +98,8 @@ class SolicitacoesActivity : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this@SolicitacoesActivity)
         dialogBuilder.setMessage("Deseja mesmo aceitar? Você pesquisou a veracidade dos dados do psicólogo?")
             .setTitle("Aceitar Solicitação")
-            .setPositiveButton("Sim", { dialog, id ->  aceitarSolicitacao() })
-            .setNegativeButton("Não", { dialog, id ->  dialog.dismiss()})
+            .setPositiveButton("Sim") { dialog, id -> aceitarSolicitacao() }
+            .setNegativeButton("Não") { dialog, id -> dialog.dismiss() }
         val b = dialogBuilder.create()
         b.show()
     }

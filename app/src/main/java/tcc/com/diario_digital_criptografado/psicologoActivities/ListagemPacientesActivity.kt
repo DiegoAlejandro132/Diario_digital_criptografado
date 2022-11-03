@@ -37,7 +37,6 @@ import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
 
-@RequiresApi(Build.VERSION_CODES.M)
 class ListagemPacientesActivity : AppCompatActivity(){
     private lateinit var recyclerView : RecyclerView
     private lateinit var pacienteList : ArrayList<Usuario>
@@ -121,7 +120,6 @@ class ListagemPacientesActivity : AppCompatActivity(){
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
-                        @RequiresApi(Build.VERSION_CODES.O)
                         override fun onItemClick(position: Int) {
                             if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
                                 val clickedItem = pacienteList[position]

@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
 import kotlinx.android.synthetic.main.activity_redefinir_senha.*
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
-@RequiresApi(Build.VERSION_CODES.M)
 class RedefinirSenhaActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {

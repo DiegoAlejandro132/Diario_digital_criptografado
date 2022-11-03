@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="@color/cor_fundo_card_dias"
     android:layout_margin="8dp">
     
     <LinearLayout
@@ -35,7 +37,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="250dp"
+            android:layout_width="245dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="15dp">
@@ -53,7 +55,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:maxLength="50"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cor_letras"
                     android:text="Nome completo"/>
             </LinearLayout>
             <LinearLayout
@@ -67,7 +69,7 @@
                 android:id="@+id/txt_telefone_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/cor_letras"
                 android:textSize="12sp"
                 android:text="(##)#########"/>
 
@@ -81,28 +83,23 @@
                     android:id="@+id/txt_email_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cor_letras"
                     android:textSize="12sp"
                     android:text="teste@email.com"/>
 
             </LinearLayout>
         </LinearLayout>
-        <Space
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/btn_excluir_paciente"
                 android:layout_width="30dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_baseline_delete_24"/>
 
         </LinearLayout>

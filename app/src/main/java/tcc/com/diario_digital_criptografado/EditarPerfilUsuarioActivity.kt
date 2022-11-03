@@ -27,7 +27,6 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.Exception
 
-@RequiresApi(Build.VERSION_CODES.M)
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 

@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@color/cor_fundo_tela">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:text="Título"
                     android:layout_marginTop="35dp"
-                    android:textColor="@color/azul_escuro"
+                    android:textColor="@color/cor_letras"
                     android:textStyle="bold"
                     android:textSize="16sp"/>
 
@@ -60,6 +61,7 @@
                     android:id="@+id/txt_titulo_dia"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:textColor="@color/cor_letras"
                     android:background="@drawable/borda_edit_text"
                     android:hint="Adicione o nome de uma lembrança"
                     android:padding="8dp"/>
@@ -71,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="@color/azul_escuro"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"
                 android:layout_marginTop="40dp"
                 android:text="Qual avaliação você daria para hoje?"/>
@@ -132,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:text="Diário"
                     android:textSize="16sp"
-                    android:textColor="@color/azul_escuro"
+                    android:textColor="@color/cor_letras"
                     android:textStyle="bold"
                     android:layout_marginTop="35dp"/>
 
@@ -141,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:gravity="top"
+                    android:textColor="@color/cor_letras"
                     android:inputType="text|textMultiLine"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
@@ -152,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="@color/azul_escuro"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"
                 android:text="Sentimentos bons"
                 android:layout_marginTop="35dp"/>
@@ -162,6 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:gravity="top"
+                android:textColor="@color/cor_letras"
                 android:inputType="text|textMultiLine"
                 android:background="@drawable/borda_edit_text"
                 android:padding="8dp"
@@ -173,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sentimentos ruins"
                 android:textSize="16sp"
-                android:textColor="@color/azul_escuro"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"
                 android:layout_marginTop="35dp"/>
 
@@ -182,16 +186,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:gravity="top"
+                android:textColor="@color/cor_letras"
                 android:inputType="text|textMultiLine"
                 android:background="@drawable/borda_edit_text"
                 android:padding="8dp"
-                android:hint="Quais sentimentos bons você sentiu?" />
+                android:hint="Quais sentimentos bons você sentiu?"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="30dp"
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/btn_voltar_formulario_diario"
@@ -199,26 +205,21 @@
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
                     android:backgroundTint="@color/transparent_red"
                     android:textColor="@color/red"
                     android:drawableLeft="@drawable/ic_baseline_close_24"
                     android:text="Voltar" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
 
                 <Button
                     android:id="@+id/btn_salvar_diario"
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_marginRight="20dp"
                     android:textSize="14sp"
                     android:backgroundTint="@color/transparent_green"
                     android:textColor="@color/green"
+                    android:layout_marginLeft="80dp"
                     android:drawableLeft="@drawable/ic_baseline_done_24"
                     android:text="Salvar" />
 

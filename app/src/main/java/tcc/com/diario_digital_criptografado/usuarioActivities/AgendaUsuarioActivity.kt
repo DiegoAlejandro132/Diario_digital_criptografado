@@ -40,7 +40,6 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-@RequiresApi(Build.VERSION_CODES.O)
 class AgendaUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
@@ -119,6 +118,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if(ConexaoUtil.estaConectado(this)){
+            usuarioEstaLogado()
             updateUserData()
             listarDias()
         }else{
@@ -183,6 +183,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                         linear_layout_agenda.isVisible = true
                     }
                 }
+            }.addOnFailureListener {
+                Log.e("trazerDadosUsuario", "Não foi possivel trazer os dados do usuario")
+                Snackbar.make(btn_voltar_agenda, "Houve um erro ao trazer os dados do usuário", Snackbar.LENGTH_LONG).show()
             }
         }catch (e:Exception){
             Toast.makeText(this@AgendaUsuarioActivity, "Erro ao verificar o usuário.", Toast.LENGTH_SHORT).show()
@@ -248,6 +251,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                             startActivity(intent)
                         }
                     })
+                }else{
+                    Log.e("litarDias", "Não foi possivel listar os dias")
+                    Snackbar.make(btn_voltar_agenda, "Houve um erro ao listar os dias", Snackbar.LENGTH_LONG).show()
                 }
             }
         }catch (e:Exception){
@@ -328,6 +334,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                         emailUsuarioSelecionado = ""
                     }
                 }
+            }.addOnFailureListener {
+                Log.e("updateUserData", it.message.toString())
+                Snackbar.make(btn_voltar_agenda, "Houve um erro ao atualizar os dados", Snackbar.LENGTH_LONG).show()
             }
         }catch (e:Exception){
             Toast.makeText(this@AgendaUsuarioActivity, "Erro ao verificar o usuário.", Toast.LENGTH_SHORT).show()
@@ -343,6 +352,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 val hoje = LocalDate.now()
                 var qtdDiaRuim = 0
                 for (dia in snapshot.child("dias").children){
+                    Log.d("diachild", CriptografiaUtil.decrypt(dia.child("data_long").value.toString()))
                     val data = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
                     val dataDate = Date(data.toLong())
                     val dataLocalDate = dataDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()

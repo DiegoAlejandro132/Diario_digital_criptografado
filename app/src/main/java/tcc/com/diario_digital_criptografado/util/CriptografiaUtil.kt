@@ -7,7 +7,6 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-@RequiresApi(Build.VERSION_CODES.O)
 internal object CriptografiaUtil {
 
     fun decrypt(cipherText: String): String {

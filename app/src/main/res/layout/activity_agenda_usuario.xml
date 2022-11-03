@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/cor_fundo_tela"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".usuarioActivities.AgendaUsuarioActivity">
@@ -38,6 +39,7 @@
 
             <CalendarView
                 android:id="@+id/calendarView_user"
+                android:background="@color/cor_fundo_inputs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dateTextAppearance="@style/CalenderViewDateCustomText"
@@ -55,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Últimos lançamentos"
-                android:textColor="@color/black"
+                android:textColor="@color/cor_letras"
                 android:layout_gravity="center"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -66,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sem lançamentos recentes"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
                 android:visibility="gone"/>

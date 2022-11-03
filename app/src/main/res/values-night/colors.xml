@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cor_letras">#dedede</color>
+    <color name="cor_letras_nav_drawer">#c2c2c2</color>
+    <color name="cor_fundo_tela">#FF000000</color>
+    <color name="cor_fundo_nav_drawer">#212121</color>
+    <color name="cor_fundo_inputs">#4a4a4a</color>
+    <color name="fundo_botoes_login">#2e2e2e</color>
+    <color name="fundo_agenda">#b3b3b3</color>
+    <color name="cor_fundo_card_dias">#212121</color>
+    <color name="cor_agenda">#00abf5</color>
+</resources>

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="15dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/cor_fundo_card_dias"
     android:layout_margin="8dp">
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:maxLength="33"
                 android:visibility="visible"
                 android:textSize="18sp"
-                android:textColor="@color/black"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"/>
 
             <LinearLayout
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cor_letras"
                     android:text="xx-xx-xxxx"/>
             </LinearLayout>
 
@@ -54,7 +54,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/cor_letras"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:text="avaliacao"/>

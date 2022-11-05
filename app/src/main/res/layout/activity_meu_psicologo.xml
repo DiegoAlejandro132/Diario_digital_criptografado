@@ -1,207 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+ <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usuarioActivities.MeuPsicologoActivity"
-    android:orientation="vertical"
     android:padding="15dp">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="654dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ProgressBar
-                android:id="@+id/progressive_meu_psicologo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:indeterminateTint="@color/red" />
+            android:orientation="vertical"
+            tools:context=".usuarioActivities.MeuPsicologoActivity">
 
             <LinearLayout
-                android:id="@+id/linear_layout_conteudo_meu_psicologo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:visibility="gone">
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressive_meu_psicologo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:indeterminateTint="@color/red" />
 
                 <LinearLayout
+                    android:id="@+id/linear_layout_conteudo_meu_psicologo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/lbl_sem_meu_psicologo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center"
-                        android:text="Não há psicólogo relacionado a esta conta."
-                        android:textColor="@color/cor_letras"
-                        android:textSize="20sp" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_meu_psicologo"
-                    android:layout_width="match_parent"
-                    android:layout_height="619dp"
-                    android:background="@drawable/linear_layout_border"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/img_foto_meu_psicologo"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/imagem_perfil_default" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/lbl_sem_meu_psicologo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nome: "
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="Não há psicólogo relacionado a esta conta."
                             android:textColor="@color/cor_letras"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/lbl_meu_psicologo_nome"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp" />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_meu_psicologo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/linear_layout_border"
                         android:orientation="vertical"
-                        android:layout_marginTop="15dp">
+                        android:visibility="gone">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Código de usuário: "
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_foto_meu_psicologo"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/imagem_perfil_default" />
 
-                        <TextView
-                            android:id="@+id/lbl_codigo_psicologo_meu_psicologo"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp" />
+                            android:layout_marginTop="50dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nome: "
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lbl_meu_psicologo_nome"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Código de usuário: "
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lbl_codigo_psicologo_meu_psicologo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CPF: "
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lbl_meu_psicologo_cpf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Número de inscrição: "
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lbl_meu_psicologo_numero_inscricao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Psicólogo"
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Região/estado de inscrição: "
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lbl_meu_psicologo_estado_inscricao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/btn_excluir_psicologo"
+                                style="@style/Widget.Material3.Button.ElevatedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/red"
+                                android:drawableLeft="@drawable/delete"
+                                android:text="Excluir psicólogo"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btn_voltar_meu_psicologo"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="vertical">
+                        android:backgroundTint="@color/transparent_red"
+                        android:drawableLeft="@drawable/ic_baseline_close_24"
+                        android:text="Voltar"
+                        android:textColor="@color/red"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="CPF: "
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/lbl_meu_psicologo_cpf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Número de inscrição: "
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/lbl_meu_psicologo_numero_inscricao"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Psicólogo"
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Região/estado de inscrição: "
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/lbl_meu_psicologo_estado_inscricao"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/cor_letras"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/btn_excluir_psicologo"
-                            style="@style/Widget.Material3.Button.ElevatedButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/red"
-                            android:drawableLeft="@drawable/delete"
-                            android:text="Excluir psicólogo"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="10dp" />
 
                 </LinearLayout>
 
@@ -210,29 +239,3 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btn_voltar_meu_psicologo"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent_red"
-            android:drawableLeft="@drawable/ic_baseline_close_24"
-            android:text="Voltar"
-            android:textColor="@color/red"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-</LinearLayout>

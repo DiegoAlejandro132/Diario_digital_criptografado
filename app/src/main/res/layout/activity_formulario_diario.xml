@@ -190,7 +190,7 @@
                 android:inputType="text|textMultiLine"
                 android:background="@drawable/borda_edit_text"
                 android:padding="8dp"
-                android:hint="Quais sentimentos bons você sentiu?"/>
+                android:hint="Quais sentimentos ruins você sentiu?"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

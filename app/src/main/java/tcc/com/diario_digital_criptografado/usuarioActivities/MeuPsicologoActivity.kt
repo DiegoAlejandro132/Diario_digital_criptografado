@@ -1,13 +1,11 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -16,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import kotlinx.android.synthetic.main.activity_meu_psicologo.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
@@ -41,7 +38,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
 
         if(ConexaoUtil.estaConectado(this)){
             FotoUtil.definirFotoPerfil()
-            retrievePsicologoData()
+            trazerDadosPsicologo()
         }else{
             progressive_meu_psicologo.isVisible = false
             linear_layout_conteudo_meu_psicologo.isVisible = true
@@ -88,7 +85,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
         b.show()
     }
 
-    private fun retrievePsicologoData(){
+    private fun trazerDadosPsicologo(){
 
         try{
 
@@ -120,11 +117,13 @@ class MeuPsicologoActivity : AppCompatActivity() {
                         if(progressive_meu_psicologo.isVisible){
                             progressive_meu_psicologo.isVisible = false
                             linear_layout_conteudo_meu_psicologo.isVisible = true
+                            btn_voltar_meu_psicologo.isVisible = true
                         }
 
                     }else{
                         linear_layout_meu_psicologo.setVisibility(View.GONE)
                         lbl_sem_meu_psicologo.setVisibility(View.VISIBLE)
+                        btn_voltar_meu_psicologo.isVisible = true
 
                         if(progressive_meu_psicologo.isVisible){
                             progressive_meu_psicologo.isVisible = false

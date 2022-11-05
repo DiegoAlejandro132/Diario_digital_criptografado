@@ -165,13 +165,15 @@ class SolicitacoesActivity : AppCompatActivity() {
                             linear_layout_conteudo_solicitacoes.isVisible = true
                         }
 
-                        lbl_sem_solicitacoes.setVisibility(View.GONE)
-                        linear_layout_dados_psicologo_solicitacao.setVisibility(View.VISIBLE)
+                        lbl_sem_solicitacoes.visibility = View.GONE
+                        linear_layout_dados_psicologo_solicitacao.isVisible = true
+                        btn_voltar_solicitacoes.isVisible = true
 
                     }else{
 
                         lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
                         linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
+                        btn_voltar_solicitacoes.isVisible = true
 
                         if(progressive_solicitacoes.isVisible){
                             progressive_solicitacoes.isVisible = false

@@ -29,15 +29,38 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_foto_perfil"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:src="@drawable/imagem_perfil_default"
-                android:layout_marginTop="20dp"
-                android:clickable="true"
-                android:focusable="true"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_foto_perfil"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/imagem_perfil_default"
+                    android:layout_marginTop="20dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginTop="168dp"
+                    android:backgroundTint="@color/transparent_orange"
+                    app:cardCornerRadius="40dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/btn_editar_foto_perfil"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_edit_24" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,7 +79,7 @@
                 <EditText
                     android:id="@+id/txt_editar_nome_usuario"
                     android:layout_width="match_parent"
-                    android:layout_height="59dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
                     android:textColor="@color/cor_letras"/>
@@ -73,7 +96,7 @@
                 <TextView
                     android:id="@+id/txt_editar_data_nascimento"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/cor_letras"
                     android:textStyle="bold"
@@ -93,7 +116,7 @@
                 <com.vicmikhailau.maskededittext.MaskedEditText
                     android:id="@+id/txt_editar_telefone"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/cor_letras"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
@@ -111,11 +134,10 @@
                 <EditText
                     android:id="@+id/txt_codigo_usuario"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
-                    android:textColor="@color/cor_letras"
-                    android:enabled="false"/>
+                    android:enabled="false" />
 
 
                 <TextView
@@ -130,9 +152,8 @@
                 <EditText
                     android:id="@+id/txt_editar_email"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/borda_edit_text"
-                    android:textColor="@color/cor_letras"
                     android:padding="8dp"
                     android:enabled="false"/>
 
@@ -148,36 +169,36 @@
                 <EditText
                     android:id="@+id/txt_editar_cpf"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/borda_edit_text"
-                    android:textColor="@color/cor_letras"
                     android:padding="8dp"
-                    android:enabled="false"/>
+                    android:enabled="false" />
 
                 <TextView
                     android:id="@+id/lbl_editar_numero_registro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Número de registro"
-                    android:textColor="@color/azul_escuro"
+                    android:textColor="@color/cor_letras"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:visibility="gone"
                     android:layout_marginTop="30dp"/>
+
                 <EditText
                     android:id="@+id/txt_editar_numero_registro"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
-                    android:enabled="false"/>
+                    android:enabled="false" />
 
                 <TextView
                     android:id="@+id/lbl_editar_numero_regiao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/azul_escuro"
+                    android:textColor="@color/cor_letras"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:text="Região"
@@ -187,11 +208,11 @@
                 <EditText
                     android:id="@+id/txt_editar_regiao"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:background="@drawable/borda_edit_text"
                     android:padding="8dp"
-                    android:enabled="false"/>
+                    android:enabled="false" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

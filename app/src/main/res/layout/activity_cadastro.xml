@@ -35,11 +35,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:text="Cadastro de usuário"
                 android:textColor="@color/cor_letras"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -47,9 +47,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textStyle="bold"
+                android:text="Crie sua conta para acessar ao seu diário criptografado"
+                android:textAlignment="center"
                 android:textColor="@color/cor_letras"
-                android:text="Crie sua conta para acessar ao seu diário criptografado"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,28 +61,28 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/cor_letras"
-                    android:textStyle="bold"
                     android:layout_marginTop="40dp"
-                    android:text="Nome completo" />
+                    android:text="Nome completo"
+                    android:textColor="@color/cor_letras"
+                    android:textStyle="bold" />
 
 
                 <EditText
                     android:id="@+id/txt_nome"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/borda_edit_text"
-                    android:padding="8dp"
                     android:layout_marginBottom="17dp"
-                    android:inputType="textPersonName" />
+                    android:background="@drawable/borda_edit_text"
+                    android:inputType="textPersonName"
+                    android:padding="8dp" />
 
                 <TextView
                     android:id="@+id/lbl_advertencia_cadastrar_usuario_nome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* Não podem haver espaços vazios no começo e final do nome, números tambem não são permitidos *"
+                    android:text="* O campo nome não pode ser vazio, números tambem não são permitidos no nome *"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -93,30 +94,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Gênero"
                         android:textColor="@color/cor_letras"
-                        android:textStyle="bold"
-                        android:text="Gênero"/>
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/cor_letras"
-                        android:textStyle="bold"
                         android:layout_gravity="end"
-                        android:text="Tipo de cadastro" />
+                        android:text="Tipo de cadastro"
+                        android:textColor="@color/cor_letras"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
 
@@ -129,19 +130,19 @@
                         android:id="@+id/spn_genero"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:contentDescription="spinner de genero"/>
+                        android:contentDescription="spinner de genero" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <Spinner
                         android:id="@+id/spn_tipo_perfil"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:gravity="end"
-                        android:contentDescription="spinner de genero"/>
+                        android:contentDescription="spinner de genero"
+                        android:gravity="end" />
 
                 </LinearLayout>
 
@@ -151,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:text="*Campo gênero ou tipo de cadastro não podem ser vazios*"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -159,30 +160,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView5"
-                    android:textColor="@color/cor_letras"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="CPF" />
+                    android:text="CPF"
+                    android:textColor="@color/cor_letras"
+                    android:textStyle="bold" />
 
                 <Space
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/cor_letras"
-                    android:textStyle="bold"
                     android:layout_marginRight="32dp"
-                    android:text="Data de nascimento"/>
+                    android:text="Data de nascimento"
+                    android:textColor="@color/cor_letras"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -194,27 +195,27 @@
                     android:id="@+id/txt_cpf"
                     android:layout_width="155dp"
                     android:layout_height="48dp"
-                    android:ems="10"
                     android:background="@drawable/borda_edit_text"
-                    android:padding="8dp"
+                    android:ems="10"
                     android:inputType="number"
+                    android:padding="8dp"
                     android:textSize="14sp"
                     app:mask="###.###.###-##" />
 
                 <Space
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/txt_data_nascimento"
                     android:layout_width="155dp"
                     android:layout_height="48dp"
                     android:background="@drawable/borda_edit_text"
-                    android:padding="8dp"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:padding="8dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -234,7 +235,7 @@
                         android:layout_height="wrap_content"
                         android:text="* CPF não válido *"
                         android:textColor="@color/red"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/lbl_advertencia_cpf_existente"
@@ -242,15 +243,15 @@
                         android:layout_height="wrap_content"
                         android:text="* CPF já existe *"
                         android:textColor="@color/red"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
 
                 <Space
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -261,19 +262,19 @@
                         android:id="@+id/lbl_advertencia_cadastrar_usuario_data_nascimento"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* Selecione uma data *"
                         android:layout_marginRight="12dp"
+                        android:text="* Selecione uma data *"
                         android:textColor="@color/red"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/lbl_advertencia_cadastrar_usuario_menor_de_idade"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* Usuário deve ser \nmaior de 18 anos *"
                         android:layout_marginRight="12dp"
+                        android:text="* Usuário deve ser \nmaior de 18 anos *"
                         android:textColor="@color/red"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -287,30 +288,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp">
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="wrap_content"
-                        android:textColor="@color/cor_letras"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="E-mail"/>
+                        android:text="E-mail"
+                        android:textColor="@color/cor_letras"
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/cor_letras"
-                        android:textStyle="bold"
                         android:layout_marginRight="100dp"
-                        android:text="Telefone"/>
+                        android:text="Telefone"
+                        android:textColor="@color/cor_letras"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -322,25 +323,25 @@
                         android:id="@+id/txt_email"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:ems="10"
                         android:background="@drawable/borda_edit_text"
-                        android:padding="8dp"
+                        android:ems="10"
                         android:inputType="textEmailAddress"
+                        android:padding="8dp"
                         android:textSize="14sp" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <com.vicmikhailau.maskededittext.MaskedEditText
                         android:id="@+id/txt_telefone"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:ems="10"
                         android:background="@drawable/borda_edit_text"
-                        android:padding="8dp"
+                        android:ems="10"
                         android:inputType="phone"
+                        android:padding="8dp"
                         android:textSize="14sp"
                         app:mask="(##)#########" />
                 </LinearLayout>
@@ -356,21 +357,21 @@
                         android:layout_height="wrap_content"
                         android:text="* Insira uma email válido \nou retire os espaços *"
                         android:textColor="@color/red"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/lbl_advertencia_cadastrar_usuario_telefone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="33dp"
                         android:text="* Insira um número \nde telefone válido *"
                         android:textColor="@color/red"
-                        android:layout_marginRight="33dp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -384,30 +385,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp">
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Senha"
                         android:textColor="@color/cor_letras"
-                        android:textStyle="bold"
-                        android:text="Senha"/>
+                        android:textStyle="bold" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/cor_letras"
-                        android:textStyle="bold"
                         android:layout_marginRight="51dp"
-                        android:text="Confirmar senha"/>
+                        android:text="Confirmar senha"
+                        android:textColor="@color/cor_letras"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -419,25 +420,25 @@
                         android:id="@+id/txt_senha"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:ems="10"
                         android:background="@drawable/borda_edit_text"
-                        android:padding="8dp"
+                        android:ems="10"
                         android:inputType="text|textPassword"
-                        android:textSize="14sp"/>
+                        android:padding="8dp"
+                        android:textSize="14sp" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <EditText
                         android:id="@+id/txt_confirmar_senha"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:ems="10"
                         android:background="@drawable/borda_edit_text"
-                        android:padding="8dp"
+                        android:ems="10"
                         android:inputType="text|textPassword"
+                        android:padding="8dp"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -446,10 +447,10 @@
                     android:id="@+id/lbl_advertencia_cadastrar_usuario_senhas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="* As senhas não são iguais *"
                     android:textColor="@color/red"
-                    android:layout_gravity="center"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -465,8 +466,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:text="A senha deve conter pelo menos 6 caracteres e não podem haver espaços vazios"
-                    android:textSize="12sp"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/red"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -480,25 +481,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp">
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/lbl_numero_registro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Número de registro"/>
+                        android:text="Número de registro" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/lbl_estado_regiao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Estado/Região do registro"/>
+                        android:text="Estado/Região do registro" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -511,19 +512,19 @@
                         android:layout_width="155dp"
                         android:layout_height="48dp"
                         android:background="@drawable/borda_edit_text"
-                        android:padding="8dp"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:padding="8dp" />
 
                     <Space
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <Spinner
                         android:id="@+id/spn_regiao"
                         android:layout_width="155dp"
                         android:layout_height="48dp"
-                        android:contentDescription="spinner de genero"/>
+                        android:contentDescription="spinner de genero" />
                 </LinearLayout>
 
                 <TextView
@@ -532,39 +533,45 @@
                     android:layout_height="wrap_content"
                     android:text="* Os campos de cadastro do psicólogo não podem ser vazios *"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Após o cadastro, um email de confirmação será enviado. Caso não o encontre, procure-o na caixa de spam"
+                android:textColor="@color/cor_letras"
+                android:layout_marginTop="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
                 android:gravity="center"
-                android:layout_marginTop="30dp">
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_cancelar"
                     style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:textSize="14sp"
-                    android:drawableLeft="@drawable/ic_baseline_close_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/transparent_red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
+                    android:text="Voltar"
                     android:textColor="@color/red"
-                    android:text="Voltar" />
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/btn_cadastrar"
                     style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:textSize="14sp"
-                    android:drawableLeft="@drawable/ic_baseline_add_24"
-                    android:backgroundTint="@color/transparent_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="100dp"
-                    android:text="Cadastrar"/>
+                    android:backgroundTint="@color/transparent_orange"
+                    android:drawableLeft="@drawable/ic_baseline_add_24"
+                    android:text="Cadastrar"
+                    android:textSize="14sp" />
 
 
             </LinearLayout>

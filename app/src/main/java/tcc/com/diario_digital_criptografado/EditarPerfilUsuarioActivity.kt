@@ -52,6 +52,10 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
             selectImage()
         }
 
+        btn_editar_foto_perfil.setOnClickListener{
+            selectImage()
+        }
+
         btn_voltar_editar_perfil.setOnClickListener{
             finish()
         }

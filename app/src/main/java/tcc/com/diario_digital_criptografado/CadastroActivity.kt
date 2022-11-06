@@ -94,21 +94,65 @@ class CadastroActivity : AppCompatActivity() {
 
     //função que cria a conta do usuario e do seu tipo de cadastro
     private fun createUser(){
-        auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
-            if(task.isSuccessful){
-                if(tipo_perfil == "Usuário do diário") {
-                    criarUsuario()
-                    Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
-                    Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
-                        if(it.isSuccessful){
-                            Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+        val database = FirebaseDatabase.getInstance().getReference("users")
+        when (tipo_perfil) {
+            "Psicólogo" -> {
+                database.get().addOnSuccessListener { snapshot ->
+                    if(snapshot.exists()){
+                        var existe = false
+                        for(user in snapshot.children){
+                            if((user.child("numero_registro").value.toString() == txt_numero_registro.text.toString())
+                                && (user.child("estado_registro").value.toString() == estado_registro)){
+
+                                existe = true
+
+                            }
                         }
+                        if(existe){
+                            linear_layout_conteudo_cadastrar.isVisible = true
+                            progressive_cadastro.visibility = View.GONE
+                            Snackbar.make(btn_cadastrar, "Os dados informados já estão associados a uma conta", Snackbar.LENGTH_LONG).show()
+                        }else{
+                            auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
+                                if(task.isSuccessful){
+                                    writePsicologoDatabase()
+                                    Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
+                                    Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
+                                        if(it.isSuccessful){
+                                            Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                    finish()
+                                }else{
+                                    try {
+                                        linear_layout_conteudo_cadastrar.isVisible = true
+                                        progressive_cadastro.visibility = View.GONE
+                                        throw task.exception!!
+                                    }catch (e:FirebaseNetworkException){
+                                        Log.e("criar usuario", e.message.toString())
+                                        Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                    }catch (e:FirebaseAuthUserCollisionException){
+                                        Log.e("criar usuario", e.message.toString())
+                                        Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
+                                    }catch (e:Exception){
+                                        Log.e("criar usuario", e.toString())
+                                        Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        linear_layout_conteudo_cadastrar.isVisible = true
+                        progressive_cadastro.visibility = View.GONE
+                        Snackbar.make(btn_cadastrar, "Houve um erro ao tentar criar a conta", Snackbar.LENGTH_LONG).show()
                     }
-                    finish()
-                }else{
-                    if(tipo_perfil == "Psicólogo"){
-                        writePsicologoDatabase()
-                        Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
+                }
+            }
+            "Usuário do diário" -> {
+                auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
+                    if(task.isSuccessful){
+                        criarUsuario()
+                        Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                         Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                             if(it.isSuccessful){
                                 Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
@@ -116,26 +160,27 @@ class CadastroActivity : AppCompatActivity() {
                         }
                         finish()
                     }else{
-                        linear_layout_conteudo_cadastrar.isVisible = true
-                        progressive_cadastro.visibility = View.GONE
-                        Toast.makeText(this@CadastroActivity, "Não foi possivel criar a conta psicologo", Toast.LENGTH_LONG).show()
+                        try {
+                            linear_layout_conteudo_cadastrar.isVisible = true
+                            progressive_cadastro.visibility = View.GONE
+                            throw task.exception!!
+                        }catch (e:FirebaseNetworkException){
+                            Log.e("criar usuario", e.message.toString())
+                            Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                        }catch (e:FirebaseAuthUserCollisionException){
+                            Log.e("criar usuario", e.message.toString())
+                            Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
+                        }catch (e:Exception){
+                            Log.e("criar usuario", e.toString())
+                            Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
-            }else{
-                try {
-                    linear_layout_conteudo_cadastrar.isVisible = true
-                    progressive_cadastro.visibility = View.GONE
-                    throw task.exception!!
-                }catch (e:FirebaseNetworkException){
-                    Log.e("criar usuario", e.message.toString())
-                    Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
-                }catch (e:FirebaseAuthUserCollisionException){
-                    Log.e("criar usuario", e.message.toString())
-                    Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
-                }catch (e:Exception){
-                    Log.e("criar usuario", e.toString())
-                    Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
-                }
+            }
+            else -> {
+                linear_layout_conteudo_cadastrar.isVisible = true
+                progressive_cadastro.visibility = View.GONE
+                Snackbar.make(btn_cadastrar, "Houve um erro ao tentar criar a conta", Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -159,8 +204,7 @@ class CadastroActivity : AppCompatActivity() {
     }
 
     private fun validarNome() : Boolean{
-        val valido = txt_nome.text.toString() != "" && txt_nome.text[0].toString() != " "
-                && txt_nome.text[txt_nome.text.length - 1].toString() != " " && "1" !in txt_nome.text
+        val valido = txt_nome.text.toString() != "" && txt_nome.text.toString() != " " && "1" !in txt_nome.text
                 && "2" !in txt_nome.text && "3" !in txt_nome.text && "4" !in txt_nome.text
                 && "5" !in txt_nome.text && "6" !in txt_nome.text && "7" !in txt_nome.text
                 && "8" !in txt_nome.text && "9" !in txt_nome.text

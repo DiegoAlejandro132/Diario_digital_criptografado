@@ -23,7 +23,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        supportActionBar?.title = "Meu diário criptografado"
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
         val timer = object: CountDownTimer(1700, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
@@ -48,7 +50,6 @@ class SplashActivity : AppCompatActivity() {
             if(AuthUtil.usuarioEstaLogado()){
                 database.get().addOnCompleteListener(this){ task ->
                     if(task.isSuccessful){
-                        Toast.makeText(this, AuthUtil.getCurrentUser().toString(), Toast.LENGTH_SHORT).show()
                         val snapshot = task.result
                         if(snapshot.child(AuthUtil.getCurrentUser()!!).value != null){
                             if(auth.currentUser!!.isEmailVerified){
@@ -66,7 +67,6 @@ class SplashActivity : AppCompatActivity() {
                                     finish()
                                 }
                             }else{
-                                Toast.makeText(this, "Você precisa confirmar o email de verificação", Toast.LENGTH_LONG).show()
                                 val intent = Intent(this, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()

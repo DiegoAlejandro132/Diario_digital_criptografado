@@ -1,16 +1,29 @@
 package tcc.com.diario_digital_criptografado;
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
+import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.txt_email
+import kotlinx.android.synthetic.main.activity_main.txt_senha
 import tcc.com.diario_digital_criptografado.psicologoActivities.ListagemPacientesActivity
+import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 
 class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -18,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        supportActionBar?.title = "Login"
 
         verifyUserIsLoggedIn()
 
@@ -40,27 +55,58 @@ class MainActivity : AppCompatActivity() {
 
             try {
 
-                val email = txt_email.text.toString()
-                val senha = txt_senha.text.toString()
+                if(ConexaoUtil.estaConectado(this)){
+                    progressive_login.isVisible = true
+                    linear_layout_conteudo_login.visibility = View.GONE
 
-                if(validateLogin()){
-                    auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            database = FirebaseDatabase.getInstance().getReference("users")
-                            database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                                val tipo_perfil = it.child("tipo_perfil").value
-                                when (tipo_perfil){
-                                    "Usuário do diário" -> loginUsuario()
-                                    "Psicólogo" -> logInPsicologo()
-                                    else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                    val email = txt_email.text.toString()
+                    val senha = txt_senha.text.toString()
+
+                    if(validateLogin()){
+                        auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                if (auth.currentUser!!.isEmailVerified){
+                                    database = FirebaseDatabase.getInstance().getReference("users")
+                                    database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                                        when (it.child("tipo_perfil").value){
+                                            "Usuário do diário" -> loginUsuario()
+                                            "Psicólogo" -> logInPsicologo()
+                                            else -> Toast.makeText(this@MainActivity, "Erro na validação, tente novamnte mais tarde", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                }else{
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
+                                }
+                            }else{
+                                try {
+                                    throw task.exception!!
+                                }catch (e: FirebaseNetworkException){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
+                                }catch (e: FirebaseAuthInvalidCredentialsException){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
+                                } catch (e:Exception){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Log.e("criar usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
                                 }
                             }
-                        }else{
-                            Toast.makeText(this@MainActivity, "Email ou senha incorreto", Toast.LENGTH_LONG).show()
                         }
+                    }else{
+                        progressive_login.visibility = View.GONE
+                        linear_layout_conteudo_login.isVisible = true
+                        Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
                     }
                 }else{
-                    Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
+                    Snackbar.make(btn_ir_cadastro, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
                 }
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, "Erro ao fazer login.", Toast.LENGTH_SHORT).show()
@@ -84,18 +130,20 @@ class MainActivity : AppCompatActivity() {
     private fun verifyUserIsLoggedIn(){
 
         try {
-            if(AuthUtil.userIsLoggedIn()){
-                database = FirebaseDatabase.getInstance().getReference("users")
-                database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                    val tipoUsuario = it.child("tipo_perfil").value.toString()
-                    if(tipoUsuario == "Psicólogo"){
-                        val intent = Intent(this, ListagemPacientesActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }else if (tipoUsuario == "Usuário do diário"){
-                        val intent = Intent(this, AgendaUsuarioActivity::class.java)
-                        startActivity(intent)
-                        finish()
+            if(AuthUtil.usuarioEstaLogado()){
+                if(auth.currentUser!!.isEmailVerified){
+                    database = FirebaseDatabase.getInstance().getReference("users")
+                    database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+                        val tipoUsuario = it.child("tipo_perfil").value.toString()
+                        if(tipoUsuario == "Psicólogo"){
+                            val intent = Intent(this, ListagemPacientesActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else if (tipoUsuario == "Usuário do diário"){
+                            val intent = Intent(this, AgendaUsuarioActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                 }
             }

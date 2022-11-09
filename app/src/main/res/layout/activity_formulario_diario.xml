@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@color/cor_fundo_tela">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,27 +20,63 @@
             android:layout_gravity="center"/>
 
         <LinearLayout
+            android:id="@+id/lbl_psicologo_nao_autorizado_formulario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cor_letras"
+                android:textSize="26sp"
+                android:text="OPS..... \nParece que você não está mais autorizado a ter acesso aos dados deste paciente"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linear_layout_conteudo_formulario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/txt_data"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_formulario_titulo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="20dp"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:text="" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Título"
+                    android:layout_marginTop="35dp"
+                    android:textColor="@color/cor_letras"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/txt_titulo_dia"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textColor="@color/cor_letras"
+                    android:background="@drawable/borda_edit_text"
+                    android:hint="Adicione o nome de uma lembrança"
+                    android:padding="8dp"/>
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/cor_letras"
+                android:textStyle="bold"
                 android:layout_marginTop="40dp"
-                android:text="De maneira geral, como foi seu dia?"/>
+                android:text="Qual avaliação você daria para o dia de hoje?"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,92 +93,140 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Péssimo"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_ruim"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ruim"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Regular"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_bom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bom"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton android:id="@+id/radio_excelente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Excelente"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/txt_pergunta1"
+            <LinearLayout
+                android:id="@+id/linear_layout_formulario_diario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diário"
+                    android:textSize="16sp"
+                    android:textColor="@color/cor_letras"
+                    android:textStyle="bold"
+                    android:layout_marginTop="35dp"/>
+
+                <EditText
+                    android:id="@+id/txt_diario"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:gravity="top"
+                    android:textColor="@color/cor_letras"
+                    android:inputType="text|textMultiLine"
+                    android:background="@drawable/borda_edit_text"
+                    android:padding="8dp"
+                    android:hint="Quais foram suas experiências hoje?" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/text_view_txt_diario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Diário"
+                android:textSize="16sp"
+                android:textColor="@color/cor_letras"
+                android:textStyle="bold"
+                android:text="Sentimentos bons"
                 android:layout_marginTop="35dp"/>
 
             <EditText
-                android:id="@+id/txt_diario"
+                android:id="@+id/txt_sentimentos_bons"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:gravity="top"
-                android:ems="10"
+                android:textColor="@color/cor_letras"
                 android:inputType="text|textMultiLine"
-                android:hint="Escreva suas anotações diárias aqui" />
+                android:background="@drawable/borda_edit_text"
+                android:padding="8dp"
+                android:hint="Quais sentimentos bons você sentiu?"
+                android:text="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sentimentos ruins"
+                android:textSize="16sp"
+                android:textColor="@color/cor_letras"
+                android:textStyle="bold"
+                android:layout_marginTop="35dp"/>
+
+            <EditText
+                android:id="@+id/txt_sentimentos_ruins"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:textColor="@color/cor_letras"
+                android:inputType="text|textMultiLine"
+                android:background="@drawable/borda_edit_text"
+                android:padding="8dp"
+                android:hint="Quais sentimentos ruins você sentiu?"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="30dp"
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/btn_voltar_formulario_diario"
-                    android:layout_width="100dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:backgroundTint="@color/voltar_color"
-                    android:textColor="@color/yellow"
-                    android:text="voltar" />
+                    android:backgroundTint="@color/transparent_red"
+                    android:textColor="@color/red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
+                    android:text="Voltar" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
 
                 <Button
                     android:id="@+id/btn_salvar_diario"
-                    android:layout_width="100dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_marginRight="20dp"
-                    android:text="salvar" />
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/transparent_green"
+                    android:textColor="@color/green"
+                    android:layout_marginLeft="80dp"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
+                    android:text="Salvar" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </ScrollView>

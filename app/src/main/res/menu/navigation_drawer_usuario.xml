@@ -7,21 +7,24 @@
     <item
         android:id="@+id/nav_acesso_perfil_usuario"
         android:title="Perfil"
-        android:checkable="true"/>
+        android:checkable="true"
+        android:icon="@drawable/ic_baseline_person_24"/>
 
     <item
         android:id="@+id/nav_acesso_meu_psicologo"
         android:title="Meu psicólogo"
-        android:checkable="true"/>
+        android:checkable="true"
+        android:icon="@drawable/ic_baseline_psychology_24"/>
 
     <item
         android:id="@+id/nav_acesso_solicitacoes"
         android:title="Solicitações"
-        android:checkable="true"/>
+        android:checkable="true"
+        android:icon="@drawable/ic_baseline_person_add_24"/>
     <item
         android:id="@+id/nav_logout_usuario"
         android:title="Logout"
         android:checkable="true"
-        />
+        android:icon="@drawable/ic_logout"/>
 
 </menu>

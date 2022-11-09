@@ -32,33 +32,41 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Adicione um paciente"
+                    android:textColor="@color/cor_letras"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="Observações:"
-                    android:layout_marginTop="20dp"/>
+                    android:textColor="@color/cor_letras" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-> Caso o código do paciente inserido não \nesteja relacionado com nenhum usuário, a \nsolicitação não chegará a ninguém. \n-> Caso o paciente já tenha uma solicitação \npendente, a sua não será enviada. \nCertifique-se com ele que não haja nenhuma.\n-> Caso o paciente já tenha um psicólogo \nassociado a ele, sua solicitação não será \nenviada. Certifique-se com ele de não \nhaver nenhum."
-                    android:textSize="12sp"/>
+                    android:textColor="@color/cor_letras"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:text="Código do paciente"
-                    android:layout_marginTop="30dp"/>
+                    android:textColor="@color/cor_letras" />
 
                 <EditText
                     android:id="@+id/txt_codigo_paciente"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="60dp"
+                    android:background="@drawable/borda_edit_text"
+                    android:inputType="text|textMultiLine"
+                    android:padding="5dp"
+                    android:textColor="@color/cor_letras" />
 
                 <TextView
                     android:id="@+id/lbl_advertencia_adicionar_paciente"
@@ -66,25 +74,33 @@
                     android:layout_height="wrap_content"
                     android:text="O código do paciente não pode ser vazio."
                     android:textColor="@color/red"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/btn_enviar_solicitacao"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="@color/transparent_green"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
                     android:text="Enviar solicitação"
-                    android:layout_marginTop="30dp"/>
+                    android:textColor="@color/green"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/btn_voltar_adicionar_paciente"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/voltar_color"
-                    android:textColor="@color/yellow"
-                    android:text="Voltar"/>
+                    android:backgroundTint="@color/transparent_red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
+                    android:text="Voltar"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
 
 
             </LinearLayout>

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".usuarioActivities.SolicitacoesActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="15dp">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,8 +16,8 @@
                 android:id="@+id/progressive_solicitacoes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/red"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:indeterminateTint="@color/red" />
 
             <LinearLayout
                 android:id="@+id/linear_layout_conteudo_solicitacoes"
@@ -34,63 +29,67 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Solicitações"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/cor_letras"
+                    android:text="Solicitações"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="20dp"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/lbl_observacoes_solicitacoes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/lbl_sem_solicitacoes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Não há nenhuma solicitação"
-                    android:textSize="18sp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
+                    android:text="Não há nenhuma solicitação"
+                    android:textColor="@color/cor_letras"
+                    android:textSize="18sp" />
 
 
                 <LinearLayout
                     android:id="@+id/linear_layout_dados_psicologo_solicitacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/linear_layout_border"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    android:background="@drawable/linear_layout_border">
+                    android:visibility="gone">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/img_foto_psicologo_solicitacao"
                         android:layout_width="160dp"
                         android:layout_height="160dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/imagem_perfil_default"/>
+                        android:src="@drawable/imagem_perfil_default" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="50dp">
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="Nome: "
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp"
-                            android:text="Nome: "/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/lbl_nome_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:layout_marginLeft="8dp"
-                            android:text="teste"/>
+                            android:text=""
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -100,24 +99,50 @@
                         android:orientation="vertical"
                         android:layout_marginTop="15dp">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Código de usuário: "
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/lbl_codigo_psicologo_solicitacao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/cor_letras"
+                                android:text="CPF: "
                                 android:textSize="18sp"
-                                android:text="CPF: "/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/lbl_cpf_psiclogo_solicitacao"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:layout_marginLeft="8dp"
-                                android:text="teste"/>
+                                android:text=""
+                                android:textColor="@color/cor_letras"
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -126,98 +151,114 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="Número de inscrição: "
+                            android:textColor="@color/cor_letras"
                             android:textSize="18sp"
-                            android:text="Número de inscrição: "/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/lbl_numero_inscricao_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:layout_marginLeft="8dp"
-                            android:text="teste"/>
+                            android:text=""
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:text="Região/estado de inscrição: "/>
+                            android:text="Região/estado de inscrição: "
+                            android:textColor="@color/cor_letras"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/lbl_regiao_inscricao_psicologo_solicitacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:layout_marginLeft="8dp"
-                            android:text="testeteste"/>
+                            android:text=""
+                            android:textColor="@color/cor_letras"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="30dp">
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/btn_aceitar_solicitacao"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:backgroundTint="@color/acept_color_back"
+                            android:backgroundTint="@color/transparent_green"
+                            android:drawableLeft="@drawable/ic_baseline_done_24"
+                            android:text="Aceitar"
                             android:textColor="@color/green"
-                            android:text="Aceitar"/>
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
                         <Button
                             android:id="@+id/btn_rejeitar_solicitacao"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="15dp"
-                            android:backgroundTint="@color/reject_color_back"
-                            android:textColor="@color/red"
-                            android:text="Rejeitar"/>
+                            android:backgroundTint="@color/red"
+                            android:drawableLeft="@drawable/delete"
+                            android:text="Rejeitar"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_voltar_solicitacoes"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
+                    android:backgroundTint="@color/transparent_red"
+                    android:textColor="@color/red"
+                    android:drawableLeft="@drawable/ic_baseline_close_24"
+                    android:textSize="14sp"
+                    android:text="Voltar"
+                    android:visibility="gone"/>
 
-                    <Button
-                        android:id="@+id/btn_voltar_solicitacoes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/voltar_color"
-                        android:textColor="@color/yellow"
-                        android:text="Voltar"/>
-
-                </LinearLayout>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="15dp" />
 
             </LinearLayout>
 
@@ -225,4 +266,3 @@
 
     </ScrollView>
 
-</LinearLayout>

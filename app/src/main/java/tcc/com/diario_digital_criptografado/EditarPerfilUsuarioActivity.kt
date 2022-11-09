@@ -2,45 +2,57 @@ package tcc.com.diario_digital_criptografado
 
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
-import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
-import java.io.File
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
+import tcc.com.diario_digital_criptografado.util.ValidationUtil
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 import kotlin.Exception
 
 class EditarPerfilUsuarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
 
     private var imageUri: Uri? = null
-    private var firebaseStore: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
-
-    private lateinit var tipoUsuarioGlobal : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_perfil)
+        usuarioEstaLogado()
+
+        supportActionBar?.title = "Editar perfil"
 
 
-        trazerDadosUsuario()
+        if(ConexaoUtil.estaConectado(this)){
+            trazerDadosUsuario()
+        }else{
+            progressive_editar_perfil.isVisible = false
+            linear_layout_conteudo_editar_perfil.isVisible = true
+            Snackbar.make(btn_voltar_editar_perfil, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         img_foto_perfil.setOnClickListener{
+            selectImage()
+        }
+
+        btn_editar_foto_perfil.setOnClickListener{
             selectImage()
         }
 
@@ -49,8 +61,17 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }
 
         btn_salvar_dados_editar_perfil.setOnClickListener{
-            saveUserData()
-            uploadImage()
+            if(ConexaoUtil.estaConectado(this)){
+                saveUserData()
+                uploadImageToStorage()
+            }else{
+                Snackbar.make(btn_voltar_editar_perfil, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
+
+        }
+
+        txt_editar_data_nascimento.setOnClickListener {
+            selecionarDataNascimento()
         }
 
 
@@ -62,36 +83,34 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         try{
 
             if(!progressive_editar_perfil.isVisible){
-                linear_layout_conteudo_editar_perfil.setVisibility(View.GONE)
+                linear_layout_conteudo_editar_perfil.visibility = View.GONE
                 progressive_editar_perfil.isVisible = true
             }
 
-            firebaseStore = FirebaseStorage.getInstance()
-            storageReference = FirebaseStorage.getInstance().reference
             database = FirebaseDatabase.getInstance().getReference("users")
             database.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
+
+                val fotoPerfil = it.child("foto_perfil").value.toString()
+                if (fotoPerfil != ""){
+                    Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_perfil)
+                }
+
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
-                txt_editar_data_nascimento.setText(it.child("data_nascimento").value.toString())
+                txt_editar_data_nascimento.text = it.child("data_nascimento").value.toString()
                 txt_editar_telefone.setText(it.child("telefone").value.toString())
                 txt_editar_email.setText(it.child("email").value.toString())
                 txt_editar_cpf.setText(it.child("cpf").value.toString())
-                txt_codigo_usuario_psicologo.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
+                txt_codigo_usuario.setText(it.child(AuthUtil.getCurrentUser()!!).key.toString())
 
-                val fotoUri = it.child("foto_perfil").value.toString().toUri()
-                if(fotoUri.toString() != ""){
-                    Glide.with(this).load(fotoUri).into(img_foto_perfil)
-                }else{
-                    Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_perfil)
-                }
 
                 if(it.child("tipo_perfil").value.toString() == "Psicólogo"){
 
-                    lbl_editar_numero_registro.setVisibility(View.VISIBLE)
-                    txt_editar_numero_registro.setVisibility(View.VISIBLE)
+                    lbl_editar_numero_registro.visibility = View.VISIBLE
+                    txt_editar_numero_registro.visibility = View.VISIBLE
                     txt_editar_numero_registro.setText(it.child("numero_registro").value.toString())
 
-                    lbl_editar_numero_regiao.setVisibility(View.VISIBLE)
-                    txt_editar_regiao.setVisibility(View.VISIBLE)
+                    lbl_editar_numero_regiao.visibility = View.VISIBLE
+                    txt_editar_regiao.visibility = View.VISIBLE
                     txt_editar_regiao.setText(it.child("estado_registro").value.toString())
 
                 }
@@ -145,22 +164,49 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage(){
+    private fun uploadImageToStorage(){
         try{
             if(imageUri != null){
                 val storageReference = FirebaseStorage.getInstance().getReference("fotos_perfil/${AuthUtil.getCurrentUser()}")
                 storageReference.putFile(imageUri!!)
-                storageReference.downloadUrl.addOnSuccessListener {
-                    var fotoUri = it.toString()
-                    database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-                    database.child("foto_perfil").setValue(fotoUri)
-                }
 
             }
         }catch (e:Exception){
             Toast.makeText(this@EditarPerfilUsuarioActivity, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()
             Log.e("uploadImage", e.message.toString())
         }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun selecionarDataNascimento(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecione sua data de nascimento")
+                .build()
+        datePicker.show(supportFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+
+            var dataErrada = Date(it)
+            var localDate = dataErrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            localDate = localDate.plusDays(1)
+            var dataCerta = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate)
+
+            val valido = ValidationUtil.validarDataNascimento(localDate.dayOfMonth, localDate.monthValue, localDate.year)
+
+            if(valido) {
+                txt_editar_data_nascimento.text = dataCerta.toString()
+            }else {
+                Snackbar.make(txt_editar_data_nascimento, "Usuário não pode ser menor de 18 anos", Snackbar.LENGTH_LONG).show()
+            }
+        }
+
     }
 
 }

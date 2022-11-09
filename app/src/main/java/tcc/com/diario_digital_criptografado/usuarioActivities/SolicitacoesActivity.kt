@@ -1,6 +1,7 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -12,38 +13,55 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
+import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 import kotlin.Exception
 
 class SolicitacoesActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
-    private var firebaseStore: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solicitacoes)
 
-        firebaseStore = FirebaseStorage.getInstance()
-        storageReference = FirebaseStorage.getInstance().reference
-        retrievePsicologoData()
+        supportActionBar?.title = "Minhas solicitações"
+        usuarioEstaLogado()
+
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            trazerDadosPsicologo()
+        }else{
+            progressive_solicitacoes.visibility = View.GONE
+            linear_layout_conteudo_solicitacoes.isVisible = true
+            btn_voltar_solicitacoes.isVisible = true
+            Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         var textoObservacao = "Antes de aceitar qualquer solicitação \nverifique a veracidade dos dados acessando o <a href='https://cadastro.cfp.org.br/'>cadastro nacional de psicólogos</a>"
         lbl_observacoes_solicitacoes.text = Html.fromHtml(textoObservacao)
         lbl_observacoes_solicitacoes.movementMethod = LinkMovementMethod.getInstance()
 
         btn_aceitar_solicitacao.setOnClickListener {
-            dialogAceitarSolicitacao()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogAceitarSolicitacao()
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_rejeitar_solicitacao.setOnClickListener {
-            dialogRejeitarSolicitacao()
+            if (ConexaoUtil.estaConectado(this)){
+                dialogRejeitarSolicitacao()
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         btn_voltar_solicitacoes.setOnClickListener {
@@ -80,8 +98,9 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun dialogAceitarSolicitacao(){
         val dialogBuilder = AlertDialog.Builder(this@SolicitacoesActivity)
         dialogBuilder.setMessage("Deseja mesmo aceitar? Você pesquisou a veracidade dos dados do psicólogo?")
-            .setPositiveButton("Sim", { dialog, id ->  aceitarSolicitacao() })
-            .setNegativeButton("Não", { dialog, id ->  dialog.dismiss()})
+            .setTitle("Aceitar Solicitação")
+            .setPositiveButton("Sim") { dialog, id -> aceitarSolicitacao() }
+            .setNegativeButton("Não") { dialog, id -> dialog.dismiss() }
         val b = dialogBuilder.create()
         b.show()
     }
@@ -103,13 +122,14 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun dialogRejeitarSolicitacao(){
         val dialogBuilder = AlertDialog.Builder(this@SolicitacoesActivity)
         dialogBuilder.setMessage("Deseja mesmo rejeitar?")
+            .setTitle("Rejeitar solicitação")
             .setPositiveButton("Sim", { dialog, id ->  rejeitarSolicitacao() })
             .setNegativeButton("Não", { dialog, id ->  dialog.dismiss() })
         val b = dialogBuilder.create()
         b.show()
     }
 
-    private fun retrievePsicologoData(){
+    private fun trazerDadosPsicologo(){
 
         try{
 
@@ -131,22 +151,30 @@ class SolicitacoesActivity : AppCompatActivity() {
                         lbl_cpf_psiclogo_solicitacao.setText(it.child(codigoPsicologo).child("cpf").value.toString())
                         lbl_numero_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("numero_registro").value.toString())
                         lbl_regiao_inscricao_psicologo_solicitacao.setText(it.child(codigoPsicologo).child("estado_registro").value.toString())
+                        lbl_codigo_psicologo_solicitacao.setText(codigoPsicologo)
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
-                        Glide.with(this).load(fotoUri).into(img_foto_psicologo_solicitacao)
+                        if(fotoUri.toString() != ""){
+                            Glide.with(this).load(fotoUri).into(img_foto_psicologo_solicitacao)
+                        }else{
+                            Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_psicologo_solicitacao)
+                        }
+
 
                         if(progressive_solicitacoes.isVisible){
                             progressive_solicitacoes.isVisible = false
                             linear_layout_conteudo_solicitacoes.isVisible = true
                         }
 
-                        lbl_sem_solicitacoes.setVisibility(View.GONE)
-                        linear_layout_dados_psicologo_solicitacao.setVisibility(View.VISIBLE)
+                        lbl_sem_solicitacoes.visibility = View.GONE
+                        linear_layout_dados_psicologo_solicitacao.isVisible = true
+                        btn_voltar_solicitacoes.isVisible = true
 
                     }else{
 
                         lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
                         linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
+                        btn_voltar_solicitacoes.isVisible = true
 
                         if(progressive_solicitacoes.isVisible){
                             progressive_solicitacoes.isVisible = false
@@ -159,6 +187,13 @@ class SolicitacoesActivity : AppCompatActivity() {
         }catch (e:Exception){
             Toast.makeText(this@SolicitacoesActivity, "Erro ao trazer os dados do psiólogo.", Toast.LENGTH_SHORT).show()
             Log.e("retrievePsicologoData", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

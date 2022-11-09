@@ -1,52 +1,79 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
-import tcc.com.diario_digital_criptografado.AgendaUsuarioActivity
+import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
+import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
+import java.time.LocalDate
 
 class FormularioDiarioActivity : AppCompatActivity() {
-    private val database = Firebase.database.reference
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var database : DatabaseReference
 
     private lateinit var avaliacao_dia : String
     private lateinit var dataSelecionada : String
-    private lateinit var emailUsuarioSelecionado : String
+    private lateinit var dataSelecionadaLong : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        verifyUser()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_diario)
+        usuarioEstaLogado()
+
 
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
+        dataSelecionadaLong = intent.getStringExtra("dataSelecionadaLong").toString()
 
-        txt_data.setText("Dia: ${dataSelecionada}")
-        retrieveDayData(dataSelecionada)
+        supportActionBar?.title = "Como foi o dia hoje?"
+        val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
+        supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
+
+        if(ConexaoUtil.estaConectado(this)){
+            FotoUtil.definirFotoPerfil()
+            trazerDadosDia(dataSelecionada)
+        }else{
+            linear_layout_conteudo_formulario.isVisible = true
+            progressive_formulario.visibility = View.GONE
+            Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
+
         onRadioButtonClicked(checkboxGroup)
 
-        btn_salvar_diario.setOnClickListener(){
-            val dia = setDayData()
-            writeDaydata(dia, dataSelecionada!!)
-            val intent = Intent(this, AgendaUsuarioActivity::class.java)
-            startActivity(intent)
+        btn_salvar_diario.setOnClickListener{
+            if(ConexaoUtil.estaConectado(this)){
+                salvarDadosDia()
+                val intent = Intent(this, AgendaUsuarioActivity::class.java)
+                startActivity(intent)
+            }else{
+                Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }
 
-        btn_voltar_formulario_diario.setOnClickListener(){
+        btn_voltar_formulario_diario.setOnClickListener{
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        usuarioEstaLogado()
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -57,23 +84,35 @@ class FormularioDiarioActivity : AppCompatActivity() {
     // <---------------------------------------------------- funções ----------------------------------------------------->
 
     //salva os dados inseridos no formulario do dia
-    private fun setDayData() : DiaFormulario{
-        val dia = DiaFormulario()
-        dia.pergunta1 = txt_pergunta1.text.toString()
-        dia.pergunta2 = txt_diario.text.toString()
-        dia.avaliacaoDia = avaliacao_dia
 
-        return dia
-    }
-    private fun writeDaydata(dia : DiaFormulario, data : String){
-
+    private fun salvarDadosDia(){
         try{
-            val userId = AuthUtil.getCurrentUser()
-            val child = "users/${userId}/dias/${data}"
-            database.child(child).setValue(dia)
+
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+            val dia = DiaFormulario()
+
+            val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
+            val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
+            val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
+            val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
+            val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
+            val data = CriptografiaUtil.encrypt(dataSelecionada)
+            val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
+            val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
+
+            dia.sentimentos_bons = sentimentosBons
+            dia.sentimentos_ruins = sentimentosRuins
+            dia.diario = diario
+            dia.avaliacaoDia = avaliacaoDia
+            dia.titulo = titulo
+            dia.data = data
+            dia.modificado_em = modificadoEm
+            dia.data_long = dataLong
+            database.child(dataSelecionada).setValue(dia)
+
         }catch (e:Exception){
-            Toast.makeText(this@FormularioDiarioActivity, "Erro ao salvar os dados do dia", Toast.LENGTH_SHORT).show()
-            Log.e("writeDaydata", e.message.toString())
+            Log.e("salvarDadosDia", e.message.toString())
+            Snackbar.make(btn_voltar_formulario_diario, "Não foi possível salvar os dados", Snackbar.LENGTH_LONG).show()
         }
 
     }
@@ -109,43 +148,73 @@ class FormularioDiarioActivity : AppCompatActivity() {
         }
     }
     //traz os dados do dia e os passa para os campos no layout
-    private fun retrieveDayData(dataSelecionada : String){
+    private fun trazerDadosDia(dataSelecionada : String){
 
         try {
 
             if(!progressive_formulario.isVisible){
-                linear_layout_conteudo_formulario.setVisibility(View.GONE)
+                linear_layout_conteudo_formulario.visibility = View.GONE
                 progressive_formulario.isVisible = true
             }
 
-            dbRef = FirebaseDatabase.getInstance().getReference("users")
-            dbRef.get().addOnSuccessListener {
+            database = FirebaseDatabase.getInstance().getReference("users")
+            database.get().addOnSuccessListener {
                 if(it.value != null){
                     if(it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString() == "Usuário do diário"){
-                        txt_pergunta1.setText(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("pergunta1").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("pergunta1").value.toString() else "")
-                        txt_diario.setText(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("pergunta2").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("pergunta2").value.toString() else "")
-                        avaliacao_dia = it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString()
+
+                        val tituloDia = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("titulo").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("titulo").value.toString() else "")
+                        txt_titulo_dia.setText(tituloDia)
+
+                        val sentimentosBons = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_bons").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_bons").value.toString() else "")
+                        txt_sentimentos_bons.setText(sentimentosBons)
+
+                        val sentimetosRuins = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_ruins").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("sentimentos_ruins").value.toString() else "")
+                        txt_sentimentos_ruins.setText(sentimetosRuins)
+
+                        val diario = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("diario").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("diario").value.toString() else "")
+                        txt_diario.setText(diario)
+
+                        val avaliacaoDia = CriptografiaUtil.decrypt(if(it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("avaliacaoDia").value != null) it.child(AuthUtil.getCurrentUser()!!).child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString() else "")
+                        avaliacao_dia = avaliacaoDia
 
                         when(avaliacao_dia){
-                            "Péssimo" -> radio_pessimo.setChecked(true)
-                            "Ruim" -> radio_ruim.setChecked(true)
-                            "Regular" -> radio_regular.setChecked(true)
-                            "Bom" -> radio_bom.setChecked(true)
-                            "Excelente" -> radio_excelente.setChecked(true)
+                            "Péssimo" -> radio_pessimo.isChecked = true
+                            "Ruim" -> radio_ruim.isChecked = true
+                            "Regular" -> radio_regular.isChecked = true
+                            "Bom" -> radio_bom.isChecked = true
+                            "Excelente" -> radio_excelente.isChecked = true
                         }
-                    }else{
+
+                        linear_layout_conteudo_formulario.isVisible = true
+
+
+                    }else if(it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString() == "Psicólogo"){
+                        val intent = intent
+                        val emailUsuarioSelecionado = intent.getStringExtra("emailUsuarioSelecionado").toString()
                         for(item in it.children){
                             if(item.child("email").value.toString() == emailUsuarioSelecionado){
-                                txt_pergunta1.setText(if(item.child("dias").child(dataSelecionada).child("pergunta1").value != null) item.child("dias").child(dataSelecionada).child("pergunta1").value.toString() else "")
-                                txt_diario.setText(if(item.child("dias").child(dataSelecionada).child("pergunta2").value != null) item.child("dias").child(dataSelecionada).child("pergunta2").value.toString() else "" )
-                                avaliacao_dia = item.child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString()
 
-                                when(avaliacao_dia){
-                                    "Péssimo" -> radio_pessimo.setChecked(true)
-                                    "Ruim" -> radio_ruim.setChecked(true)
-                                    "Regular" -> radio_regular.setChecked(true)
-                                    "Bom" -> radio_bom.setChecked(true)
-                                    "Excelente" -> radio_excelente.setChecked(true)
+                                if(item.child("codigo_psicologo").value != AuthUtil.getCurrentUser() || item.child("tem_psicologo").value == false) {
+                                    linear_layout_conteudo_formulario.visibility = View.GONE
+                                    lbl_psicologo_nao_autorizado_formulario.isVisible = true
+                                }else{
+                                    val sentimentosBons = CriptografiaUtil.decrypt(if(item.child("dias").child(dataSelecionada).child("sentimentos_bons").value != null) item.child("dias").child(dataSelecionada).child("sentimentos_bons").value.toString() else "")
+                                    txt_sentimentos_bons.setText(sentimentosBons)
+
+                                    val sentimentosRuins = CriptografiaUtil.decrypt(if(item.child("dias").child(dataSelecionada).child("sentimentos_ruins").value != null) item.child("dias").child(dataSelecionada).child("sentimentos_ruins").value.toString() else "")
+                                    txt_sentimentos_ruins.setText(sentimentosRuins)
+
+                                    val avaliacaoDia = CriptografiaUtil.decrypt(if(item.child("dias").child(dataSelecionada).child("avaliacaoDia").value != null) item.child("dias").child(dataSelecionada).child("avaliacaoDia").value.toString() else "")
+                                    avaliacao_dia = avaliacaoDia
+
+                                    when(avaliacao_dia){
+                                        "Péssimo" -> radio_pessimo.isChecked = true
+                                        "Ruim" -> radio_ruim.isChecked = true
+                                        "Regular" -> radio_regular.isChecked = true
+                                        "Bom" -> radio_bom.isChecked = true
+                                        "Excelente" -> radio_excelente.isChecked = true
+                                    }
+                                    definirVisualizaçãoPsicologo()
                                 }
                             }
                         }
@@ -154,9 +223,11 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
                 if(progressive_formulario.isVisible){
                     progressive_formulario.isVisible = false
-                    linear_layout_conteudo_formulario.isVisible = true
                 }
 
+            }.addOnFailureListener {
+                Toast.makeText(this@FormularioDiarioActivity, "Erro ao trazer os dados do dia.", Toast.LENGTH_SHORT).show()
+                Log.e("retrieveDayData", it.message.toString())
             }
         }catch (e:Exception){
             Toast.makeText(this@FormularioDiarioActivity, "Erro ao trazer os dados do dia.", Toast.LENGTH_SHORT).show()
@@ -167,30 +238,28 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
 
     //caso quem acesse seja um psicologo, algumas informações do diario não poderão ser vistas por ele
-    private fun verifyUser(){
-        try {
-            dbRef = FirebaseDatabase.getInstance().getReference("users")
-            dbRef.child(AuthUtil.getCurrentUser()!!).get().addOnSuccessListener {
-                val tipo_usuario = it.child("tipo_perfil").value.toString()
-                if(tipo_usuario == "Psicólogo"){
-                    val intent = intent
-                    emailUsuarioSelecionado = intent.getStringExtra("emailUsuarioSelecionado").toString()
-                    txt_diario.setVisibility(View.INVISIBLE)
-                    btn_salvar_diario.setVisibility(View.INVISIBLE)
-                    txt_pergunta1.setEnabled(false)
-                    radio_pessimo.setClickable(false)
-                    radio_ruim.setClickable(false)
-                    radio_regular.setClickable(false)
-                    radio_bom.setClickable(false)
-                    radio_excelente.setClickable(false)
-                    text_view_txt_diario.setVisibility(View.INVISIBLE)
-                }else{
-                    emailUsuarioSelecionado = ""
-                }
-            }
-        }catch (e:Exception){
-            Toast.makeText(this@FormularioDiarioActivity, "Erro ao verificar o tipo de usuario", Toast.LENGTH_SHORT).show()
-            Log.e("verifyUser", e.message.toString())
+    private fun definirVisualizaçãoPsicologo(){
+        linear_layout_conteudo_formulario.isVisible = true
+        lbl_psicologo_nao_autorizado_formulario.visibility = View.GONE
+
+        linear_layout_formulario_diario.visibility = View.GONE
+        layout_formulario_titulo.visibility = View.GONE
+        btn_salvar_diario.visibility = View.GONE
+        txt_sentimentos_bons.isEnabled = false
+        txt_sentimentos_bons.hint = ""
+        txt_sentimentos_ruins.isEnabled = false
+        txt_sentimentos_ruins.hint = ""
+        radio_pessimo.isClickable = false
+        radio_ruim.isClickable = false
+        radio_regular.isClickable = false
+        radio_bom.isClickable = false
+        radio_excelente.isClickable = false
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

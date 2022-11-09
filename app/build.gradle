@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "tcc.com.diario_digital_criptografado"
-        minSdk 21
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"

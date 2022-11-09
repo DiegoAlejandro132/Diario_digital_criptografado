@@ -1,24 +1,24 @@
 package tcc.com.diario_digital_criptografado.adapter
 
-
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.net.toUri
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 
 class PacienteAdapter (private val context : Context, private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
-
 
     private lateinit var listener : onItemClickListener
 
@@ -39,11 +39,18 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = pacienteslist[position]
-        holder.nomeList.text = current.nome
+        holder.nomeList.text = current.nome.replaceFirstChar { it.toUpperCase() }
         holder.telefoneList.text = current.telefone
         holder.emailList.text = current.email
-        //holder.fotoPerfil.setImageURI(current.foto_perfil.toUri())
-        Glide.with(context).load(pacienteslist[position].foto_perfil).into(holder.fotoPerfil)
+        val diasRuins = CriptografiaUtil.decrypt(current.diasRuinsConsecutivos)
+        if(diasRuins == "true")
+            holder.alerta.background.setTint(Color.parseColor("#FF0000"))
+        else
+            holder.alerta.background.setTint(Color.parseColor("#11cc00"))
+        if(pacienteslist[position].foto_perfil != "")
+            Glide.with(context).load(pacienteslist[position].foto_perfil).into(holder.fotoPerfil)
+        else
+            Glide.with(context).load(R.drawable.imagem_perfil_default).into(holder.fotoPerfil)
     }
 
     override fun getItemCount(): Int {
@@ -54,6 +61,7 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
         val nomeList : TextView = itemView.findViewById(R.id.txt_nome_list)
         val telefoneList : TextView = itemView.findViewById(R.id.txt_telefone_list)
         val emailList : TextView = itemView.findViewById(R.id.txt_email_list)
+        val alerta : CardView = itemView.findViewById(R.id.alerta_dias_ruins_paciente)
         val lixeira : ImageView = itemView.findViewById(R.id.btn_excluir_paciente)
         val fotoPerfil : ImageView = itemView.findViewById(R.id.img_fotoPerfil_card_listagem)
 

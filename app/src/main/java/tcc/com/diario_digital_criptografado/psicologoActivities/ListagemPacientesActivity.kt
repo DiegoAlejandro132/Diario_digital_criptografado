@@ -1,35 +1,43 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+
 import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
 import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
+import tcc.com.diario_digital_criptografado.util.ConexaoUtil
+import tcc.com.diario_digital_criptografado.util.FotoUtil
 
 class ListagemPacientesActivity : AppCompatActivity(){
-    private lateinit var auth: FirebaseAuth
     private lateinit var recyclerView : RecyclerView
     private lateinit var pacienteList : ArrayList<Usuario>
     private lateinit var database : DatabaseReference
@@ -39,8 +47,20 @@ class ListagemPacientesActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listagem_pacientes)
 
+        supportActionBar?.title = "Meus pacientes"
+
+
         setNavigationDrawer()
-        setHeaderNavigationDrawer()
+
+        usuarioEstaLogado()
+
+        if(ConexaoUtil.estaConectado(this)){
+            setHeaderNavigationDrawer()
+            FotoUtil.definirFotoPerfil()
+            listarDadosPacientes()
+        }else{
+            Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
 
         recyclerView = recycler_pacientes
         recycler_pacientes.layoutManager = LinearLayoutManager(this)
@@ -48,18 +68,26 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
         pacienteList = arrayListOf<Usuario>()
 
-        listarDadosPacientes()
 
         swipe_listagem_pacientes.setOnRefreshListener {
-            listarDadosPacientes()
-
+            if(ConexaoUtil.estaConectado(this)){
+                listarDadosPacientes()
+            }else{
+                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                swipe_listagem_pacientes.isRefreshing = false
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        setHeaderNavigationDrawer()
-        listarDadosPacientes()
+        if(ConexaoUtil.estaConectado(this)){
+            setHeaderNavigationDrawer()
+            FotoUtil.definirFotoPerfil()
+            listarDadosPacientes()
+        }else{
+            Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -72,35 +100,51 @@ class ListagemPacientesActivity : AppCompatActivity(){
 
     private fun listarDadosPacientes(){
         try{
+
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
+
                 pacienteList.clear()
                 if(it.exists()){
                     for(item in it.children){
                         val itemData = item.getValue(Usuario::class.java)
-                        if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
+                        if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser()
+                            && item.child("tem_psicologo").value == true)
                             pacienteList.add(itemData)
                     }
+                    if(pacienteList.size == 0)
+                        lbl_sem_pacientes.isVisible = true
+                    else
+                        lbl_sem_pacientes.visibility = View.GONE
+
                     var adapter = PacienteAdapter(this@ListagemPacientesActivity , pacienteList,)
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
                         override fun onItemClick(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            adapter.notifyItemChanged(position)
-                            val intent = Intent(getApplicationContext(), AgendaUsuarioActivity::class.java)
-                            intent.putExtra("email", clickedItem.email)
-                            startActivity(intent)
+                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                val clickedItem = pacienteList[position]
+                                adapter.notifyItemChanged(position)
+                                val intent = Intent(this@ListagemPacientesActivity, AgendaUsuarioActivity::class.java)
+                                intent.putExtra("email", clickedItem.email)
+                                startActivity(intent)
+                            }else{
+                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                            }
+
                         }
 
                         override fun excluirPaciente(position: Int) {
-                            val clickedItem = pacienteList[position]
-                            val email = clickedItem.email
+                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                val clickedItem = pacienteList[position]
+                                val email = clickedItem.email
 
-                            adapter.notifyItemChanged(position)
-                            pacienteList.removeAt(position)
-                            excluirPaciente(email)
-
+                                adapter.notifyItemChanged(position)
+                                pacienteList.removeAt(position)
+                                excluirPaciente(email)
+                            }else{
+                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                            }
                         }
                     })
 
@@ -125,11 +169,16 @@ class ListagemPacientesActivity : AppCompatActivity(){
     private fun setHeaderNavigationDrawer(){
 
         try {
-
-            database = FirebaseDatabase.getInstance().getReference("users")
+            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
             database.get().addOnSuccessListener {
-                val nomeUsuario = "<b>" + it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString().replaceFirstChar { it.toUpperCase() } + "</b>"
-                nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
+                val nomeUsuario = it.child("nome").value.toString().replaceFirstChar { it.toUpperCase() }
+                val emailUsuario = it.child("email").value.toString()
+                val fotoPerfil = it.child("foto_perfil").value.toString()
+                if(fotoPerfil != "")
+                    Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+
+                nav_header_nome_usuario.text = nomeUsuario
+                nav_header_email_usuario.text = emailUsuario
             }
 
         }catch (e : Exception){
@@ -146,6 +195,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navView.itemIconTintList = null
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPerfil()
@@ -170,6 +220,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
     private fun showDialogLogOut(){
         val dialogBuilder = AlertDialog.Builder(this@ListagemPacientesActivity)
         dialogBuilder.setMessage("Deseja encerrar a sessão?")
+            .setTitle("Encerrar sessão")
             .setPositiveButton("Sim") { dialog, id ->  signOut() }
             .setNegativeButton("Não") { dialog, id ->  dialog.dismiss()}
         val b = dialogBuilder.create()
@@ -204,6 +255,13 @@ class ListagemPacientesActivity : AppCompatActivity(){
             }
         }catch (e : Exception){
             Log.e("excluirPaciente", e.message.toString())
+        }
+    }
+
+    private fun usuarioEstaLogado(){
+        if(!AuthUtil.usuarioEstaLogado()){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

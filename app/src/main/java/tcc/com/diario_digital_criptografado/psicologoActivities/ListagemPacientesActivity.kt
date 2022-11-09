@@ -108,7 +108,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
                 if(it.exists()){
                     for(item in it.children){
                         val itemData = item.getValue(Usuario::class.java)
-                        if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser())
+                        if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser()
+                            && item.child("tem_psicologo").value == true)
                             pacienteList.add(itemData)
                     }
                     if(pacienteList.size == 0)

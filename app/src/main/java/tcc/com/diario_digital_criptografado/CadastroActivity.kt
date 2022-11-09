@@ -199,7 +199,7 @@ class CadastroActivity : AppCompatActivity() {
             validarPsicologo()
         }
 
-        return validarNome() && validarCpf() && validarSenhas() && validarSpinners()
+        return validarNome() && validarCpf() && validarSenhas() && validarSpinners() && validarTelefone()
                 && validarEmail() && validarDataNascimento() && if(tipo_perfil == "Psicólogo") validarPsicologo() else true
     }
 

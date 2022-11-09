@@ -81,16 +81,20 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }else{
                                 try {
-                                    progressive_login.visibility = View.GONE
-                                    linear_layout_conteudo_login.isVisible = true
                                     throw task.exception!!
                                 }catch (e: FirebaseNetworkException){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
                                     Log.e("criar usuario", e.message.toString())
                                     Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
                                 }catch (e: FirebaseAuthInvalidCredentialsException){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
                                     Log.e("criar usuario", e.message.toString())
                                     Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
                                 } catch (e:Exception){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
                                     Log.e("criar usuario", e.message.toString())
                                     Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
                                 }

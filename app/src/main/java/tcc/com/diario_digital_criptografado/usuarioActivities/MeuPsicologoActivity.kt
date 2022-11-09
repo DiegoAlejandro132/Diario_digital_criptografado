@@ -42,6 +42,7 @@ class MeuPsicologoActivity : AppCompatActivity() {
         }else{
             progressive_meu_psicologo.isVisible = false
             linear_layout_conteudo_meu_psicologo.isVisible = true
+            btn_voltar_meu_psicologo.isVisible = true
             Snackbar.make(btn_voltar_meu_psicologo, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
         }
 

@@ -80,7 +80,7 @@
                     android:id="@+id/lbl_advertencia_cadastrar_usuario_nome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* O campo nome não pode ser vazio, números tambem não são permitidos no nome *"
+                    android:text="* Os campos nome não pode ser vazio, números tambem não são permitidos no nome *"
                     android:textColor="@color/red"
                     android:visibility="gone" />
 
@@ -212,6 +212,7 @@
                     android:layout_width="155dp"
                     android:layout_height="48dp"
                     android:background="@drawable/borda_edit_text"
+                    android:textColor="@color/cor_letras"
                     android:gravity="center"
                     android:padding="8dp"
                     android:textSize="14sp"

@@ -40,6 +40,7 @@ class SolicitacoesActivity : AppCompatActivity() {
         }else{
             progressive_solicitacoes.visibility = View.GONE
             linear_layout_conteudo_solicitacoes.isVisible = true
+            btn_voltar_solicitacoes.isVisible = true
             Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
         }
 

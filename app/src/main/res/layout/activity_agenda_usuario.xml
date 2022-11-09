@@ -107,7 +107,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/cor_letras"
             android:textSize="26sp"
             android:text="OPS..... \nParece que você não está mais autorizado a ter acesso aos dados deste paciente"/>
 

@@ -70,6 +70,8 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         if(!AuthUtil.usuarioEstaLogado()) {
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+
         calendarView_user.setOnDateChangeListener {
                 calendarView, i, i2, i3 ->
 
@@ -203,9 +205,9 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     private fun listarDias() {
         try{
-            var dialist = ArrayList<DiaFormulario>()
+            val dialist = ArrayList<DiaFormulario>()
 
-            var recryclerDias = recycler_dias
+            val recryclerDias = recycler_dias
             recryclerDias.layoutManager = LinearLayoutManager(this)
             recryclerDias.setHasFixedSize(true)
 

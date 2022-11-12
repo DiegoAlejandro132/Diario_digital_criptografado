@@ -469,7 +469,7 @@ class CadastroActivity : AppCompatActivity() {
             psicologo.email = txt_email.text.toString()
             psicologo.telefone = txt_telefone.text.toString()
             psicologo.nome = txt_nome.text.toString()
-            psicologo.sexo = genero.toString()
+            psicologo.genero = genero.toString()
             psicologo.tipo_perfil = tipo_perfil.toString()
             psicologo.numero_registro = txt_numero_registro.text.toString()
             psicologo.estado_registro = estado_registro.toString()

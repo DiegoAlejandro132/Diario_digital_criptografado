@@ -121,6 +121,7 @@
         tools:ignore="MissingConstraints"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemMaxLines="2"
         app:itemIconTint="@color/pastel_orange">
 
         <LinearLayout

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
- <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cor_fundo_tela"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp">
 
         <LinearLayout
@@ -41,7 +42,7 @@
                             android:id="@+id/lbl_sem_meu_psicologo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:gravity="center"
                             android:text="Não há psicólogo relacionado a esta conta."
                             android:textColor="@color/cor_letras"
@@ -49,10 +50,71 @@
 
                     </LinearLayout>
 
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/linear_layout_duvida_meu_psicologo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="7dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="O que meu psicólogo pode ver?"
+                                    android:textColor="@color/cor_letras"/>
+
+                                <ImageView
+                                    android:id="@+id/btn_mostrar_duvida_meu_psicologo"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginLeft="120dp"
+                                    android:src="@drawable/ic_baseline_arrow_drop_down_24"/>
+
+                                <ImageView
+                                    android:id="@+id/btn_esconder_duvida_meu_psicologo"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginLeft="120dp"
+                                    android:src="@drawable/ic_baseline_arrow_drop_up_24"
+                                    android:visibility="gone"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_conteudo_duvida_meu_psicologo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="7dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="O psicólogo tem acesso às informações inseridas no campo de sentimentos ruins, sentimentos bons e avaliação geral do dia. "
+                                    android:textColor="@color/cor_letras"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
                     <LinearLayout
                         android:id="@+id/linear_layout_meu_psicologo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/linear_layout_border"
                         android:orientation="vertical"
                         android:visibility="gone">
@@ -153,7 +215,6 @@
                                 android:id="@+id/lbl_meu_psicologo_numero_inscricao"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Psicólogo"
                                 android:textColor="@color/cor_letras"
                                 android:textSize="18sp" />
 

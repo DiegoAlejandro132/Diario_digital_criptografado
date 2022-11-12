@@ -57,6 +57,18 @@ class MeuPsicologoActivity : AppCompatActivity() {
         btn_voltar_meu_psicologo.setOnClickListener {
             finish()
         }
+
+        linear_layout_duvida_meu_psicologo.setOnClickListener {
+            if (linear_layout_conteudo_duvida_meu_psicologo.isVisible) {
+                linear_layout_conteudo_duvida_meu_psicologo.visibility = View.GONE
+                btn_esconder_duvida_meu_psicologo.visibility = View.GONE
+                btn_mostrar_duvida_meu_psicologo.isVisible = true
+            } else{
+                linear_layout_conteudo_duvida_meu_psicologo.isVisible = true
+                btn_esconder_duvida_meu_psicologo.isVisible = true
+                btn_mostrar_duvida_meu_psicologo.visibility = View.GONE
+            }
+        }
     }
 
     private fun excluirPsicologo() {

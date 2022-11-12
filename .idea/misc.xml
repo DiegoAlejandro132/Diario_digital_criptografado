@@ -17,7 +17,11 @@
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/borda_edit_text.xml" value="0.3635" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/borda_input.xml" value="0.3625" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/btn_voltar.xml" value="0.3635" />
+        <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.278" />
+        <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_arrow_right_24.xml" value="0.278" />
+        <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.278" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.3635" />
+        <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_description_24.xml" value="0.278" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.3635" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3635" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/drawable/ic_baseline_person_add_24.xml" value="0.3635" />
@@ -42,6 +46,7 @@
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/activity_redefinir_senha.xml" value="0.3625" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/activity_solicitacoes.xml" value="0.33" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/activity_splash.xml" value="0.3625" />
+        <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/activity_termos_de_uso.xml" value="0.3625" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/activity_teste.xml" value="0.3484375" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/header_navigation_drawer.xml" value="0.33" />
         <entry key="..\:/Z_Faculdade/Diario_digital_criptografado/app/src/main/res/layout/model_item_list_paciente.xml" value="0.3614583333333333" />

@@ -545,6 +545,30 @@
                 android:textColor="@color/cor_letras"
                 android:layout_marginTop="20dp"/>
 
+            <Button
+                android:id="@+id/btn_ir_politica_privacidade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="Termos de uso e política de privacidade"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:textSize="14sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <CheckBox
+                    android:id="@+id/btn_aceito_politica_privacidade"
+                    android:layout_width="wrap_content"
+                    android:text="Eu li e aceito os termos de uso e política de privacidade"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -555,7 +579,7 @@
                 <Button
                     android:id="@+id/btn_cancelar"
                     style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/transparent_red"
                     android:drawableLeft="@drawable/ic_baseline_close_24"
@@ -566,9 +590,9 @@
                 <Button
                     android:id="@+id/btn_cadastrar"
                     style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="50dp"
                     android:backgroundTint="@color/transparent_orange"
                     android:drawableLeft="@drawable/ic_baseline_add_24"
                     android:text="Cadastrar"

@@ -1,14 +1,12 @@
 package tcc.com.diario_digital_criptografado
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -31,9 +29,6 @@ import tcc.com.diario_digital_criptografado.model.Usuario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.ValidationUtil
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -69,17 +64,27 @@ class CadastroActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+
         //Cadastrar usuario
         btn_cadastrar.setOnClickListener {
-            if(validarCadastro()){
-                if(ConexaoUtil.estaConectado(this)){
-                    linear_layout_conteudo_cadastrar.visibility = View.GONE
-                    progressive_cadastro.isVisible = true
-                    createUser()
-                }else{
-                    Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            if(btn_aceito_politica_privacidade.isChecked){
+                if(validarCadastro()){
+                    if(ConexaoUtil.estaConectado(this)){
+                        linear_layout_conteudo_cadastrar.visibility = View.GONE
+                        progressive_cadastro.isVisible = true
+                        createUser()
+                    }else{
+                        Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                    }
                 }
+            }else{
+                Snackbar.make(btn_cadastrar, "É necessário aceitar os termos de uso e política de privacidade para criar a conta", Snackbar.LENGTH_LONG).show()
             }
+        }
+
+        btn_ir_politica_privacidade.setOnClickListener {
+            val intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
+            startActivity(intent)
         }
 
     }
@@ -505,15 +510,6 @@ class CadastroActivity : AppCompatActivity() {
         }
 
 
-    }
-
-    private fun cpfExiste(){
-        val database = FirebaseDatabase.getInstance().getReference("users")
-        database.get().addOnCompleteListener{
-            if (it.isSuccessful){
-
-            }
-        }
     }
 
 }

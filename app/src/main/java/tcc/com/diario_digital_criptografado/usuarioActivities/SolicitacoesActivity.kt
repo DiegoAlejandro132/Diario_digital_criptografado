@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
+import kotlinx.android.synthetic.main.activity_meu_psicologo.*
 import kotlinx.android.synthetic.main.activity_solicitacoes.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
@@ -66,6 +67,18 @@ class SolicitacoesActivity : AppCompatActivity() {
 
         btn_voltar_solicitacoes.setOnClickListener {
             finish()
+        }
+
+        linear_layout_duvida_solicitacao_psicologo.setOnClickListener {
+            if (linear_layout_conteudo_duvida_solicitacao_psicologo.isVisible) {
+                linear_layout_conteudo_duvida_solicitacao_psicologo.visibility = View.GONE
+                btn_esconder_duvida_solicitacao_psicologo.visibility = View.GONE
+                btn_mostrar_duvida_solicitacao_psicologo.isVisible = true
+            } else{
+                linear_layout_conteudo_duvida_solicitacao_psicologo.isVisible = true
+                btn_esconder_duvida_solicitacao_psicologo.isVisible = true
+                btn_mostrar_duvida_solicitacao_psicologo.visibility = View.GONE
+            }
         }
 
     }

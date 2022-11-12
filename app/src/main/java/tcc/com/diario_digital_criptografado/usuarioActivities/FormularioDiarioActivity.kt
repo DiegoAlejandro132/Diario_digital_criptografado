@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
@@ -41,7 +42,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
         dataSelecionadaLong = intent.getStringExtra("dataSelecionadaLong").toString()
 
-        supportActionBar?.title = "Como foi o dia hoje?"
+        supportActionBar?.title = "Como foi o dia?"
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
         supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
@@ -58,16 +59,14 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
         btn_salvar_diario.setOnClickListener{
             if(ConexaoUtil.estaConectado(this)){
-                salvarDadosDia()
-                val intent = Intent(this, AgendaUsuarioActivity::class.java)
-                startActivity(intent)
+                dialogSalvar()
             }else{
                 Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
             }
         }
 
         btn_voltar_formulario_diario.setOnClickListener{
-            finish()
+            dialogVotlar()
         }
     }
 
@@ -262,5 +261,26 @@ class FormularioDiarioActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun dialogVotlar(){
+        val dialogBuilder = AlertDialog.Builder(this@FormularioDiarioActivity)
+        dialogBuilder.setMessage("Caso você saia, os dados anotados não serão salvos")
+            .setTitle("Deseja mesmo sair?")
+            .setPositiveButton("Sim") { dialog, id ->  finish() }
+            .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
+        val b = dialogBuilder.create()
+        b.show()
+    }
+
+    private fun dialogSalvar(){
+        val dialogBuilder = AlertDialog.Builder(this@FormularioDiarioActivity)
+        dialogBuilder.setMessage("Você deseja salvar os dados?")
+            .setTitle("Salvar dados?")
+            .setPositiveButton("Sim") { dialog, id ->  salvarDadosDia(); startActivity(Intent(this, AgendaUsuarioActivity::class.java)); finish() }
+            .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
+        val b = dialogBuilder.create()
+        b.show()
+    }
+
 
 }

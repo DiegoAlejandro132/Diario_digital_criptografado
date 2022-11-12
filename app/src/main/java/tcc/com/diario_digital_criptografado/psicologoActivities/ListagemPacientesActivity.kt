@@ -1,16 +1,11 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -199,21 +194,27 @@ class ListagemPacientesActivity : AppCompatActivity(){
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPerfil()
-                R.id.nav_adicionar_paciente -> goAdicionarPaciente()
+                R.id.nav_adicionar_paciente -> irAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
+                R.id.nav_politica_privacidade_psicologo -> irPoliticaPrivacidade()
             }
             true
         }
 
     }
 
-    private fun goAdicionarPaciente() {
+    private fun irAdicionarPaciente() {
         intent = Intent(this, AdicionarPacienteActivity::class.java)
         startActivity(intent)
     }
 
     private fun irVisualizarPerfil(){
         intent = Intent(this, MeuPerfilActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun irPoliticaPrivacidade(){
+        intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
         startActivity(intent)
     }
 

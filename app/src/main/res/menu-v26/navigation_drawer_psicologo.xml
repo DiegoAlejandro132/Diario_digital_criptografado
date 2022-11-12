@@ -16,8 +16,15 @@
         android:icon="@drawable/ic_baseline_person_add_24" />
 
     <item
+        android:id="@+id/nav_politica_privacidade_psicologo"
+        android:title="Termos de uso e política de privacidade"
+        android:icon="@drawable/ic_baseline_description_24"
+        android:checkable="true"/>
+
+    <item
         android:id="@+id/nav_logout_psicologo"
         android:title="Logout"
         android:checkable="true"
         android:icon="@drawable/ic_logout" />
+
 </menu>

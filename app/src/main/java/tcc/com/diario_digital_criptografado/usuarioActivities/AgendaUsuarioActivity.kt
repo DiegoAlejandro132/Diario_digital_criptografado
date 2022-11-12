@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.MeuPerfilActivity
+import tcc.com.diario_digital_criptografado.PoliticaDePrivacidadeActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.DiaAdapter
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
@@ -282,14 +283,17 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 R.id.nav_acesso_meu_psicologo -> goMeuPsicologo()
                 R.id.nav_acesso_solicitacoes -> goSolicitacoes()
                 R.id.nav_logout_usuario -> showDialogLogOut()
+                R.id.nav_politica_privacidade_usuario -> irPoliticaPrivacidade()
                 //opções de acesso do psicologo
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPefil()
                 R.id.nav_adicionar_paciente -> goAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
+                R.id.nav_politica_privacidade_psicologo -> irPoliticaPrivacidade()
             }
             true
         }
     }
+
     private fun showDialogLogOut(){
         val dialogBuilder = AlertDialog.Builder(this@AgendaUsuarioActivity)
         dialogBuilder.setMessage("Deseja encerrar a sessão?")
@@ -356,12 +360,11 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 val hoje = LocalDate.now()
                 var qtdDiaRuim = 0
                 for (dia in snapshot.child("dias").children){
-                    Log.d("diachild", CriptografiaUtil.decrypt(dia.child("data_long").value.toString()))
                     val data = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
                     val dataDate = Date(data.toLong())
                     val dataLocalDate = dataDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     if((hoje.year == dataLocalDate.year) && (hoje.month == dataLocalDate.month)
-                        && (dataLocalDate.dayOfMonth - hoje.dayOfMonth <= 7)){
+                        && (hoje.dayOfMonth - dataLocalDate.dayOfMonth <= 7)){
 
                         val avaliacaoDia = CriptografiaUtil.decrypt(dia.child("avaliacaoDia").value.toString())
                         val diaRuim = "Péssimo" in avaliacaoDia || "Ruim" in avaliacaoDia
@@ -412,6 +415,11 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun irPoliticaPrivacidade(){
+        intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
+        startActivity(intent)
     }
 
 

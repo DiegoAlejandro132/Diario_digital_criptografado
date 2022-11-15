@@ -25,14 +25,14 @@ class RedefinirSenhaActivity : AppCompatActivity() {
                 if(validateEmail()){
                     auth.sendPasswordResetEmail(txt_email_redefinir.text.toString()).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(this@RedefinirSenhaActivity, "Caso o email possua cadastro, será enviado um email de redefinição de senha", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@RedefinirSenhaActivity, "Caso o e-mail possua cadastro, será enviado um e-mail de redefinição de senha", Toast.LENGTH_LONG).show()
                         } else {
                             Toast.makeText(this@RedefinirSenhaActivity, "Falha no processo", Toast.LENGTH_LONG).show()
 
                         }
                     }
                 }else{
-                    Toast.makeText(this@RedefinirSenhaActivity, "Você precisa inserir um email!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RedefinirSenhaActivity, "Você precisa inserir um e-mail!", Toast.LENGTH_LONG).show()
                 }
             }else{
                 Snackbar.make(btn_redefinir_senha, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()

@@ -137,7 +137,7 @@
                         android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:textSize="16sp"
-                        android:text="Email"/>
+                        android:text="E-mail"/>
                     <TextView
                         android:id="@+id/lbl_meu_email"
                         android:layout_width="wrap_content"

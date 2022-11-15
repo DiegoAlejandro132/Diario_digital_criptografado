@@ -34,6 +34,7 @@
             android:id="@+id/politica_privacidade_texto_inicial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="gravity"
             android:layout_marginTop="15dp"/>
 
         <TextView

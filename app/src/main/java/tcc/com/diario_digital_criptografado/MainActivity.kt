@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                                 }else{
                                     progressive_login.visibility = View.GONE
                                     linear_layout_conteudo_login.isVisible = true
-                                    Toast.makeText(this, "É necessario confirmar a conta no email antes de realizar o login", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "É necessario confirmar a conta no e-mail antes de realizar o login", Toast.LENGTH_SHORT).show()
                                 }
                             }else{
                                 try {
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     }else{
                         progressive_login.visibility = View.GONE
                         linear_layout_conteudo_login.isVisible = true
-                        Toast.makeText(this@MainActivity, "Insira o email e senha para poder entrar!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "Insira o e-mail e senha para poder entrar!", Toast.LENGTH_LONG).show()
                     }
                 }else{
                     Snackbar.make(btn_ir_cadastro, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()

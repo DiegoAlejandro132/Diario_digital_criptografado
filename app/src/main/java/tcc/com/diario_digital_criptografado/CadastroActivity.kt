@@ -124,7 +124,7 @@ class CadastroActivity : AppCompatActivity() {
                                     Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                                     Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                                         if(it.isSuccessful){
-                                            Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this@CadastroActivity, "E-mail de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
                                         }
                                     }
                                     finish()
@@ -138,7 +138,7 @@ class CadastroActivity : AppCompatActivity() {
                                         Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
                                     }catch (e:FirebaseAuthUserCollisionException){
                                         Log.e("criar usuario", e.message.toString())
-                                        Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
+                                        Snackbar.make(btn_cadastrar, "O e-mail inserido ja está em uso", Snackbar.LENGTH_LONG).show()
                                     }catch (e:Exception){
                                         Log.e("criar usuario", e.toString())
                                         Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
@@ -160,7 +160,7 @@ class CadastroActivity : AppCompatActivity() {
                         Toast.makeText(this@CadastroActivity, "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                         Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                             if(it.isSuccessful){
-                                Toast.makeText(this@CadastroActivity, "Email de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@CadastroActivity, "E-mail de confirmação enviado para ${txt_email.text}", Toast.LENGTH_LONG).show()
                             }
                         }
                         finish()
@@ -174,7 +174,7 @@ class CadastroActivity : AppCompatActivity() {
                             Snackbar.make(btn_cadastrar, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
                         }catch (e:FirebaseAuthUserCollisionException){
                             Log.e("criar usuario", e.message.toString())
-                            Snackbar.make(btn_cadastrar, "O email inserido ja está em uso", Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(btn_cadastrar, "O e-mail inserido ja está em uso", Snackbar.LENGTH_LONG).show()
                         }catch (e:Exception){
                             Log.e("criar usuario", e.toString())
                             Snackbar.make(btn_cadastrar, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()

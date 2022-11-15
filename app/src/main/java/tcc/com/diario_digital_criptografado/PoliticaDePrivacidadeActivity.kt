@@ -13,8 +13,8 @@ class PoliticaDePrivacidadeActivity : AppCompatActivity() {
             finish()
         }
 
-        val inicio = "Meu Diário, pessoa jurídica de direito privado leva a sua privacidade a " +
-                "sério e zela pela segurança e proteção de dados de todos os seus clientes, parceiros, " +
+        val inicio = "Meu Diário, pessoa jurídica de direito privado leva a sua privacidade e intimiade " +
+                "como principal ativo a ser protegido e zela pela segurança e proteção de dados de todos os seus clientes, parceiros, " +
                 "fornecedores e usuários do aplicativo Meu Diário. " +
                 "Esta Política de Privacidade destina-se a informá-lo sobre o modo como nós utilizamos e " +
                 "divulgamos informações coletadas ao longo do uso do aplicativo.Esta Política de " +
@@ -66,7 +66,7 @@ class PoliticaDePrivacidadeActivity : AppCompatActivity() {
                 "ou corrigir as informações que temos sobre você;\n3. Para um psicólogo poder identificar " +
                 "seus pacientes;\n4. Para personalizar sua experiência de uso no aplicativo;\n5. Para " +
                 "tornar possível o conhecimento mútuo dos dados entre um psicólogo e um paciente, " +
-                "com o objetivo de garantir um para o outro que são quem dizem ser;\n6. Para entrarmos " +
+                "com o objetivo de garantir para ambos que são quem dizem ser;\n6. Para entrarmos " +
                 "em contato por um número de telefone e/ou endereço de e-mail fornecido. Podemos entrar " +
                 "em contato com você pessoalmente, por mensagem de voz, através de equipamentos de " +
                 "discagem automática, por mensagens de texto (SMS), por e-mail, ou por qualquer outro " +
@@ -118,7 +118,7 @@ class PoliticaDePrivacidadeActivity : AppCompatActivity() {
                 "esses mesmos dados continuarão sendo compartilhados até o momento em que a relação " +
                 "psicólogo-paciente seja desfeita no aplicativo.\nOs dados do usuário do diário que " +
                 "serão compartilhados com um psicólogo autorizado pelo usuário são o nome, telefone " +
-                "e email para identificação e contato e a avaliação geral, sentimentos bons e ruins " +
+                "e e-mail para identificação e contato, e os topicos avaliação geral, sentimentos bons e ruins " +
                 "referentes a dias preenchidos pelo usuário do diário com o objetivo de auxiliar o " +
                 "psicólogo em um possível acompanhamento psicológico.\n"
 
@@ -179,7 +179,7 @@ class PoliticaDePrivacidadeActivity : AppCompatActivity() {
                 "texto no aplicativo, com a data de revisão atualizada. Podemos alterar esta Política " +
                 "de Privacidade a qualquer momento. Caso haja alteração significativa nos termos desta " +
                 "Política de Privacidade, podemos informá-lo por meio das informações de contato que " +
-                "tivermos em nosso banco de dados ou por meio de notificação em nossa loja.\n" +
+                "tivermos em nosso banco de dados ou por meio de notificação em nosso aplicativo.\n" +
                 "Recordamos que nós temos como compromisso não tratar os seus Dados Pessoais de forma " +
                 "incompatível com os objetivos descritos acima, exceto se de outra forma requerido por " +
                 "lei ou ordem judicial.\n" +

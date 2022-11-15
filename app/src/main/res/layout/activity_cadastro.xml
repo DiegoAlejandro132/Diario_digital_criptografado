@@ -356,7 +356,7 @@
                         android:id="@+id/lbl_advertencia_cadastrar_usuario_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* Insira uma email válido \nou retire os espaços *"
+                        android:text="* Insira uma e-mail válido \nou retire os espaços *"
                         android:textColor="@color/red"
                         android:visibility="gone" />
 
@@ -541,7 +541,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Após o cadastro, um email de confirmação será enviado. Caso não o encontre, procure-o na caixa de spam"
+                android:text="Após o cadastro, um e-mail de confirmação será enviado. Caso não o encontre, procure-o na caixa de spam"
                 android:textColor="@color/cor_letras"
                 android:layout_marginTop="20dp"/>
 

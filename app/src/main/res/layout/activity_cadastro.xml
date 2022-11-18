@@ -543,6 +543,7 @@
                 android:layout_height="wrap_content"
                 android:text="Após o cadastro, um e-mail de confirmação será enviado. Caso não o encontre, procure-o na caixa de spam"
                 android:textColor="@color/cor_letras"
+                android:justificationMode="inter_word"
                 android:layout_marginTop="20dp"/>
 
             <Button

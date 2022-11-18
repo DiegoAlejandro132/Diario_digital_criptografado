@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="7dp">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:id="@+id/politica_privacidade_texto_inicial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="gravity"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -50,6 +50,7 @@
             android:id="@+id/politica_privacidade_texto_definicoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -66,6 +67,7 @@
             android:id="@+id/politica_privacidade_texto_uso_dados_pessoais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -81,6 +83,7 @@
             android:id="@+id/politica_privacidade_texto_nao_fornecimento_dados_pessoais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -96,6 +99,7 @@
             android:id="@+id/politica_privacidade_texto_dados_coletados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -112,6 +116,7 @@
             android:id="@+id/politica_privacidade_compartilhamento_dados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -128,6 +133,7 @@
             android:id="@+id/politica_privacidade_texto_direitos_usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -144,6 +150,7 @@
             android:id="@+id/politica_privacidade_seguranca_dados_pessoais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -160,6 +167,7 @@
             android:id="@+id/politica_privacidade_links_para_outros_sites"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -176,6 +184,7 @@
             android:id="@+id/politica_privacidade_atualizacao_politica"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <TextView
@@ -192,6 +201,7 @@
             android:id="@+id/politica_privacidade_encarregado_tratamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:layout_marginTop="15dp"/>
 
         <Button

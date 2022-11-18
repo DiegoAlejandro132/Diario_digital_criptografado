@@ -92,7 +92,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
                 val fotoPerfil = it.child("foto_perfil").value.toString()
                 if (fotoPerfil != ""){
-                    Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_perfil)
+                    Glide.with(applicationContext).load(fotoPerfil.toUri()).into(img_foto_perfil)
                 }
 
                 txt_editar_nome_usuario.setText(it.child("nome").value.toString())
@@ -160,7 +160,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
 
         if(requestCode == 100 && resultCode == RESULT_OK){
             imageUri = data?.data!!
-            Glide.with(this).load(imageUri).into(img_foto_perfil)
+            Glide.with(applicationContext).load(imageUri).into(img_foto_perfil)
         }
     }
 

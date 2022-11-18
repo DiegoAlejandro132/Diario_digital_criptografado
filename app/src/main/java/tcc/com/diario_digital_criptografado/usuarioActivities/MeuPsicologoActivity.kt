@@ -122,9 +122,9 @@ class MeuPsicologoActivity : AppCompatActivity() {
 
                         val fotoUri = it.child(codigoPsicologo).child("foto_perfil").value.toString().toUri()
                         if(fotoUri.toString() != ""){
-                            Glide.with(this).load(fotoUri).into(img_foto_meu_psicologo)
+                            Glide.with(applicationContext).load(fotoUri).into(img_foto_meu_psicologo)
                         }else{
-                            Glide.with(this).load(R.drawable.imagem_perfil_default).into(img_foto_meu_psicologo)
+                            Glide.with(applicationContext).load(R.drawable.imagem_perfil_default).into(img_foto_meu_psicologo)
                         }
 
                         if(progressive_meu_psicologo.isVisible){

@@ -155,7 +155,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                     val emailUsuario = it.child("${AuthUtil.getCurrentUser()}/email").value.toString()
                     val fotoperfil = it.child("${AuthUtil.getCurrentUser()}/foto_perfil").value.toString()
                     if(fotoperfil != "")
-                        Glide.with(this).load(fotoperfil.toUri()).into(nav_header_foto_perfil)
+                        Glide.with(applicationContext).load(fotoperfil.toUri()).into(nav_header_foto_perfil)
                     nav_header_nome_usuario.text = nomeUsuario
                     nav_header_email_usuario.text = emailUsuario
 
@@ -332,7 +332,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                     nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
                     val fotoPerfil = it.child("foto_perfil").value.toString()
                     if(fotoPerfil != ""){
-                        Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+                        Glide.with(applicationContext).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
                     }
                     if(tipoUsuario == "Psicólogo"){
                         val intent = intent

@@ -99,7 +99,7 @@ class MeuPerfilActivity : AppCompatActivity() {
                     val tipoUsuario = it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString()
                     val fotoPerfil = it.child(AuthUtil.getCurrentUser()!!).child("foto_perfil").value.toString()
                     if (fotoPerfil != ""){
-                        Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_meu_perfil)
+                        Glide.with(applicationContext).load(fotoPerfil.toUri()).into(img_foto_meu_perfil)
                     }
 
                     lbl_meu_nome_usuario.text = it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString()

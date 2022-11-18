@@ -170,7 +170,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                 val emailUsuario = it.child("email").value.toString()
                 val fotoPerfil = it.child("foto_perfil").value.toString()
                 if(fotoPerfil != "")
-                    Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+                    Glide.with(applicationContext).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
 
                 nav_header_nome_usuario.text = nomeUsuario
                 nav_header_email_usuario.text = emailUsuario

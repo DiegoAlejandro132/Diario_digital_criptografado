@@ -82,11 +82,7 @@ class MeuPerfilActivity : AppCompatActivity() {
         FotoUtil.definirFotoPerfil()
         trazerDadosUsuario()
     }
-
-    override fun onStop() {
-        super.onStop()
-        finish()
-    }
+    
 
 
     private fun trazerDadosUsuario(){

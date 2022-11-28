@@ -116,7 +116,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
-                        override fun onItemClick(position: Int) {
+                        override fun selecionarPaciente(position: Int) {
                             if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
                                 val clickedItem = pacienteList[position]
                                 adapter.notifyItemChanged(position)

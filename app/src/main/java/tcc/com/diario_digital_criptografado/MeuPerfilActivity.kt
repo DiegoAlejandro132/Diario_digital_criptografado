@@ -82,7 +82,7 @@ class MeuPerfilActivity : AppCompatActivity() {
         FotoUtil.definirFotoPerfil()
         trazerDadosUsuario()
     }
-    
+
 
 
     private fun trazerDadosUsuario(){

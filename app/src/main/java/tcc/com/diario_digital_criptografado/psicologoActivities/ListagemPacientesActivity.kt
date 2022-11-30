@@ -130,17 +130,21 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         }
 
                         override fun excluirPaciente(position: Int) {
-                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
-                                val clickedItem = pacienteList[position]
-                                val email = clickedItem.email
+                            try{
+                                if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                    val clickedItem = pacienteList[position]
+                                    val email = clickedItem.email
 
-                                excluirPaciente(email)
-                                Log.d("posicao", position.toString())
-                                pacienteList.removeAt(position)
-                                adapter.notifyItemChanged(position)
-                            }else{
-                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                                    excluirPaciente(email)
+                                    pacienteList.removeAt(position)
+                                    adapter.notifyItemRemoved(position)
+                                }else{
+                                    Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                                }
+                            }catch (e:Exception){
+                                Log.e("erronoadapter", e.message.toString())
                             }
+
                         }
                     })
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -85,17 +86,29 @@ class MainActivity : AppCompatActivity() {
                                 }catch (e: FirebaseNetworkException){
                                     progressive_login.visibility = View.GONE
                                     linear_layout_conteudo_login.isVisible = true
-                                    Log.e("criar usuario", e.message.toString())
+                                    Log.e("login usuario", e.message.toString())
                                     Snackbar.make(btn_login, "Verifique a conexão com a internet e tente mais tarde", Snackbar.LENGTH_LONG).show()
                                 }catch (e: FirebaseAuthInvalidCredentialsException){
                                     progressive_login.visibility = View.GONE
                                     linear_layout_conteudo_login.isVisible = true
-                                    Log.e("criar usuario", e.message.toString())
-                                    Snackbar.make(btn_login, "Login ou senha incorretos", Snackbar.LENGTH_LONG).show()
-                                } catch (e:Exception){
+                                    Log.e("login usuario", e.message.toString())
+                                    Log.e("login usuario", e.toString())
+                                    Snackbar.make(btn_login, "E-mail ou senha incorretos", Snackbar.LENGTH_LONG).show()
+                                } catch (e:FirebaseAuthInvalidUserException){
                                     progressive_login.visibility = View.GONE
                                     linear_layout_conteudo_login.isVisible = true
-                                    Log.e("criar usuario", e.message.toString())
+                                    Log.e("login usuario", e.message.toString())
+                                    Snackbar.make(btn_login, "E-mail ou senha incorretos", Snackbar.LENGTH_LONG).show()
+                                } catch (e: FirebaseTooManyRequestsException) {
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Log.e("login usuario", e.message.toString())
+                                    Toast.makeText(this, "Conta temporariamente bloqueada devido ao número de erros", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Redefina sua senha ou espere alguns minutos para entrar novamente", Toast.LENGTH_SHORT).show()
+                                }catch (e:Exception){
+                                    progressive_login.visibility = View.GONE
+                                    linear_layout_conteudo_login.isVisible = true
+                                    Log.e("login usuario", e.toString())
                                     Snackbar.make(btn_login, "Houve um erro inesperado, por favor tente mais tarde", Snackbar.LENGTH_LONG).show()
                                 }
                             }
@@ -103,13 +116,13 @@ class MainActivity : AppCompatActivity() {
                     }else{
                         progressive_login.visibility = View.GONE
                         linear_layout_conteudo_login.isVisible = true
-                        Toast.makeText(this@MainActivity, "Insira o e-mail e senha para poder entrar!", Toast.LENGTH_LONG).show()
+                        Snackbar.make(btn_login, "Insira o e-mail e senha para poder entrar!", Snackbar.LENGTH_LONG).show()
                     }
                 }else{
                     Snackbar.make(btn_ir_cadastro, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
                 }
             }catch (e:Exception){
-                Toast.makeText(this@MainActivity, "Erro ao fazer login.", Toast.LENGTH_SHORT).show()
+                Snackbar.make(btn_ir_cadastro, "Erro ao fazer login", Snackbar.LENGTH_LONG).show()
                 Log.e("login", e.message.toString())
             }
 

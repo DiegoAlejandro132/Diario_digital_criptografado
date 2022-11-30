@@ -29,8 +29,8 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.model_item_list_paciente, parent, false)
-        return ViewHolder(itemView, listener)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.model_item_list_paciente, parent)
+            return ViewHolder(itemView, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

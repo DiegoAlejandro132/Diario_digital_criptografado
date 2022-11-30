@@ -134,9 +134,10 @@ class ListagemPacientesActivity : AppCompatActivity(){
                                 val clickedItem = pacienteList[position]
                                 val email = clickedItem.email
 
-                                adapter.notifyItemChanged(position)
-                                pacienteList.removeAt(position)
                                 excluirPaciente(email)
+                                Log.d("posicao", position.toString())
+                                pacienteList.removeAt(position)
+                                adapter.notifyItemChanged(position)
                             }else{
                                 Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
                             }
@@ -249,6 +250,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         if(user.child("email").value.toString() == email){
                             database.child(user.key.toString()).child("codigo_psicologo").setValue("")
                             database.child(user.key.toString()).child("tem_psicologo").setValue(false)
+                            database.child(AuthUtil.getCurrentUser()!!).child("pacientes").child(user.key.toString()).setValue(null)
+                            break
                         }
                     }
 

@@ -32,6 +32,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var avaliacao_dia : String
     private lateinit var dataSelecionada : String
     private lateinit var dataSelecionadaLong : String
+    private var tipoUsuario : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,10 @@ class FormularioDiarioActivity : AppCompatActivity() {
         }
 
         btn_voltar_formulario_diario.setOnClickListener{
-            dialogVotlar()
+            if(tipoUsuario == "Usuário do diário")
+                dialogVotlar()
+            else
+                finish()
         }
     }
 
@@ -107,13 +111,19 @@ class FormularioDiarioActivity : AppCompatActivity() {
             dia.data = data
             dia.modificado_em = modificadoEm
             dia.data_long = dataLong
-            database.child(dataSelecionada).setValue(dia)
+            if(!diaVazio())
+                database.child(dataSelecionada).setValue(dia)
 
         }catch (e:Exception){
             Log.e("salvarDadosDia", e.message.toString())
             Snackbar.make(btn_voltar_formulario_diario, "Não foi possível salvar os dados", Snackbar.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun diaVazio(): Boolean{
+        return txt_diario.text.toString() == "" && avaliacao_dia == "" && txt_sentimentos_bons.text.toString() == ""
+                && txt_sentimentos_ruins.text.toString() == "" && txt_titulo_dia.text.toString() == ""
     }
 
     //função para uso do radio buttom

@@ -74,11 +74,21 @@ class MeuPsicologoActivity : AppCompatActivity() {
     private fun excluirPsicologo() {
 
         try{
-            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-            database.child("codigo_psicologo").setValue("")
-            database.child("tem_psicologo").setValue(false)
-            linear_layout_meu_psicologo.setVisibility(View.GONE)
-            lbl_sem_meu_psicologo.setVisibility(View.VISIBLE)
+            if(ConexaoUtil.estaConectado(this)){
+                database = FirebaseDatabase.getInstance().getReference("users")
+                database.get().addOnSuccessListener {
+                    if(it.exists()){
+                        val codigoPsicologo = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").value.toString()
+                        database.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").setValue("")
+                        database.child(AuthUtil.getCurrentUser()!!).child("tem_psicologo").setValue(false)
+                        database.child(codigoPsicologo).child("pacientes").child(AuthUtil.getCurrentUser()!!).setValue(null)
+                        linear_layout_meu_psicologo.setVisibility(View.GONE)
+                        lbl_sem_meu_psicologo.setVisibility(View.VISIBLE)
+                    }
+                }
+            }else{
+                Snackbar.make(btn_voltar_meu_psicologo, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
 
         }catch (e:Exception){
             Toast.makeText(this@MeuPsicologoActivity, "Erro ao excluir o psicólogo", Toast.LENGTH_SHORT).show()

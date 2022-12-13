@@ -100,7 +100,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
             database.get().addOnSuccessListener {
 
                 pacienteList.clear()
-                if(it.exists()){
+                if(it.exists() && AuthUtil.getCurrentUser() != null){
                     for(item in it.children){
                         val itemData = item.getValue(Usuario::class.java)
                         if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser()

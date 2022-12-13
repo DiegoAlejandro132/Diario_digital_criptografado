@@ -11,8 +11,11 @@ internal object FotoUtil {
         storageReference.downloadUrl.addOnSuccessListener {
             if (it != null){
                 val fotoUri = it.toString()
-                val database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-                database.child("foto_perfil").setValue(fotoUri)
+                if(AuthUtil.getCurrentUser() != null) {
+                    val database = FirebaseDatabase.getInstance().getReference("users")
+                        .child(AuthUtil.getCurrentUser()!!)
+                    database.child("foto_perfil").setValue(fotoUri)
+                }
             }
         }.addOnFailureListener {
             Log.e("definir foto perfil", "Não foi possivel salvar a foto")

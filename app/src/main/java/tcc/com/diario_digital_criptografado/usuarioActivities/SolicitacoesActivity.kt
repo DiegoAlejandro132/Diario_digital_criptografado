@@ -86,22 +86,24 @@ class SolicitacoesActivity : AppCompatActivity() {
     private fun aceitarSolicitacao(){
 
         try{
-            database = FirebaseDatabase.getInstance().getReference("users")
-            database.get().addOnSuccessListener {
-                if(it.exists()){
+            if(ConexaoUtil.estaConectado(this)){
+                database = FirebaseDatabase.getInstance().getReference("users")
+                database.get().addOnSuccessListener {
+                    if(it.exists()){
+                        val codigoPsicologo = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").value.toString()
+                        database.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").setValue(it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").value.toString())
+                        database.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").setValue("")
+                        database.child(AuthUtil.getCurrentUser()!!).child("tem_psicologo").setValue(true)
+                        database.child(AuthUtil.getCurrentUser()!!).child("tem_solicitacao").setValue(false)
+                        database.child(codigoPsicologo).child("pacientes").child(AuthUtil.getCurrentUser()!!).setValue(it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString())
 
-                    val codigoPsicologo = it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").value.toString()
-                    database.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo").setValue(it.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").value.toString())
-                    database.child(AuthUtil.getCurrentUser()!!).child("codigo_psicologo_solicitacao").setValue("")
-                    database.child(AuthUtil.getCurrentUser()!!).child("tem_psicologo").setValue(true)
-                    database.child(AuthUtil.getCurrentUser()!!).child("tem_solicitacao").setValue(false)
-                    database.child(codigoPsicologo).child("pacientes").child(AuthUtil.getCurrentUser()!!).setValue(it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString())
-
-                    linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
-                    lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
-
+                        linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
+                        lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
+                    }
                 }
-            }
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
         }catch (e:Exception){
             Toast.makeText(this@SolicitacoesActivity, "Erro ao aceitar a solicitação.", Toast.LENGTH_SHORT).show()
             Log.e("aceitarSolicitacao", e.message.toString())
@@ -120,12 +122,16 @@ class SolicitacoesActivity : AppCompatActivity() {
 
     private fun rejeitarSolicitacao() {
         try {
-            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
-            database.child("tem_solicitacao").setValue(false)
-            database.child("codigo_psicologo_solicitacao").setValue("")
-            linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
-            lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
-            Toast.makeText(this@SolicitacoesActivity, "Solicitação rejeitada com sucesso.", Toast.LENGTH_SHORT).show()
+            if(ConexaoUtil.estaConectado(this)){
+                database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
+                database.child("tem_solicitacao").setValue(false)
+                database.child("codigo_psicologo_solicitacao").setValue("")
+                linear_layout_dados_psicologo_solicitacao.setVisibility(View.GONE)
+                lbl_sem_solicitacoes.setVisibility(View.VISIBLE)
+                Toast.makeText(this@SolicitacoesActivity, "Solicitação rejeitada com sucesso.", Toast.LENGTH_SHORT).show()
+            }else{
+                Snackbar.make(btn_voltar_solicitacoes, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
         }catch (e : Exception){
             Toast.makeText(this@SolicitacoesActivity, "Houve um erro de conexão ao realizar a ação. Tente mais tarde", Toast.LENGTH_SHORT).show()
             Log.e("aceitarSolicitacao", e.message!!)

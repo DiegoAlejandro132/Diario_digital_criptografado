@@ -124,6 +124,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             usuarioEstaLogado()
             updateUserData()
             listarDias()
+            FotoUtil.definirFotoPerfil()
         }else{
             Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
         }
@@ -148,7 +149,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
-                if(it.exists()){
+                if(it.exists() && AuthUtil.getCurrentUser() != null){
                     tipoUsuario = it.child("${AuthUtil.getCurrentUser()}/tipo_perfil").value.toString()
 
                     val nomeUsuario = it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() }
@@ -355,7 +356,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun atualizarContagemDiasRuins(){
         database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
         database.get().addOnCompleteListener{
-            if(it.isSuccessful){
+            if(it.isSuccessful && AuthUtil.getCurrentUser() != null){
                 val snapshot = it.result
                 val hoje = LocalDate.now()
                 var qtdDiaRuim = 0

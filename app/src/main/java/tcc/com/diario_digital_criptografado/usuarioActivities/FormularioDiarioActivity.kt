@@ -77,6 +77,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         usuarioEstaLogado()
+        FotoUtil.definirFotoPerfil()
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -90,29 +91,34 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
     private fun salvarDadosDia(){
         try{
+            if(ConexaoUtil.estaConectado(this)){
+                database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+                val dia = DiaFormulario()
 
-            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
-            val dia = DiaFormulario()
+                val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
+                val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
+                val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
+                val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
+                val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
+                val data = CriptografiaUtil.encrypt(dataSelecionada)
+                val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
+                val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
 
-            val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
-            val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
-            val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
-            val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
-            val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
-            val data = CriptografiaUtil.encrypt(dataSelecionada)
-            val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
-            val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
-
-            dia.sentimentos_bons = sentimentosBons
-            dia.sentimentos_ruins = sentimentosRuins
-            dia.diario = diario
-            dia.avaliacaoDia = avaliacaoDia
-            dia.titulo = titulo
-            dia.data = data
-            dia.modificado_em = modificadoEm
-            dia.data_long = dataLong
-            if(!diaVazio())
-                database.child(dataSelecionada).setValue(dia)
+                dia.sentimentos_bons = sentimentosBons
+                dia.sentimentos_ruins = sentimentosRuins
+                dia.diario = diario
+                dia.avaliacaoDia = avaliacaoDia
+                dia.titulo = titulo
+                dia.data = data
+                dia.modificado_em = modificadoEm
+                dia.data_long = dataLong
+                if(!diaVazio())
+                    database.child(dataSelecionada).setValue(dia)
+                //startActivity(Intent(this, AgendaUsuarioActivity::class.java))
+                finish()
+            }else{
+                Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
 
         }catch (e:Exception){
             Log.e("salvarDadosDia", e.message.toString())
@@ -286,7 +292,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         val dialogBuilder = AlertDialog.Builder(this@FormularioDiarioActivity)
         dialogBuilder.setMessage("Você deseja salvar os dados?")
             .setTitle("Salvar dados?")
-            .setPositiveButton("Sim") { dialog, id ->  salvarDadosDia(); startActivity(Intent(this, AgendaUsuarioActivity::class.java)); finish() }
+            .setPositiveButton("Sim") { dialog, id ->  salvarDadosDia() }
             .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
         val b = dialogBuilder.create()
         b.show()

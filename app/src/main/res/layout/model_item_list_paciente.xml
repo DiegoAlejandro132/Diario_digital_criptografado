@@ -17,7 +17,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/alerta_dias_ruins_paciente"
             android:layout_width="11dp"
-            android:layout_height="95dp"
+            android:layout_height="115dp"
             app:cardCornerRadius="25dp"
             android:layout_gravity="center"
             android:layout_marginLeft="-2dp"/>

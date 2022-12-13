@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="10dp"
+    android:background="@color/cor_fundo_tela"
     android:orientation="vertical">
 
     <ScrollView
@@ -136,7 +137,7 @@
                         android:textColor="@color/cor_letras"
                         android:textStyle="bold"
                         android:textSize="16sp"
-                        android:text="Email"/>
+                        android:text="E-mail"/>
                     <TextView
                         android:id="@+id/lbl_meu_email"
                         android:layout_width="wrap_content"

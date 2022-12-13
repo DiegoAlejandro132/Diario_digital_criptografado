@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.MeuPerfilActivity
+import tcc.com.diario_digital_criptografado.PoliticaDePrivacidadeActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.DiaAdapter
 import tcc.com.diario_digital_criptografado.model.DiaFormulario
@@ -123,6 +124,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             usuarioEstaLogado()
             updateUserData()
             listarDias()
+            FotoUtil.definirFotoPerfil()
         }else{
             Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
         }
@@ -147,14 +149,14 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
-                if(it.exists()){
+                if(it.exists() && AuthUtil.getCurrentUser() != null){
                     tipoUsuario = it.child("${AuthUtil.getCurrentUser()}/tipo_perfil").value.toString()
 
                     val nomeUsuario = it.child("${AuthUtil.getCurrentUser()}/nome").value.toString().replaceFirstChar { it.toUpperCase() }
                     val emailUsuario = it.child("${AuthUtil.getCurrentUser()}/email").value.toString()
                     val fotoperfil = it.child("${AuthUtil.getCurrentUser()}/foto_perfil").value.toString()
                     if(fotoperfil != "")
-                        Glide.with(this).load(fotoperfil.toUri()).into(nav_header_foto_perfil)
+                        Glide.with(applicationContext).load(fotoperfil.toUri()).into(nav_header_foto_perfil)
                     nav_header_nome_usuario.text = nomeUsuario
                     nav_header_email_usuario.text = emailUsuario
 
@@ -282,14 +284,17 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 R.id.nav_acesso_meu_psicologo -> goMeuPsicologo()
                 R.id.nav_acesso_solicitacoes -> goSolicitacoes()
                 R.id.nav_logout_usuario -> showDialogLogOut()
+                R.id.nav_politica_privacidade_usuario -> irPoliticaPrivacidade()
                 //opções de acesso do psicologo
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPefil()
                 R.id.nav_adicionar_paciente -> goAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
+                R.id.nav_politica_privacidade_psicologo -> irPoliticaPrivacidade()
             }
             true
         }
     }
+
     private fun showDialogLogOut(){
         val dialogBuilder = AlertDialog.Builder(this@AgendaUsuarioActivity)
         dialogBuilder.setMessage("Deseja encerrar a sessão?")
@@ -328,7 +333,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                     nav_header_nome_usuario.text = Html.fromHtml(nomeUsuario)
                     val fotoPerfil = it.child("foto_perfil").value.toString()
                     if(fotoPerfil != ""){
-                        Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+                        Glide.with(applicationContext).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
                     }
                     if(tipoUsuario == "Psicólogo"){
                         val intent = intent
@@ -351,17 +356,16 @@ class AgendaUsuarioActivity : AppCompatActivity() {
     private fun atualizarContagemDiasRuins(){
         database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!)
         database.get().addOnCompleteListener{
-            if(it.isSuccessful){
+            if(it.isSuccessful && AuthUtil.getCurrentUser() != null){
                 val snapshot = it.result
                 val hoje = LocalDate.now()
                 var qtdDiaRuim = 0
                 for (dia in snapshot.child("dias").children){
-                    Log.d("diachild", CriptografiaUtil.decrypt(dia.child("data_long").value.toString()))
                     val data = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
                     val dataDate = Date(data.toLong())
                     val dataLocalDate = dataDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     if((hoje.year == dataLocalDate.year) && (hoje.month == dataLocalDate.month)
-                        && (dataLocalDate.dayOfMonth - hoje.dayOfMonth <= 7)){
+                        && (hoje.dayOfMonth - dataLocalDate.dayOfMonth <= 7)){
 
                         val avaliacaoDia = CriptografiaUtil.decrypt(dia.child("avaliacaoDia").value.toString())
                         val diaRuim = "Péssimo" in avaliacaoDia || "Ruim" in avaliacaoDia
@@ -412,6 +416,11 @@ class AgendaUsuarioActivity : AppCompatActivity() {
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun irPoliticaPrivacidade(){
+        intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
+        startActivity(intent)
     }
 
 

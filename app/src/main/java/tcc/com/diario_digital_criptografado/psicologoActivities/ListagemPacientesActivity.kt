@@ -1,16 +1,11 @@
 package tcc.com.diario_digital_criptografado.psicologoActivities
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -105,7 +100,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
             database.get().addOnSuccessListener {
 
                 pacienteList.clear()
-                if(it.exists()){
+                if(it.exists() && AuthUtil.getCurrentUser() != null){
                     for(item in it.children){
                         val itemData = item.getValue(Usuario::class.java)
                         if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser()
@@ -121,7 +116,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                     recyclerView.adapter = adapter
 
                     adapter.setOnItemClickListener(object : PacienteAdapter.onItemClickListener{
-                        override fun onItemClick(position: Int) {
+                        override fun selecionarPaciente(position: Int) {
                             if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
                                 val clickedItem = pacienteList[position]
                                 adapter.notifyItemChanged(position)
@@ -135,16 +130,21 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         }
 
                         override fun excluirPaciente(position: Int) {
-                            if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
-                                val clickedItem = pacienteList[position]
-                                val email = clickedItem.email
+                            try{
+                                if(ConexaoUtil.estaConectado(this@ListagemPacientesActivity)){
+                                    val clickedItem = pacienteList[position]
+                                    val email = clickedItem.email
 
-                                adapter.notifyItemChanged(position)
-                                pacienteList.removeAt(position)
-                                excluirPaciente(email)
-                            }else{
-                                Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                                    excluirPaciente(email)
+                                    pacienteList.removeAt(position)
+                                    adapter.notifyItemRemoved(position)
+                                }else{
+                                    Snackbar.make(textView12, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+                                }
+                            }catch (e:Exception){
+                                Log.e("erronoadapter", e.message.toString())
                             }
+
                         }
                     })
 
@@ -175,7 +175,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                 val emailUsuario = it.child("email").value.toString()
                 val fotoPerfil = it.child("foto_perfil").value.toString()
                 if(fotoPerfil != "")
-                    Glide.with(this).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
+                    Glide.with(applicationContext).load(fotoPerfil.toUri()).into(nav_header_foto_perfil)
 
                 nav_header_nome_usuario.text = nomeUsuario
                 nav_header_email_usuario.text = emailUsuario
@@ -199,21 +199,27 @@ class ListagemPacientesActivity : AppCompatActivity(){
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_acesso_perfil_psicologo -> irVisualizarPerfil()
-                R.id.nav_adicionar_paciente -> goAdicionarPaciente()
+                R.id.nav_adicionar_paciente -> irAdicionarPaciente()
                 R.id.nav_logout_psicologo -> showDialogLogOut()
+                R.id.nav_politica_privacidade_psicologo -> irPoliticaPrivacidade()
             }
             true
         }
 
     }
 
-    private fun goAdicionarPaciente() {
+    private fun irAdicionarPaciente() {
         intent = Intent(this, AdicionarPacienteActivity::class.java)
         startActivity(intent)
     }
 
     private fun irVisualizarPerfil(){
         intent = Intent(this, MeuPerfilActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun irPoliticaPrivacidade(){
+        intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
         startActivity(intent)
     }
 
@@ -248,6 +254,8 @@ class ListagemPacientesActivity : AppCompatActivity(){
                         if(user.child("email").value.toString() == email){
                             database.child(user.key.toString()).child("codigo_psicologo").setValue("")
                             database.child(user.key.toString()).child("tem_psicologo").setValue(false)
+                            database.child(AuthUtil.getCurrentUser()!!).child("pacientes").child(user.key.toString()).setValue(null)
+                            break
                         }
                     }
 

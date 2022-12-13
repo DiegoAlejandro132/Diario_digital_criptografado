@@ -4,33 +4,25 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_editar_perfil.*
-import kotlinx.android.synthetic.main.activity_listagem_pacientes.*
 import kotlinx.android.synthetic.main.activity_meu_perfil.*
-import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
-import java.lang.Thread.sleep
 
 class MeuPerfilActivity : AppCompatActivity() {
 
@@ -47,7 +39,14 @@ class MeuPerfilActivity : AppCompatActivity() {
 
         if(ConexaoUtil.estaConectado(this)){
             FotoUtil.definirFotoPerfil()
-            trazerDadosUsuario()
+            val timer = object: CountDownTimer(2000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    trazerDadosUsuario()
+                }
+            }
+            timer.start()
         }else{
             progressive_meu_perfil.visibility = View.GONE
             linear_layout_conteudo_meu_perfil.isVisible = true
@@ -83,10 +82,6 @@ class MeuPerfilActivity : AppCompatActivity() {
         trazerDadosUsuario()
     }
 
-    override fun onStop() {
-        super.onStop()
-        finish()
-    }
 
 
     private fun trazerDadosUsuario(){
@@ -94,12 +89,12 @@ class MeuPerfilActivity : AppCompatActivity() {
 
             database = FirebaseDatabase.getInstance().getReference("users")
             database.get().addOnSuccessListener {
-                if(it.exists()){
+                if(it.exists() && AuthUtil.getCurrentUser() != null){
 
                     val tipoUsuario = it.child(AuthUtil.getCurrentUser()!!).child("tipo_perfil").value.toString()
                     val fotoPerfil = it.child(AuthUtil.getCurrentUser()!!).child("foto_perfil").value.toString()
                     if (fotoPerfil != ""){
-                        Glide.with(this).load(fotoPerfil.toUri()).into(img_foto_meu_perfil)
+                        Glide.with(applicationContext).load(fotoPerfil.toUri()).into(img_foto_meu_perfil)
                     }
 
                     lbl_meu_nome_usuario.text = it.child(AuthUtil.getCurrentUser()!!).child("nome").value.toString()
@@ -135,6 +130,7 @@ class MeuPerfilActivity : AppCompatActivity() {
     private fun irEditarPerfil(){
         intent = Intent(this, EditarPerfilUsuarioActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun copiarCodigoUsuario(){

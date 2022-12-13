@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
@@ -31,6 +32,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var avaliacao_dia : String
     private lateinit var dataSelecionada : String
     private lateinit var dataSelecionadaLong : String
+    private var tipoUsuario : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         dataSelecionada = intent.getStringExtra("dataSelecionada").toString()
         dataSelecionadaLong = intent.getStringExtra("dataSelecionadaLong").toString()
 
-        supportActionBar?.title = "Como foi o dia hoje?"
+        supportActionBar?.title = "Como foi o dia?"
         val textoActionBar = "<b>Dia: $dataSelecionada </b>" 
         supportActionBar?.subtitle = Html.fromHtml(textoActionBar)
 
@@ -58,22 +60,24 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
         btn_salvar_diario.setOnClickListener{
             if(ConexaoUtil.estaConectado(this)){
-                salvarDadosDia()
-                val intent = Intent(this, AgendaUsuarioActivity::class.java)
-                startActivity(intent)
+                dialogSalvar()
             }else{
                 Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
             }
         }
 
         btn_voltar_formulario_diario.setOnClickListener{
-            finish()
+            if(tipoUsuario == "Usuário do diário")
+                dialogVotlar()
+            else
+                finish()
         }
     }
 
     override fun onResume() {
         super.onResume()
         usuarioEstaLogado()
+        FotoUtil.definirFotoPerfil()
     }
 
     // <---------------------------------------------------- funções ----------------------------------------------------->
@@ -87,34 +91,45 @@ class FormularioDiarioActivity : AppCompatActivity() {
 
     private fun salvarDadosDia(){
         try{
+            if(ConexaoUtil.estaConectado(this)){
+                database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
+                val dia = DiaFormulario()
 
-            database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
-            val dia = DiaFormulario()
+                val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
+                val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
+                val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
+                val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
+                val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
+                val data = CriptografiaUtil.encrypt(dataSelecionada)
+                val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
+                val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
 
-            val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
-            val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)
-            val sentimentosBons = CriptografiaUtil.encrypt(txt_sentimentos_bons.text.toString())
-            val sentimentosRuins = CriptografiaUtil.encrypt(txt_sentimentos_ruins.text.toString())
-            val titulo = CriptografiaUtil.encrypt(txt_titulo_dia.text.toString())
-            val data = CriptografiaUtil.encrypt(dataSelecionada)
-            val dataLong = CriptografiaUtil.encrypt(dataSelecionadaLong)
-            val modificadoEm = CriptografiaUtil.encrypt(System.currentTimeMillis().toString())
-
-            dia.sentimentos_bons = sentimentosBons
-            dia.sentimentos_ruins = sentimentosRuins
-            dia.diario = diario
-            dia.avaliacaoDia = avaliacaoDia
-            dia.titulo = titulo
-            dia.data = data
-            dia.modificado_em = modificadoEm
-            dia.data_long = dataLong
-            database.child(dataSelecionada).setValue(dia)
+                dia.sentimentos_bons = sentimentosBons
+                dia.sentimentos_ruins = sentimentosRuins
+                dia.diario = diario
+                dia.avaliacaoDia = avaliacaoDia
+                dia.titulo = titulo
+                dia.data = data
+                dia.modificado_em = modificadoEm
+                dia.data_long = dataLong
+                if(!diaVazio())
+                    database.child(dataSelecionada).setValue(dia)
+                //startActivity(Intent(this, AgendaUsuarioActivity::class.java))
+                finish()
+            }else{
+                Snackbar.make(btn_voltar_formulario_diario, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+            }
 
         }catch (e:Exception){
             Log.e("salvarDadosDia", e.message.toString())
             Snackbar.make(btn_voltar_formulario_diario, "Não foi possível salvar os dados", Snackbar.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun diaVazio(): Boolean{
+        return txt_diario.text.toString() == "" && avaliacao_dia == "" && txt_sentimentos_bons.text.toString() == ""
+                && txt_sentimentos_ruins.text.toString() == "" && txt_titulo_dia.text.toString() == ""
     }
 
     //função para uso do radio buttom
@@ -262,5 +277,26 @@ class FormularioDiarioActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun dialogVotlar(){
+        val dialogBuilder = AlertDialog.Builder(this@FormularioDiarioActivity)
+        dialogBuilder.setMessage("Caso você saia, os dados anotados não serão salvos")
+            .setTitle("Deseja mesmo sair?")
+            .setPositiveButton("Sim") { dialog, id ->  finish() }
+            .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
+        val b = dialogBuilder.create()
+        b.show()
+    }
+
+    private fun dialogSalvar(){
+        val dialogBuilder = AlertDialog.Builder(this@FormularioDiarioActivity)
+        dialogBuilder.setMessage("Você deseja salvar os dados?")
+            .setTitle("Salvar dados?")
+            .setPositiveButton("Sim") { dialog, id ->  salvarDadosDia() }
+            .setNegativeButton("Não") { dialog, id ->  dialog.dismiss() }
+        val b = dialogBuilder.create()
+        b.show()
+    }
+
 
 }

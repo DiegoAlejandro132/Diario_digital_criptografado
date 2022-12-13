@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cor_fundo_tela"
     android:orientation="vertical"
     android:padding="30dp">
 
@@ -29,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Insira o email da sua conta para redefinição"
+        android:text="Insira o e-mail da sua conta para redefinição"
         android:textColor="@color/cor_letras"
         android:textSize="16sp"
         android:layout_gravity="center"/>

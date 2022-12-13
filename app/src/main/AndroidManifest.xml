@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Diario_digital_criptografado"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PoliticaDePrivacidadeActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

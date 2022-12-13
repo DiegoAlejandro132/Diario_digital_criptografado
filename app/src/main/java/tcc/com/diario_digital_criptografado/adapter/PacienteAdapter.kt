@@ -2,16 +2,12 @@ package tcc.com.diario_digital_criptografado.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tcc.com.diario_digital_criptografado.R
@@ -23,7 +19,7 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
     private lateinit var listener : onItemClickListener
 
     interface onItemClickListener{
-        fun onItemClick(position : Int)
+        fun selecionarPaciente(position : Int)
         //fun onItemLongClickListener(position : Int)
         fun excluirPaciente(position: Int)
     }
@@ -34,7 +30,7 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.model_item_list_paciente, parent, false)
-        return ViewHolder(itemView, listener)
+            return ViewHolder(itemView, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -68,7 +64,7 @@ class PacienteAdapter (private val context : Context, private val pacienteslist 
 
         init {
             itemView.setOnClickListener{
-                listener.onItemClick(adapterPosition)
+                listener.selecionarPaciente(adapterPosition)
             }
 
 //            itemView.setOnLongClickListener {

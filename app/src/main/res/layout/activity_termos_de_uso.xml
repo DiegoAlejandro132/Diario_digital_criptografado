@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cor_fundo_tela"
+    tools:context=".PoliticaDePrivacidadeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Válida a partir de dezembro de 2022"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="POLÍTICA DE PRIVACIDADE - MEU DIÁRIO"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_inicial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DEFINIÇÕES"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_definicoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="USO DE DADOS PESSOAIS"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_uso_dados_pessoais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="NÃO FORNECIMENTO DE DADOS PESSOAIS"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_nao_fornecimento_dados_pessoais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DADOS COLETADOS"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_dados_coletados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="COMPARTILHAMENTO DE DADOS PESSOAIS COM TERCEIROS"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_compartilhamento_dados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DIREITOS DO USUÁRIO"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_texto_direitos_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="SEGURANÇA DOS DADOS PESSOAIS"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_seguranca_dados_pessoais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="LINKS PARA OUTROS SITES OU REDES SOCIAIS"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_links_para_outros_sites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="ATUALIZAÇÃO DESTA POLÍTICA DE PRIVACIDADE"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_atualizacao_politica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="ENCARREGADO DO TRATAMENTO DOS DADOS PESSOAIS"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_letras"/>
+
+        <TextView
+            android:id="@+id/politica_privacidade_encarregado_tratamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="15dp"/>
+
+        <Button
+            android:id="@+id/btn_voltar_politica_privacidade"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:drawableLeft="@drawable/ic_baseline_close_24"
+            android:backgroundTint="@color/transparent_red"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:text="Voltar"/>
+    </LinearLayout>
+
+</ScrollView>

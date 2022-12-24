@@ -11,10 +11,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tcc.com.diario_digital_criptografado.R
-import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.model.UsuarioDiario
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 
-class PacienteAdapter (private val context : Context, private val pacienteslist : ArrayList<Usuario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
+class PacienteAdapter (private val context : Context, private val pacienteslist : ArrayList<UsuarioDiario>) : RecyclerView.Adapter<PacienteAdapter.ViewHolder>() {
 
     private lateinit var listener : onItemClickListener
 

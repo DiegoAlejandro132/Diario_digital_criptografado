@@ -11,9 +11,9 @@ import tcc.com.diario_digital_criptografado.R
 
 import java.util.ArrayList;
 
-import tcc.com.diario_digital_criptografado.model.DiaFormulario;
+import tcc.com.diario_digital_criptografado.model.Diario;
 
-class DiaAdapter (private val context :Context, private val diaList :ArrayList<DiaFormulario>) : RecyclerView.Adapter<DiaAdapter.ViewHolder>(){
+class DiaAdapter (private val context :Context, private val diaList :ArrayList<Diario>) : RecyclerView.Adapter<DiaAdapter.ViewHolder>(){
 
     private lateinit var listener : onItemClickListener
 

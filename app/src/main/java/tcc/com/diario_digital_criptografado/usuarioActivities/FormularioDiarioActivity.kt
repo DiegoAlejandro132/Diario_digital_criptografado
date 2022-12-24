@@ -1,30 +1,25 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_agenda_usuario.*
-import kotlinx.android.synthetic.main.activity_editar_perfil.*
 import kotlinx.android.synthetic.main.activity_formulario_diario.*
 import tcc.com.diario_digital_criptografado.MainActivity
 import tcc.com.diario_digital_criptografado.R
-import tcc.com.diario_digital_criptografado.model.DiaFormulario
+import tcc.com.diario_digital_criptografado.model.Diario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.CriptografiaUtil
 import tcc.com.diario_digital_criptografado.util.FotoUtil
-import java.time.LocalDate
 
 class FormularioDiarioActivity : AppCompatActivity() {
     private lateinit var database : DatabaseReference
@@ -93,7 +88,7 @@ class FormularioDiarioActivity : AppCompatActivity() {
         try{
             if(ConexaoUtil.estaConectado(this)){
                 database = FirebaseDatabase.getInstance().getReference("users").child(AuthUtil.getCurrentUser()!!).child("dias")
-                val dia = DiaFormulario()
+                val dia = Diario()
 
                 val diario = CriptografiaUtil.encrypt(txt_diario.text.toString())
                 val avaliacaoDia = CriptografiaUtil.encrypt(avaliacao_dia)

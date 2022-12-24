@@ -64,7 +64,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         btn_salvar_dados_editar_perfil.setOnClickListener{
             if(ConexaoUtil.estaConectado(this)){
                 uploadImageToStorage()
-                saveUserData()
+                salvarDadosUsuario()
                 val timer = object: CountDownTimer(4000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         linear_layout_conteudo_editar_perfil.visibility = View.GONE
@@ -145,7 +145,7 @@ class EditarPerfilUsuarioActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserData() {
+    private fun salvarDadosUsuario() {
         try {
             if(txt_editar_nome_usuario.text.toString() == ""
                 || txt_editar_data_nascimento.text.toString() == ""

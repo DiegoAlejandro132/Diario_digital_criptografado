@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.header_navigation_drawer.*
 import tcc.com.diario_digital_criptografado.*
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.PacienteAdapter
-import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.model.UsuarioDiario
 import tcc.com.diario_digital_criptografado.usuarioActivities.AgendaUsuarioActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
@@ -34,7 +34,7 @@ import tcc.com.diario_digital_criptografado.util.FotoUtil
 
 class ListagemPacientesActivity : AppCompatActivity(){
     private lateinit var recyclerView : RecyclerView
-    private lateinit var pacienteList : ArrayList<Usuario>
+    private lateinit var pacienteList : ArrayList<UsuarioDiario>
     private lateinit var database : DatabaseReference
     private lateinit var toggle : ActionBarDrawerToggle
 
@@ -61,7 +61,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
         recycler_pacientes.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        pacienteList = arrayListOf<Usuario>()
+        pacienteList = arrayListOf<UsuarioDiario>()
 
 
         swipe_listagem_pacientes.setOnRefreshListener {
@@ -102,7 +102,7 @@ class ListagemPacientesActivity : AppCompatActivity(){
                 pacienteList.clear()
                 if(it.exists() && AuthUtil.getCurrentUser() != null){
                     for(item in it.children){
-                        val itemData = item.getValue(Usuario::class.java)
+                        val itemData = item.getValue(UsuarioDiario::class.java)
                         if(itemData!!.tipo_perfil == "Usuário do diário" && item.child("codigo_psicologo").value.toString() == AuthUtil.getCurrentUser()
                             && item.child("tem_psicologo").value == true)
                             pacienteList.add(itemData)

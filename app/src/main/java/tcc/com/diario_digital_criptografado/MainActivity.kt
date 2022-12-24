@@ -1,23 +1,17 @@
 package tcc.com.diario_digital_criptografado;
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_agenda_usuario.*
-import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.txt_email
 import kotlinx.android.synthetic.main.activity_main.txt_senha
@@ -35,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Login"
 
-        verifyUserIsLoggedIn()
+        usuarioEstaLogado()
 
         //Direciona para pagina de cadastro
         btn_ir_cadastro.setOnClickListener {
@@ -63,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     val email = txt_email.text.toString()
                     val senha = txt_senha.text.toString()
 
-                    if(validateLogin()){
+                    if(validarLogin()){
                         auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
                                 if (auth.currentUser!!.isEmailVerified){
@@ -132,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     }
     
 
-    private fun validateLogin() : Boolean{
+    private fun validarLogin() : Boolean{
         if((txt_email != null && txt_email.text.toString() != "")
             &&(txt_senha != null && txt_senha.text.toString() != "")){
             return true
@@ -140,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun verifyUserIsLoggedIn(){
+    private fun usuarioEstaLogado(){
 
         try {
             if(AuthUtil.usuarioEstaLogado()){

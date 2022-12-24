@@ -21,24 +21,28 @@ class RedefinirSenhaActivity : AppCompatActivity() {
 
 
         btn_redefinir_senha.setOnClickListener {
-            if (ConexaoUtil.estaConectado(this)){
-                if(validateEmail()){
-                    auth.sendPasswordResetEmail(txt_email_redefinir.text.toString()).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Snackbar.make(btn_redefinir_senha, "Caso o e-mail possua cadastro, será enviado um e-mail de redefinição de senha", Snackbar.LENGTH_LONG).show()
-                        } else {
-                            Snackbar.make(btn_redefinir_senha, "Falha no processo", Snackbar.LENGTH_LONG).show()
-                        }
-                    }
-                }else{
-                    Snackbar.make(btn_redefinir_senha, "Você precisa inserir um e-mail", Snackbar.LENGTH_LONG).show()
-                }
-            }else{
-                Snackbar.make(btn_redefinir_senha, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
-            }
+            enviarEmail()
         }
 
 
+    }
+
+    private fun enviarEmail(){
+        if (ConexaoUtil.estaConectado(this)){
+            if(validateEmail()){
+                auth.sendPasswordResetEmail(txt_email_redefinir.text.toString()).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Snackbar.make(btn_redefinir_senha, "Caso o e-mail possua cadastro, será enviado um e-mail de redefinição de senha", Snackbar.LENGTH_LONG).show()
+                    } else {
+                        Snackbar.make(btn_redefinir_senha, "Falha no processo", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+            }else{
+                Snackbar.make(btn_redefinir_senha, "Você precisa inserir um e-mail", Snackbar.LENGTH_LONG).show()
+            }
+        }else{
+            Snackbar.make(btn_redefinir_senha, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun validateEmail() : Boolean{

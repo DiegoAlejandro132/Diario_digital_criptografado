@@ -18,14 +18,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_adicionar_paciente.*
-import kotlinx.android.synthetic.main.activity_agenda_usuario.*
 import kotlinx.android.synthetic.main.activity_cadastro.*
 import kotlinx.android.synthetic.main.activity_cadastro.txt_email
 import kotlinx.android.synthetic.main.activity_cadastro.txt_senha
-import kotlinx.android.synthetic.main.activity_main.*
 import tcc.com.diario_digital_criptografado.model.Psicologo
-import tcc.com.diario_digital_criptografado.model.Usuario
+import tcc.com.diario_digital_criptografado.model.UsuarioDiario
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
 import tcc.com.diario_digital_criptografado.util.ValidationUtil
@@ -120,7 +117,7 @@ class CadastroActivity : AppCompatActivity() {
                         }else{
                             auth.createUserWithEmailAndPassword(txt_email.text.toString(), txt_senha.text.toString()).addOnCompleteListener(this) {task ->
                                 if(task.isSuccessful){
-                                    writePsicologoDatabase()
+                                    criarPsicologo()
                                     Toast.makeText(this@CadastroActivity, "Psicólogo cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                                     Firebase.auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
                                         if(it.isSuccessful){
@@ -434,24 +431,24 @@ class CadastroActivity : AppCompatActivity() {
 
         try{
 
-            val usuario = Usuario()
-            usuario.cpf = txt_cpf.text.toString()
-            usuario.data_nascimento = txt_data_nascimento.text.toString()
-            usuario.email = txt_email.text.toString()
-            usuario.telefone = txt_telefone.text.toString()
-            usuario.nome = txt_nome.text.toString()
-            usuario.genero = genero.toString()
-            usuario.tipo_perfil = tipo_perfil.toString()
-            usuario.tem_psicologo = false
-            usuario.tem_solicitacao = false
-            usuario.codigo_psicologo = ""
-            usuario.codigo_psicologo_solicitacao = ""
-            usuario.foto_perfil = ""
-            usuario.diasRuinsConsecutivos = ""
+            val usuarioDiario = UsuarioDiario()
+            usuarioDiario.cpf = txt_cpf.text.toString()
+            usuarioDiario.data_nascimento = txt_data_nascimento.text.toString()
+            usuarioDiario.email = txt_email.text.toString()
+            usuarioDiario.telefone = txt_telefone.text.toString()
+            usuarioDiario.nome = txt_nome.text.toString()
+            usuarioDiario.genero = genero.toString()
+            usuarioDiario.tipo_perfil = tipo_perfil.toString()
+            usuarioDiario.tem_psicologo = false
+            usuarioDiario.tem_solicitacao = false
+            usuarioDiario.codigo_psicologo = ""
+            usuarioDiario.codigo_psicologo_solicitacao = ""
+            usuarioDiario.foto_perfil = ""
+            usuarioDiario.diasRuinsConsecutivos = ""
 
             val userUid = AuthUtil.getCurrentUser()
             val child = "users/$userUid"
-            database.child(child).setValue(usuario)
+            database.child(child).setValue(usuarioDiario)
         }catch (e:Exception){
             Toast.makeText(this@CadastroActivity, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show()
             Log.e("writeUserDatabase", e.message.toString())
@@ -459,7 +456,7 @@ class CadastroActivity : AppCompatActivity() {
     }
 
 
-    private fun writePsicologoDatabase() {
+    private fun criarPsicologo() {
 
         try{
 

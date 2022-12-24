@@ -1,14 +1,12 @@
 package tcc.com.diario_digital_criptografado.usuarioActivities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +27,7 @@ import tcc.com.diario_digital_criptografado.MeuPerfilActivity
 import tcc.com.diario_digital_criptografado.PoliticaDePrivacidadeActivity
 import tcc.com.diario_digital_criptografado.R
 import tcc.com.diario_digital_criptografado.adapter.DiaAdapter
-import tcc.com.diario_digital_criptografado.model.DiaFormulario
+import tcc.com.diario_digital_criptografado.model.Diario
 import tcc.com.diario_digital_criptografado.psicologoActivities.AdicionarPacienteActivity
 import tcc.com.diario_digital_criptografado.util.AuthUtil
 import tcc.com.diario_digital_criptografado.util.ConexaoUtil
@@ -101,12 +99,12 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                 if(tipoUsuario == "Psicólogo")
                     if(ConexaoUtil.estaConectado(this)){
                         intent.putExtra("emailUsuarioSelecionado", emailUsuarioSelecionado)
-                        startActivity(intent)
+                        irDiario(intent)
                     }else{
                         Snackbar.make(calendarView_user, "Verifique a conexão com a internet", Snackbar.LENGTH_LONG).show()
                     }
                 else
-                    startActivity(intent)
+                    irDiario(intent)
             }else{
                 Snackbar.make(calendarView_user, "Data futura não é permitida", Snackbar.LENGTH_LONG).show()
             }
@@ -122,7 +120,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         super.onResume()
         if(ConexaoUtil.estaConectado(this)){
             usuarioEstaLogado()
-            updateUserData()
+            atualizarDadosUsuario()
             listarDias()
             FotoUtil.definirFotoPerfil()
         }else{
@@ -207,7 +205,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     private fun listarDias() {
         try{
-            val dialist = ArrayList<DiaFormulario>()
+            val dialist = ArrayList<Diario>()
 
             val recryclerDias = recycler_dias
             recryclerDias.layoutManager = LinearLayoutManager(this)
@@ -227,7 +225,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
                         val dataExpiracao = dataExpiracaoDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(5)
 
                         if(dataHoje <= dataExpiracao){
-                            val diaData = DiaFormulario()
+                            val diaData = Diario()
                             diaData.data = CriptografiaUtil.decrypt(dia.child("data").value.toString())
                             diaData.data_long = CriptografiaUtil.decrypt(dia.child("data_long").value.toString())
                             diaData.avaliacaoDia = CriptografiaUtil.decrypt(if(dia.child("avaliacaoDia").value != null) dia.child("avaliacaoDia").value.toString() else "")
@@ -321,7 +319,7 @@ class AgendaUsuarioActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserData(){
+    private fun atualizarDadosUsuario(){
 
         try{
 
@@ -420,6 +418,10 @@ class AgendaUsuarioActivity : AppCompatActivity() {
 
     private fun irPoliticaPrivacidade(){
         intent = Intent(this, PoliticaDePrivacidadeActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun irDiario(intent : Intent){
         startActivity(intent)
     }
 
